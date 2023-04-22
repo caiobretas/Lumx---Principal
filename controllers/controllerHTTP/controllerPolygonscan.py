@@ -38,7 +38,8 @@ class ControllerPolygonscan(ControllerHTTPBase):
                 txnType ='Normal',
                 address=str(address).lower(),
                 blockchain='MATIC',
-                name = str(name).lower()
+                name = str(name).lower(),
+                scan = 'https://polygonscan.com'
                 )
                 list_Transactions.append(transaction)
             
@@ -73,7 +74,8 @@ class ControllerPolygonscan(ControllerHTTPBase):
                 txnType = 'Internal',
                 address = str(address).lower(),
                 name = str(name).capitalize(),
-                blockchain = 'MATIC'
+                blockchain = 'MATIC',
+                scan = 'https://polygonscan.com'
                 )
                 list_internalTransactions.append(transaction)
             
@@ -110,7 +112,9 @@ class ControllerPolygonscan(ControllerHTTPBase):
                     txnType = 'ERC-20',
                     address = str(address).lower(),
                     name = str(name).capitalize(),
-                    blockchain = 'MATIC')
+                    blockchain = 'MATIC',
+                scan = 'https://polygonscan.com'
+                )
                 list_erc20Transactions.append(transaction)
             
             return list_erc20Transactions

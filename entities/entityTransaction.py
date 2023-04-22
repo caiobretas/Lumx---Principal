@@ -81,6 +81,7 @@ class TransactionCrypto:
     address: str=None,
     blockchain=None,
     name: str=None,
+    scan: str=None
     ):
         
         self.id = str(uuid4())
@@ -95,7 +96,7 @@ class TransactionCrypto:
         self.gas: float = gas
         self.gasPrice: float = (gasPrice / (10**18)) if gasPrice != None else gasPrice
         self.gasUsed: float = gasUsed
-        self.cumulativeGasUsed: float = (cumulativeGasUsed / (10**18)) if cumulativeGasUsed != None else cumulativeGasUsed
+        self.cumulativeGasUsed: float = cumulativeGasUsed
         self.value = (value / (10**float(tokenDecimal)))
         self.tokenName = tokenName
         self.tokenSymbol = tokenSymbol
@@ -108,13 +109,14 @@ class TransactionCrypto:
         self.txnType = txnType
         self.address = address.lower()
         self.blockchain = blockchain
-        self.name = name.capitalize()
+        self.name = name
+        self.scan = scan + f'/tx/{self.hash}'
         
         if self.address == self.from_:
             self.value = (value / (10**int(tokenDecimal))) * (-1)
 
     def to_tuple(self) -> tuple:
-        return (self.id, self.blockNumber,self.blockHash,self.datetime,self.hash,self.nonce,self.from_,self.to_,self.contractAddress,self.gas,self.gasPrice,self.gasUsed,self.cumulativeGasUsed,self.value,self.tokenName,self.tokenSymbol,self.tokenDecimal,self.isError,self.txreceipt_status,self.type,self.methodId,self.functionName,self.txnType, self.blockchain, self.address, self.name)
+        return (self.id, self.blockNumber,self.blockHash,self.datetime,self.hash,self.nonce,self.from_,self.to_,self.contractAddress,self.gas,self.gasPrice,self.gasUsed,self.cumulativeGasUsed,self.value,self.tokenName,self.tokenSymbol,self.tokenDecimal,self.isError,self.txreceipt_status,self.type,self.methodId,self.functionName,self.txnType, self.blockchain, self.address, self.name, self.scan)
      
     def __repr__(self) -> str:
         return f'Bank: {self.name} - Type: {self.txnType} - Chain: {self.blockchain} - Symbol: {self.tokenSymbol} - Datetime: {self.datetime}'

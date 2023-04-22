@@ -38,7 +38,8 @@ class ControllerEtherscan(ControllerHTTPBase):
                 txnType ='Normal',
                 address=str(address).lower(),
                 blockchain='ETH',
-                name = str(name).lower()
+                name = str(name).lower(),
+                scan = 'https://etherscan.io'
                 )
                 list_Transactions.append(transaction)
             
@@ -73,7 +74,8 @@ class ControllerEtherscan(ControllerHTTPBase):
                 txnType = 'Internal',
                 address = str(address).lower(),
                 name = str(name).capitalize(),
-                blockchain = 'ETH'
+                blockchain = 'ETH',
+                scan = 'https://etherscan.io'
                 )
                 list_internalTransactions.append(transaction)
             
@@ -110,7 +112,8 @@ class ControllerEtherscan(ControllerHTTPBase):
                     txnType = 'ERC-20',
                     address = str(address).lower(),
                     name = str(name).capitalize(),
-                    blockchain = 'ETH'
+                    blockchain = 'ETH',
+                    scan = 'https://etherscan.io'
                 )
                 list_erc20Transactions.append(transaction)
             
