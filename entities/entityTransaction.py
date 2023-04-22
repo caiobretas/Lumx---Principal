@@ -92,11 +92,11 @@ class TransactionCrypto:
         self.from_ = from_.lower()
         self.to_ = to.lower()
         self.contractAddress = contractAddress
-        self.gas = gas
-        self.gasPrice = gasPrice
-        self.gasUsed = gasUsed
-        self.cumulativeGasUsed = cumulativeGasUsed
-        self.value = (value / (10**int(tokenDecimal)))
+        self.gas: float = gas
+        self.gasPrice: float = (gasPrice / (10**18)) if gasPrice != None else gasPrice
+        self.gasUsed: float = gasUsed
+        self.cumulativeGasUsed: float = (cumulativeGasUsed / (10**18)) if cumulativeGasUsed != None else cumulativeGasUsed
+        self.value = (value / (10**float(tokenDecimal)))
         self.tokenName = tokenName
         self.tokenSymbol = tokenSymbol
         self.tokenDecimal = int(tokenDecimal)

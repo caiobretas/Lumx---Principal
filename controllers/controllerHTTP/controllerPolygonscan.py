@@ -14,21 +14,21 @@ class ControllerPolygonscan(ControllerHTTPBase):
 
             list_Transactions: list[TransactionCrypto] = []
             for dict in result:
-                obj = TransactionCrypto(
-                blockNumber = dict['blockNumber'], 
-                blockHash = dict['blockHash'], 
+                transaction = TransactionCrypto(
+                blockNumber = int(dict['blockNumber']),
+                blockHash = str(dict['blockHash']).lower(),
                 timeStamp = int(dict['timeStamp']),
-                hash = dict['hash'], 
-                nonce = dict['nonce'],
-                from_ = dict['from'],
-                contractAddress = dict['contractAddress'],
-                to = dict['to'],
-                gas = dict['gas'],
-                gasPrice = dict['gasPrice'],
-                gasUsed = dict['gasUsed'],
-                cumulativeGasUsed = dict['cumulativeGasUsed'],
-                value = int(dict['value']),
-                tokenName = 'Polygon',
+                hash = str(dict['hash']).lower(), 
+                nonce = int(dict['nonce']),
+                from_ = str(dict['from']).lower(),
+                contractAddress = str(dict['contractAddress']).lower(),
+                to = str(dict['to']).lower(),
+                gas = float(dict['gas']),
+                gasPrice = float(dict['gasPrice']),
+                gasUsed = float(dict['gasUsed']),
+                cumulativeGasUsed = float(dict['cumulativeGasUsed']),
+                value = float(dict['value']),
+                tokenName = 'Matic',
                 tokenSymbol = 'MATIC',
                 tokenDecimal = 18,
                 isError = int(dict['isError']),
@@ -36,11 +36,11 @@ class ControllerPolygonscan(ControllerHTTPBase):
                 methodId = dict['methodId'],
                 functionName = dict['functionName'],
                 txnType ='Normal',
-                address=address,
+                address=str(address).lower(),
                 blockchain='MATIC',
-                name = name
+                name = str(name).lower()
                 )
-                list_Transactions.append(obj)
+                list_Transactions.append(transaction)
             
             return list_Transactions
             
@@ -55,27 +55,27 @@ class ControllerPolygonscan(ControllerHTTPBase):
 
             list_internalTransactions: list[TransactionCrypto] = []
             for dict in result:
-                obj = TransactionCrypto(
-                blockNumber = dict['blockNumber'],
+                transaction = TransactionCrypto(
+                blockNumber = int(dict['blockNumber']),
                 timeStamp = int(dict['timeStamp']),
-                hash = dict['hash'],
-                from_ = dict['from'],
-                contractAddress = dict['contractAddress'],
-                to = dict['to'],
-                gas = dict['gas'],
-                gasUsed = dict['gasUsed'],
-                value = int(dict['value']),
-                tokenName = 'Polygon',
+                hash = str(dict['hash']).lower(),
+                from_ = str(dict['from']).lower(),
+                contractAddress = str(dict['contractAddress']).lower(),
+                to = str(dict['to']).lower(),
+                gas = float(dict['gas']),
+                gasUsed = float(dict['gasUsed']),
+                value = float(dict['value']),
+                tokenName = 'Matic',
                 tokenSymbol = 'MATIC',
                 tokenDecimal = 18,
-                isError = dict['isError'],
-                type = dict['type'],
+                isError = int(dict['isError']),
+                type = str(dict['type']).lower(),
                 txnType = 'Internal',
-                address = address,
-                name = name,
+                address = str(address).lower(),
+                name = str(name).capitalize(),
                 blockchain = 'MATIC'
                 )
-                list_internalTransactions.append(obj)
+                list_internalTransactions.append(transaction)
             
             return list_internalTransactions
         
@@ -88,33 +88,32 @@ class ControllerPolygonscan(ControllerHTTPBase):
             endpoint = self.baseUrl + filtros
             result = super().get(endpoint=endpoint)['result']
 
-            list_internalTransactions: list[TransactionCrypto] = []
+            list_erc20Transactions: list[TransactionCrypto] = []
             for dict in result:
-                obj = TransactionCrypto(
-                    blockNumber = dict['blockNumber'],
-                    blockHash = dict['blockHash'],
+                transaction = TransactionCrypto(
+                    blockNumber = int(dict['blockNumber']),
+                    blockHash = str(dict['blockHash']).lower(),
                     timeStamp = int(dict['timeStamp']),
-                    hash = dict['hash'],
-                    nonce = dict['nonce'],
-                    from_ = dict['from'],
-                    contractAddress = dict['contractAddress'],
-                    to = dict['to'],
-                    gas = dict['gas'],
-                    gasPrice = dict['gasPrice'],
-                    gasUsed = dict['gasUsed'],
-                    cumulativeGasUsed = int(dict['cumulativeGasUsed']),
-                    value = int(dict['value']),
-                    tokenName = dict['tokenName'],
-                    tokenSymbol = dict['tokenSymbol'],
-                    tokenDecimal = dict['tokenDecimal'],
+                    hash = str(dict['hash']).lower(),
+                    nonce = int(dict['nonce']),
+                    from_ = str(dict['from']).lower(),
+                    contractAddress = str(dict['contractAddress']).lower(),
+                    to = str(dict['to']).lower(),
+                    gas = float(dict['gas']),
+                    gasPrice = float(dict['gasPrice']),
+                    gasUsed = float(dict['gasUsed']),
+                    cumulativeGasUsed = float(dict['cumulativeGasUsed']),
+                    value = float(dict['value']),
+                    tokenName = str(dict['tokenName']),
+                    tokenSymbol = str(dict['tokenSymbol']).upper(),
+                    tokenDecimal = int(dict['tokenDecimal']),
                     txnType = 'ERC-20',
-                    address = address,
-                    name = name,
-                    blockchain = 'MATIC'
-                )
-                list_internalTransactions.append(obj)
+                    address = str(address).lower(),
+                    name = str(name).capitalize(),
+                    blockchain = 'MATIC')
+                list_erc20Transactions.append(transaction)
             
-            return list_internalTransactions
+            return list_erc20Transactions
         
         except Exception as e:
             raise e
