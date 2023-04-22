@@ -50,5 +50,3 @@ class Main:
         print('\nRotine in {:.2f} seconds\n'.format(time() - self.start_time))
 
 Main().rotina()
-
-# teste
