@@ -1,0 +1,1 @@
+select * from finance.movements_crypto;

@@ -1,3 +1,25 @@
 {
-    "python.analysis.typeCheckingMode": "off"
+    "python.analysis.typeCheckingMode": "off",
+    "sqltools.connections": [
+        {
+            "previewLimit": 50,
+            "server": "protocol-prod.czhdzceztpsv.us-east-1.rds.amazonaws.com",
+            "port": 5432,
+            "driver": "PostgreSQL",
+            "name": "Protocol",
+            "database": "postgres",
+            "password": "F1n@nceiro2502",
+            "username": "financeiro"
+        },
+        {
+            "previewLimit": 50,
+            "server": "financeiro.czhdzceztpsv.us-east-1.rds.amazonaws.com",
+            "port": 5432,
+            "driver": "PostgreSQL",
+            "name": "Financeiro",
+            "database": "postgres",
+            "username": "postgres",
+            "password": "financeiro2502lumx.."
+        }
+    ]
 }
