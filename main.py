@@ -50,12 +50,3 @@ class Main:
         print('\nRotine in {:.2f} seconds\n'.format(time() - self.start_time))
 
 Main().rotina()
-
-# import schedule
-# from time import sleep
-    
-# schedule.every(1).minutes.do(Main().rotina)
-
-# while True:
-#     schedule.run_pending()
-#     sleep(1)
