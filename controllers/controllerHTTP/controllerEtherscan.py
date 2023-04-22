@@ -38,7 +38,7 @@ class ControllerEtherscan(ControllerHTTPBase):
                 txnType ='Normal',
                 address=str(address).lower(),
                 blockchain='ETH',
-                name = str(name).lower(),
+                name = str(name),
                 scan = 'https://etherscan.io'
                 )
                 list_Transactions.append(transaction)
@@ -73,7 +73,7 @@ class ControllerEtherscan(ControllerHTTPBase):
                 type = str(dict['type']).lower(),
                 txnType = 'Internal',
                 address = str(address).lower(),
-                name = str(name).capitalize(),
+                name = str(name),
                 blockchain = 'ETH',
                 scan = 'https://etherscan.io'
                 )
@@ -111,7 +111,7 @@ class ControllerEtherscan(ControllerHTTPBase):
                     tokenDecimal = int(dict['tokenDecimal']),
                     txnType = 'ERC-20',
                     address = str(address).lower(),
-                    name = str(name).capitalize(),
+                    name = str(name),
                     blockchain = 'ETH',
                     scan = 'https://etherscan.io'
                 )
