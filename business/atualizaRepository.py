@@ -11,6 +11,7 @@ from business.updateCategories import UpdateCategories
 from business.updateTransactions import UpdateTransactions
 from business.updateCryptoTransactions import UpdateCryptoTransactions
 from business.updateFutures import UpdateFutures
+from business.updateBook import UpdateBook
 
 
 class AtualizaFinanceRepository:
@@ -29,6 +30,7 @@ class AtualizaFinanceRepository:
         # self.repositoryVolumeWallets.insereVolumeWallets(self.protocolData.lst_Wallets)
         # self.repositoryBillings.insertBilling(self.protocolData.lst_billings)
 
+        UpdateBook(path_interface=pathIF,sheetName_interface='book')
         UpdateCryptoTransactions(connection=connFinance, engine=engine, schema='finance', tableName='movements_crypto')
         # UpdateCryptoPrices(connectionFinance=connFinance, engineAdmin=engine, schema=schema, tableName='prices_crypto')
         # UpdateCategories(connection=connFinance, engine=engine,pathIF=pathIF,schema='finance', sheetName='categories', tableName='categories')

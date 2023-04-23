@@ -11,7 +11,6 @@ class InterfaceBillings ( InterfaceBase ):
         self.interface: DataFrame = super().abreDataFrame()
 
     def get_Billings(self):
-        df: DataFrame = self.interface
 
         lst_aux: list[Billing] = []
         for index, row in self.interface.iterrows():
