@@ -7,3 +7,12 @@ class Book:
         self.is_conversion = is_conversion
         self.is_primarysale = is_primarysale
         self.is_secondarysale = is_secondarysale
+    
+    def __repr__(self) -> str:
+        return f'Address: {self.address} - Name: {self.name}'
+    def __str__(self) -> str:
+        return f'Address: {self.address} - Name: {self.name}'
+    
+    def to_tuple(self) -> tuple:
+        return (self.address, self.name, self.is_lumx, self.is_conversion, self.is_primarysale, self.is_secondarysale)
+    

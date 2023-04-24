@@ -1,5 +1,4 @@
 from time import time
-from entities.entityCategory import Category
 from interfaces.interfaceCategories import InterfaceCategories
 from repositories.repositoryCategories import RepositoryCategories
 

@@ -3,10 +3,10 @@ from entities.entityBook import Book
 from interfaces.interfaceBase import InterfaceBase
 
 class InterfaceBook(InterfaceBase):
-    def __init__(self,path, sheetName):
-        self.path = path
-        super().__init__(path, sheetName)
-        self.dataframe = super().abreDataFrame()
+    def __init__(self,path_interface, sheetName_interface):
+        self.path = path_interface
+        super().__init__(path_interface, sheetName_interface)
+        
     
     def getSheets(self):
         try:
@@ -18,8 +18,8 @@ class InterfaceBook(InterfaceBase):
             return None
    
     def getBook(self) -> list[Book]:
+        self.dataframe = super().abreDataFrame()
         self.getSheets()
-
 
         list_books: list[Book] = []
         for index, row in self.dataframe.iterrows():
