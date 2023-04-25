@@ -49,5 +49,5 @@ class UpdateCryptoTransactions:
             
             finally:
                 try_time = time()
-                print('Status: {} - Time: {:.2f}s'.format(status,' ' * 1, try_time - start_time))
+                print('{} Status: {} - Time: {:.2f}s'.format(' ' * 3,status, try_time - start_time))
                 self.repositoryCryptoTransactions.delete_unknown_tokens(list_known_tokens=list_coins)
