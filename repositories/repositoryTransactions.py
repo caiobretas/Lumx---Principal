@@ -1,5 +1,6 @@
 from datetime import datetime
 from entities.entityTransaction import Transaction
+from entities.entitiyProjection import Projection
 from repositories.repositoryBase import RepositoryBase
 import psycopg2
 
@@ -120,3 +121,53 @@ class RepositoryTransaction ( RepositoryBase ):
             cur.execute(query=query)
 
             self.connection.commit()
+    
+    def getProjection(self) -> list[Projection]:
+        with self.connection.cursor() as cur:
+             
+            query = f"""select distinct fm.*, subcategoria3, subcategoria2, subcategoria, categoria, categoriaprojecao
+from finance.movements as fm
+	left join finance.categories as fc on fc.subcategoria4 = fm.nomeclassificacao;"""
+        try:
+            cur.execute(query=query)
+            list_projection: list[Projection] = []
+            for row in cur.fetchall():
+                register = Projection(
+                id = row[1],
+                data_lançamento = row[2],
+                data_liquidação = row[3],
+                datavencimento = row[5],
+                valorprevisto = row[6],
+                valorrealizado = row[7],
+                moeda = 'BRL',
+                cotação = 1,
+                valorprevisto_BRL = row[6],
+                valorrealizado_BRL = row[7],
+                realizado = row[9],
+                recorrente = row['recorrente'],
+                de = row['de'],
+                para = row['para'],
+                percentualrateio = row['percentualrateio'],
+                nomecentrocusto = row['nomecentrocusto'],
+                nomepessoa = row['nomepessoa'],
+                observacao = row['observacao'],
+                descricao = row['descricao'],
+                numeronotafiscal = row['numeronotafiscal'],
+                nomeprojeto = row['nomeprojeto'],
+                contaativo = row['contaativo'],
+                subcategoria4 = row['subcategoria4'],
+                subcategoria3 = row['subcategoria3'],
+                subcategoria2 = row['subcategoria2'],
+                subcategoria = row['subcategoria'],
+                categoria = row['categoria'],
+                categoriaprojecao = row['categoriaprojecao'],
+                categoriacusto_receita = row['categoriacusto_receita'],
+                hash = None,
+                check_conciliadoorigem = row['check_conciliadoorigem'],
+                check_conciliadodestino = row['check_conciliadodestino']
+                )
+                
+            self.connection.commit()
+            return list_projection
+        except:
+            raise Exception
