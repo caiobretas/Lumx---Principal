@@ -5,6 +5,7 @@ from repositories.repositoryBook import RepositoryBook
 class UpdateBook:
     def __init__(self, connection, engine, schema, tableName, path_interface, sheetName_interface):
         start_time = time()
+        print('\nUpdating Book...')
         try:
             self.list_books = InterfaceBook(path_interface=path_interface, sheetName_interface=sheetName_interface).getBook()
             # insert the list in database
