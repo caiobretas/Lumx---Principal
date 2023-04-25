@@ -19,9 +19,9 @@ class LoadTransactions:
             print(f'Error: {e}.\n\nperiodoDe e periodoAte não podem ser None\nperiodoDe = {self.periodoDe}\nperiodoAte = {self.periodoAte}')
             raise e
         
-    def loadCryptoTransactions(self, metamask: bool, address, apiKey, name = 'Unknown', chain: str='ETH') -> list[TransactionCrypto]:
+    def loadCryptoTransactions(self, is_safe: bool, address, apiKey, name: str = 'Unknown', chain: str='ethereum') -> list[TransactionCrypto]:
         list_total = []
-        if chain.upper() == 'ETH' or metamask:
+        if is_safe == False or chain.upper() == 'ETHEREUM':
             apiKey = 'DUUV82YWBS4YIWEURM8V7N5AXWB5ZMJH3A'
             list_normal = ControllerEtherscan().get_normalTransactions(name=name,address=address,apiKey=apiKey)
             list_internal = ControllerEtherscan().get_internalTransactions(name=name,address=address,apiKey=apiKey)
@@ -31,7 +31,7 @@ class LoadTransactions:
             list_total.extend(list_internal)
             list_total.extend(list_erc20)
      
-        if chain.upper() == 'MATIC' or metamask:
+        if is_safe == False or chain.upper() == 'POLYGON':
             apiKey = 'V7J58GX39IDM5AQW3XQ8CX98N9E2GFGIKF'
             list_normal = ControllerPolygonscan().get_normalTransactions(name=name,address=address, apiKey=apiKey)
             list_internal = ControllerPolygonscan().get_internalTransactions(name=name,address=address, apiKey=apiKey)
@@ -40,4 +40,6 @@ class LoadTransactions:
             list_total.extend(list_normal)
             list_total.extend(list_internal)
             list_total.extend(list_erc20)
+        
+
         return list_total
