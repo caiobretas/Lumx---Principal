@@ -10,6 +10,7 @@ class UpdateBook:
             # insert the list in database
             RepositoryBook(connection=connection, engine=engine, schema=schema, tableName=tableName).insert(lst=self.list_books)
             try_time = time()
+            status = 'Complete'
         except:
             status = 'Failed'
         print('{} Status: {} - Time: {:.2f}s'.format(' ' * 3,status, try_time - start_time))
