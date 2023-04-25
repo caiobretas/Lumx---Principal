@@ -17,7 +17,7 @@ class UpdateTransactions:
             self.repositoryTransaction.deleteByDate(date=date)
                 
         except:
-            status = 'Failed'
+            status = 'Reset'
             return None
     
         finally:
@@ -35,7 +35,7 @@ class UpdateTransactions:
                     apenasRealizados=True).loadTransactions())
                 
             try_time = time()
-            print('Status: {} - Time: {}'.format(status,' ' * 1,round(try_time - start_time, 3)))
+            print('Status: {} - Time: {}'.format(status,' ' * 1,try_time - start_time))
 
 # class UpdateCryptoTransactions:
     # 

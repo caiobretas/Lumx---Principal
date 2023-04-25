@@ -21,4 +21,4 @@ class UpdateCategories:
         
         finally:
             try_time = time()
-            print('{} Status: {} - Time: {}'.format(status,' ' * 1,round(try_time - start_time, 3)))
+            print('Status: {} - Time: {:.2f}s'.format(status,' ' * 1, try_time - start_time))

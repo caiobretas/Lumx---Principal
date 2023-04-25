@@ -34,5 +34,5 @@ class UpdateFutures:
         
         finally:
             try_time = time()
-            print('{} Status: {} - Time: {}'.format(' ' * 1,status,round(try_time - start_time, 3)))
+            print('Status: {} - Time: {:.2f}s'.format(status,' ' * 1, try_time - start_time))
                 
