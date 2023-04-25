@@ -13,6 +13,7 @@ from business.updateCryptoTransactions import UpdateCryptoTransactions
 from business.updateFutures import UpdateFutures
 from business.updateBook import UpdateBook
 
+from business.assembleProjection import AssembleProjection
 
 class AtualizaFinanceRepository:
     def __init__(self, connFinance, engine, schema, pathIF, connProtocol) -> None:
@@ -32,9 +33,11 @@ class AtualizaFinanceRepository:
 
         # UpdateBook(connection=connFinance, engine=engine, schema=schema, tableName='book', path_interface=pathIF,sheetName_interface='book')
         # UpdateCryptoTransactions(connection=connFinance, engine=engine, schema='finance', tableName='movements_crypto')
-        UpdateCryptoPrices(connectionFinance=connFinance, engineAdmin=engine, schema=schema, tableName='prices_crypto')
+        # UpdateCryptoPrices(connectionFinance=connFinance, engineAdmin=engine, schema=schema, tableName='prices_crypto')
         # UpdateCategories(connection=connFinance, engine=engine,pathIF=pathIF,schema='finance', sheetName='categories', tableName='categories')
         # UpdateTransactions(connection=connFinance,engine=engine,schema='finance',tableName='movements')
         # UpdateFutures(connection=connFinance,engine=engine,schema='finance',tableName='movements')
 
+        AssembleProjection(connection=connFinance,engine=engine,schema='finance',tableName='movements').getRegisters()
+        
         print('\nDatabase updated in {:.2f} seconds\n'.format(time() - timer))

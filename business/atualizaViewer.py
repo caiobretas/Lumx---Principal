@@ -52,6 +52,7 @@ class AtualizaViewer:
         # self.viewerControle.insertViewerControle(lst=self.repositoryData.lst_controle)
         
         # writes the transactions
+
         WriteTranscations(connection=connFinance,engine=engineAdmin,schema=schema,path=pathVW,sheetName='Movimentação', tableName='movements')
 
         print('\nViewer updated in {:.2f} seconds\n'.format(time() - timer))

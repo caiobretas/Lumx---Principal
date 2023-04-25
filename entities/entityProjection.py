@@ -38,4 +38,4 @@ class Projection:
         self.check_conciliadodestino = check_conciliadodestino
     
     def __repr__(self) -> str:
-        return f'\Data: {self.data_lançamento} - Valor: {self.valorprevisto} - Conta: {self.contaativo}\n'
+        return f'Data: {self.data_lançamento} - Categoria: {self.subcategoria4} - Valor: {self.valorprevisto} - Conta: {self.contaativo}\n'

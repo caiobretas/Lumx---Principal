@@ -39,14 +39,17 @@ class Transaction:
         self.nomeprojeto = nomeprojeto
         self.nomeclassificacao = nomeclassificacao
         self.contaativo = contaativo
-        
 
-        if self.tipo == 'Transferencia':
-            self.datapagamento = self.data
-            self.datavencimento = self.data
-            self.percentualrateio = 100
-            self.idcentrocustom = 1
-            self.nomecentrocusto = 'Lumx'
+        if self.tipo == 'Pagamento':
+            self.valorprevisto = (-1) * valorprevisto if valorprevisto != None else None
+            self.valorrealizado = (-1) * valorrealizado if valorrealizado != None else None
+            self.nomecontadestino = nomepessoa
+            self.nomecontaorigem = contaativo
+
+        if self.tipo == 'Recebimento':
+            self.nomecontadestino = contaativo
+            self.nomecontaorigem = nomepessoa
+
         
     def to_tuple(self) -> tuple:
         return (self.id, self.tipo, self.data, self.datapagamento, self.datavencimento, self.datacompetencia, self.valorprevisto, self.valorrealizado, self.percentualrateio, self.realizado, self.idcontaorigem, self.nomecontaorigem, self.codigoreduzidoorigem, self.idcontadestino , self.nomecontadestino, self.codigoreduzidodestino, self.idcentrocusto , self.nomecentrocusto, self.idpessoa , self.nomepessoa, self.observacao, self.cpfcnpjpessoa, self.descricao, self.idunidadenegocio, self.nomeunidadenegocio, self.numeronotafiscal, self.conciliadoorigem, self.conciliadodestino, self.saldoiniciodiacontaativo, self.saldofimdiaccontaativo, self.idprojeto, self.nomeprojeto, self.nomeclassificacao, self.contaativo)

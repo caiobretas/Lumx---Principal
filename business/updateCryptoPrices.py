@@ -4,7 +4,6 @@ from entities.entityCoin import Coin
 from repositories.repositoryPrices import RepositoryPrices
 from business.loadPrices import LoadPrices
 
-
 class UpdateCryptoPrices:
     def __init__(self, connectionFinance, engineAdmin, schema,tableName):
         self.repositoryPrices = RepositoryPrices(connection=connectionFinance, engine=engineAdmin, schema=schema, tableName=tableName)
