@@ -10,7 +10,7 @@ class ControllerHTTPBase:
         return list_
     
     def get(self, endpoint: str, headers: str | None = None, type = 'JSON') -> list:
-        if type == 'JSON':
+        if type.upper() == 'JSON':
             try:
                 return loads(get(endpoint, headers=headers).text)
             
@@ -18,7 +18,7 @@ class ControllerHTTPBase:
                 print(f'\nErr: {e}\n')
                 raise e
             
-        elif type == 'csv':
+        elif type.upper() == 'CSV':
             try:
                 response = get(endpoint, headers=headers)
                 data =  response.content.decode('utf-8').splitlines()

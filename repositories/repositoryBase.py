@@ -1,10 +1,11 @@
-from sqlalchemy import inspect, Connection
+import psycopg2
+from sqlalchemy import inspect
 import pandas as pd
 from pandas import DataFrame
 
 class RepositoryBase:
     
-    def __init__(self, connection: str, engine: str, schema: str, tableName: str):
+    def __init__(self, connection, engine: str, schema: str, tableName: str):
         
         self.dbname = 'postgres'
         self.connection = connection

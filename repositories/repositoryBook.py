@@ -32,10 +32,9 @@ class RepositoryBook ( RepositoryBase ):
                 cur.executemany(query, values)
                 self.connection.commit()
             
-            except Exception as e:
-                print(e)
-                print(f'\nProblem inserting book registers')
-                raise e
+            except:
+                raise Exception
+            
     def getBook(self) -> list[Book]:
         with self.connection.cursor() as cur:
             query = f"SELECT * FROM {self.schema}.{self.tableName} order by is_lumx desc"

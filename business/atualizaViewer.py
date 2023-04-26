@@ -14,6 +14,7 @@ from business.getProtocoldata import GetProtocolData
 from business.getRepositoryData import GetRepositoryData
 
 from business.writeMovements import WriteTranscations
+from business.writeProjection import WriteProjection
 
 # this instance is used to update all the viewers
 class AtualizaViewer:
@@ -52,7 +53,7 @@ class AtualizaViewer:
         # self.viewerControle.insertViewerControle(lst=self.repositoryData.lst_controle)
         
         # writes the transactions
-
+        WriteProjection(connection=connFinance,engine=engineAdmin,schema=schema,path=pathVW,sheetName='Tabela Projeção', tableName='movements')
         WriteTranscations(connection=connFinance,engine=engineAdmin,schema=schema,path=pathVW,sheetName='Movimentação', tableName='movements')
 
         print('\nViewer updated in {:.2f} seconds\n'.format(time() - timer))

@@ -125,7 +125,9 @@ class RepositoryTransaction ( RepositoryBase ):
     def getProjection(self) -> list[Projection]:
         with self.connection.cursor() as cur:
              
-            query = f"""select distinct fm.*, subcategoria3, subcategoria2, subcategoria, categoria, categoriaprojecao from finance.movements as fm left join finance.categories as fc on fc.subcategoria4 = fm.nomeclassificacao order by data desc, realizado asc;"""
+            query = f"""select distinct fm.*, subcategoria3, subcategoria2, subcategoria, categoria, categoriaprojecao
+            from {self.schema}.{self.tableName} as fm
+            left join {self.schema}.categories as fc on fc.subcategoria4 = fm.nomeclassificacao order by data desc, realizado asc;"""
             try:
                 cur.execute(query=query)
                 list_projection: list[Projection] = []

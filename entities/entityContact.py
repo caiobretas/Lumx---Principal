@@ -1,43 +1,37 @@
+from uuid import uuid4
 class Contact:
-    def __init__(self, id = None, cpf_cnpj = None, razão_social = None, inscrição_estadual = None, inscrição_municipal = None, nome_fantasia = None, nome_amigável = None, data_de_nascimento = None, endereço = None, número = None, complemento = None, bairro = None, cep = None, cidade = None, uf = None, codibge = None, nome_país = None, código_bacen_do_pais = None, email = None, telefone = None, rg = None, data_de_emissão_do_rg = None, orgão_emissor_do_rg = None, uf_emissor_do_rg = None, código_do_banco = None, agencia_bancária = None, digito_agencia = None, conta_bancaria = None, digito_conta = None, operação = None, chave_pix = None, cliente = None, cliente_desde = None, optante_simples = None, incentivador_cultural = None, não_contribuinte = None, código_único = None, classificação_preferencial = None, centro_de_custo_preferencial = None):
-        
-        self.id = id
-        self.cpf_cnpj = cpf_cnpj
-        self.razão_social = razão_social
-        self.inscrição_estadual = inscrição_estadual
-        self.inscrição_municipal = inscrição_municipal
-        self.nome_fantasia = nome_fantasia
-        self.nome_amigável = nome_amigável
-        self.data_de_nascimento = data_de_nascimento
-        self.endereço = endereço
-        self.número = número
-        self.complemento = complemento
-        self.bairro = bairro
-        self.cep = cep
-        self.cidade = cidade
-        self.uf = uf
-        self.codibge = codibge
-        self.nome_país = nome_país
-        self.código_bacen_do_pais = código_bacen_do_pais
-        self.email = email
-        self.telefone = telefone
-        self.rg = rg
-        self.data_de_emissão_do_rg = data_de_emissão_do_rg
-        self.orgão_emissor_do_rg = orgão_emissor_do_rg
-        self.uf_emissor_do_rg = uf_emissor_do_rg
-        self.código_do_banco = código_do_banco
-        self.agencia_bancária = agencia_bancária
-        self.digito_agencia = digito_agencia
-        self.conta_bancaria = conta_bancaria
-        self.digito_conta = digito_conta
-        self.operação = operação
-        self.chave_pix = chave_pix
-        self.cliente = cliente
-        self.cliente_desde = cliente_desde
-        self.optante_simples = optante_simples
-        self.incentivador_cultural = incentivador_cultural
-        self.não_contribuinte = não_contribuinte
-        self.código_único = código_único
-        self.classificação_preferencial = classificação_preferencial
-        self.centro_de_custo_preferencial = centro_de_custo_preferencial
-        
+    def __init__(self,ID: str = None,Nome: str = None,CPFCNPJ: str = None,NomeFantasia: str = None,Logradouro: str = None,Nro: str = None,Complemento: str = None,Bairro: str = None,CEP: str = None,Cidade: str = None,UF: str = None,NomePais: str = None,Ativo: str = None,Email: str = None,Telefone: str = None,Cliente: str = None,Fornecedor: str = None,Sexo: str = None,RG: str = None,OrgaoEmissorRG: str = None,UFEmissorRG: str = None,CodigoBanco: str = None,NomeBanco: str = None,AgenciaBancaria: str = None,DigitoAgenciaBancaria: str = None,ContaBancaria: str = None,DigitoContaBancaria: str = None,TipoContaBancaria: str = None, ClienteDesde: str = None,IDClassificacaoPreferencial: str = None,IDCentroCustoPreferencial: str = None, Observacoes: str = None,ChavePix: str = None,TipoChavePix: str = None):
+        self.id = str(uuid4())
+        self.idpessoa = ID
+        self.nome = Nome
+        self.cpfcnpj = CPFCNPJ
+        self.nomefantasia = NomeFantasia
+        self.logradouro = Logradouro
+        self.nro = Nro
+        self.complemento = Complemento
+        self.bairro = Bairro
+        self.cep = CEP
+        self.cidade = Cidade
+        self.uf = UF
+        self.nomepais = NomePais
+        self.ativo = Ativo
+        self.email = Email
+        self.telefone = Telefone
+        self.cliente = Cliente
+        self.fornecedor = Fornecedor
+        self.sexo = Sexo
+        self.rg = RG
+        self.orgaoemissorrg = OrgaoEmissorRG
+        self.ufemissorrg = UFEmissorRG
+        self.clientedesde = ClienteDesde
+        self.idclassificacaopreferencial = IDClassificacaoPreferencial
+        self.idcentrocustopreferencial = IDCentroCustoPreferencial
+        self.observacoes = Observacoes
+        self.chavepix = ChavePix
+        self.tipochavepix = TipoChavePix
+
+    def __repr__(self):
+        return f'ID: {self.idpessoa} - Name: {self.nome} - Telefone: {self.telefone}'
+
+    def to_tuple(self) -> tuple:
+        return (self.id,self.idpessoa,self.nome,self.cpfcnpj,self.nomefantasia,self.logradouro,self.nro,self.complemento,self.bairro,self.cep,self.cidade,self.uf,self.nomepais,self.ativo,self.email,self.telefone,self.cliente,self.fornecedor,self.sexo,self.rg,self.orgaoemissorrg,self.ufemissorrg,self.clientedesde,self.idclassificacaopreferencial,self.idcentrocustopreferencial,self.observacoes,self.chavepix,self.tipochavepix)

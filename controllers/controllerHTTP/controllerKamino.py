@@ -2,9 +2,10 @@ import uuid
 import datetime
 
 from controllers.controllerHTTP.controllerHTTPBase import ControllerHTTPBase
-from entities.entityTransfers import Transfer
 
+from entities.entityTransfers import Transfer
 from entities.entityTransaction import Transaction
+from entities.entityContact import Contact
 
 class ControllerKamino ( ControllerHTTPBase ):
     def __init__ (self):
@@ -24,11 +25,11 @@ class ControllerKamino ( ControllerHTTPBase ):
                         'Hash': hash,
                         'Usr': usr}
 
-    def postTransfer(self, obj: Transfer):
+    def postTransfer(self, dict_: Transfer):
         url = '/api/financeiro/transferencia'
         endpoint = self.baseUrl + url
 
-        super().post(endpoint=endpoint, obj=obj, headers=self.headers)
+        super().post(endpoint=endpoint, dict_=dict_, headers=self.headers)
 
     def getTransfers(self, id: int = None, period_from: datetime.datetime =None, period_to: datetime.datetime=None) -> list[Transfer]:
         try:
@@ -75,7 +76,7 @@ class ControllerKamino ( ControllerHTTPBase ):
             endpoint = self.baseUrl + url + filtros
             
             list_aux: list[Transaction] = [] 
-            for row in super().get(type='csv', endpoint=endpoint, headers=self.headers):
+            for row in super().get(type='CSV', endpoint=endpoint, headers=self.headers):
                 row: str = Transaction(
                 id = row['ID'],
                 tipo = row['Tipo'],
@@ -117,4 +118,47 @@ class ControllerKamino ( ControllerHTTPBase ):
             
         except Exception as e:
             print(e)
+
+    def getContacts(self):
+        try:
+            url = '/api/pessoa/lista'
+            endpoint = self.baseUrl + url
             
+            list_contacts: list[Contact] = []
+            for dict_ in super().get(endpoint=endpoint, headers=self.headers,type='json'):
+                contact = Contact(
+                    ID = dict_['ID'],
+                    Nome = dict_['Nome'],
+                    CPFCNPJ = dict_['CPFCNPJ'],
+                    NomeFantasia = dict_['NomeFantasia'],
+                    Logradouro = dict_['Logradouro'],
+                    Nro = dict_['Nro'],
+                    Complemento = dict_['Complemento'],
+                    Bairro = dict_['Bairro'],
+                    CEP = dict_['CEP'],
+                    Cidade = dict_['Cidade'],
+                    UF = dict_['UF'],
+                    NomePais = dict_['NomePais'],
+                    Ativo = dict_['Ativo'],
+                    Email = dict_['EmailPrincipal'],
+                    Telefone = dict_['TelefonePrincipal'],
+                    Cliente = dict_['Cliente'],
+                    Fornecedor = dict_['Fornecedor'],
+                    Sexo = dict_['Sexo'],
+                    RG = dict_['RG'],
+                    OrgaoEmissorRG = dict_['OrgaoEmissorRG'],
+                    UFEmissorRG = dict_['UFEmissorRG'],
+                    ClienteDesde = dict_['ClienteDesde'],
+                    IDClassificacaoPreferencial = dict_['IDClassificacaoPreferencial'],
+                    IDCentroCustoPreferencial = dict_['IDCentroCustoPreferencial'],
+                    Observacoes = dict_['Observacoes'],
+                    ChavePix = dict_['ChavePix'],
+                    TipoChavePix = dict_['TipoChavePix'])
+                list_contacts.append(contact)
+            
+            return list_contacts
+        except:
+            raise Exception
+        finally:
+            status = 'Complete'
+        
