@@ -32,8 +32,8 @@ class AtualizaFinanceRepository:
         # self.repositoryBillings.insertBilling(self.protocolData.lst_billings)
 
         # UpdateBook(connection=connFinance, engine=engine, schema=schema, tableName='book', path_interface=pathIF,sheetName_interface='book')
-        # UpdateCryptoTransactions(connection=connFinance, engine=engine, schema='finance', tableName='movements_crypto')
-        # UpdateCryptoPrices(connectionFinance=connFinance, engineAdmin=engine, schema=schema, tableName='prices_crypto')
+        UpdateCryptoTransactions(connection=connFinance, engine=engine, schema='finance', tableName='movements_crypto')
+        UpdateCryptoPrices(connectionFinance=connFinance, engineAdmin=engine, schema=schema, tableName='prices_crypto')
         # UpdateCategories(connection=connFinance, engine=engine,pathIF=pathIF,schema='finance', sheetName='categories', tableName='categories')
         # UpdateTransactions(connection=connFinance,engine=engine,schema='finance',tableName='movements')
         # UpdateFutures(connection=connFinance,engine=engine,schema='finance',tableName='movements')

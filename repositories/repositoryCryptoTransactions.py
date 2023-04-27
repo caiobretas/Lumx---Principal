@@ -37,7 +37,7 @@ class RepositoryCryptoTransaction ( RepositoryBase ):
                 query = f"""
                     INSERT INTO {self.schema}.{self.tableName}
                     (id, blockNumber, blockHash, datetime, hash, nonce, from_, to_,
-                    contractAddress, gas, gasPrice, gasUsed, cumulativeGasUsed, value,
+                    contractAddress, gas, gasPrice, gasUsed, cumulativeGasUsed, value, gasFee, total,
                     tokenName, tokenSymbol, tokenDecimal, isError, txreceipt_status, type,
                     methodId, functionName, txnType, blockchain, address, bank, scan) VALUES ({placeholders})
                     ON CONFLICT (id) DO NOTHING

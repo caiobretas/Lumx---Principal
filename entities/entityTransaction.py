@@ -72,6 +72,8 @@ class TransactionCrypto:
     gasUsed = None,
     cumulativeGasUsed = None,
     value = None,
+    gasFee = None,
+    total = None,
     tokenName = None,
     tokenSymbol = None,
     tokenDecimal = None,
@@ -101,6 +103,8 @@ class TransactionCrypto:
         self.gasUsed: float = gasUsed
         self.cumulativeGasUsed: float = cumulativeGasUsed
         self.value = (value / (10**float(tokenDecimal)))
+        self.gasFee = gasFee
+        self.total = total
         self.tokenName = tokenName
         self.tokenSymbol = tokenSymbol
         self.tokenDecimal = int(tokenDecimal)
@@ -109,7 +113,7 @@ class TransactionCrypto:
         self.type = type
         self.methodId = methodId
         self.functionName = functionName
-        self.txnType = txnType
+        self.txnType: str = txnType
         self.address = address.lower()
         self.blockchain = blockchain
         self.name = name
@@ -119,7 +123,7 @@ class TransactionCrypto:
             self.value = (value / (10**int(tokenDecimal))) * (-1)
 
     def to_tuple(self) -> tuple:
-        return (self.id, self.blockNumber,self.blockHash,self.datetime,self.hash,self.nonce,self.from_,self.to_,self.contractAddress,self.gas,self.gasPrice,self.gasUsed,self.cumulativeGasUsed,self.value,self.tokenName,self.tokenSymbol,self.tokenDecimal,self.isError,self.txreceipt_status,self.type,self.methodId,self.functionName,self.txnType, self.blockchain, self.address, self.name, self.scan)
+        return (self.id, self.blockNumber,self.blockHash,self.datetime,self.hash,self.nonce,self.from_,self.to_,self.contractAddress,self.gas,self.gasPrice,self.gasUsed,self.cumulativeGasUsed,self.value,self.gasFee,self.total,self.tokenName,self.tokenSymbol,self.tokenDecimal,self.isError,self.txreceipt_status,self.type,self.methodId,self.functionName,self.txnType, self.blockchain, self.address, self.name, self.scan)
      
     def __repr__(self) -> str:
         return f'Bank: {self.name} - Type: {self.txnType} - Chain: {self.blockchain} - Symbol: {self.tokenSymbol} - Datetime: {self.datetime}'

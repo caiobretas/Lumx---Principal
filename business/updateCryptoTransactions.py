@@ -4,6 +4,7 @@ from entities.entityCoin import Coin
 from entities.entityBook import Book
 from entities.entityTransaction import TransactionCrypto
 from business.loadTransactions import LoadTransactions
+from business.treatCryptoTransactions import TreatCryptoTransactions
 from repositories.repositoryCryptoTransactions import RepositoryCryptoTransaction
 from repositories.repositoryBook import RepositoryBook
 from repositories.repositoryPrices import RepositoryPrices
@@ -37,9 +38,12 @@ class UpdateCryptoTransactions:
                     for transaction in list_transactions:
                         if transaction.datetime.date() >= date:
                                 list_new_transactions.append(transaction)
+                                TreatCryptoTransactions(transaction)
                     self.repositoryCryptoTransactions.insert(lst=list_new_transactions)
                     status = 'Complete'
                 else:
+                    for transaction in list_transactions:
+                        TreatCryptoTransactions(transaction)
                     self.repositoryCryptoTransactions.insert(lst=list_transactions)
                     status = 'Reset'
             

@@ -31,9 +31,7 @@ class Main:
         self.connection = psycopg2.connect(host=self.host, port=self.port, dbname= self.dbname, user=self.user, password=self.password)
         self.engineAdmin = create_engine(f'postgresql://{self.user}:{self.password}@{self.host}/{self.dbname}')
 
-        
     def finance(self):
-        
         # from business.updateFiatTransactions import UpdateFiatTransactions
         # from business.postTransaction import PostTransaction
         
@@ -43,8 +41,9 @@ class Main:
     def hr(self):
         self.schemaHR = 'h_resources'
 
-        from business.UpdateContacts import UpdateContacts
+        from business.updateContacts import UpdateContacts
         UpdateContacts(connection=self.connection, engine=self.engineAdmin, schema=self.schemaHR, tableName='contacts')
+    
     def rotine(self):
 
         self.finance()
@@ -54,5 +53,5 @@ class Main:
 
     # def test(self):
 
-Main().hr()
-# Main().rotina()
+# Main().hr()
+Main().rotine()
