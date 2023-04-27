@@ -12,13 +12,16 @@ class InterfaceCategories(InterfaceBase):
         try:
             list_aux: list[Category] = []
             for index, row in df.iterrows():
-                row = Category(id = row['id'],
-                subcategoria4 = row['subcategoria4'],
-                subcategoria3 = row['subcategoria3'],
-                subcategoria2 = row['subcategoria2'],
-                subcategoria = row['subcategoria'],
-                categoria = row['categoria'],
-                categoriaprojecao = row['categoriaprojecao'])
+                row = Category(
+                      id = row['id'],
+                      projeto = row['projeto'],
+                      method_id = row['method_id'],
+                      subcategoria4 = row['subcategoria4'],
+                      subcategoria3 = row['subcategoria3'],
+                      subcategoria2 = row['subcategoria2'],
+                      subcategoria = row['subcategoria'],
+                      categoria = row['categoria'],
+                      categoriaprojecao = row['categoriaprojecao'])
                 list_aux.append(row)
             return list_aux
         except:

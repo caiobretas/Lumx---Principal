@@ -109,7 +109,7 @@ class TransactionCrypto:
         self.tokenSymbol = tokenSymbol
         self.tokenDecimal = int(tokenDecimal)
         self.isError = isError
-        self.txreceipt_status = txreceipt_status
+        self.txreceipt_status: int = txreceipt_status
         self.type = type
         self.methodId = methodId
         self.functionName = functionName
@@ -121,6 +121,12 @@ class TransactionCrypto:
         
         if self.address == self.from_:
             self.value = (value / (10**int(tokenDecimal))) * (-1)
+        
+        if self.isError != 0:
+            self.txreceipt_status = 0
+            self.value = 0
+
+
 
     def to_tuple(self) -> tuple:
         return (self.id, self.blockNumber,self.blockHash,self.datetime,self.hash,self.nonce,self.from_,self.to_,self.contractAddress,self.gas,self.gasPrice,self.gasUsed,self.cumulativeGasUsed,self.value,self.gasFee,self.total,self.tokenName,self.tokenSymbol,self.tokenDecimal,self.isError,self.txreceipt_status,self.type,self.methodId,self.functionName,self.txnType, self.blockchain, self.address, self.name, self.scan)
