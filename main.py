@@ -36,7 +36,7 @@ class Main:
         # from business.postTransaction import PostTransaction
         
         AtualizaFinanceRepository(connFinance=self.connection, engine=self.engineAdmin, schema=self.schema, pathIF=self.pathIF,connProtocol=self.connectionProtocol)
-        AtualizaViewer(pathVW=self.pathVW, pathIF=self.pathIF, connProtocol=self.connectionProtocol, connFinance=self.connection, engineAdmin=self.engineAdmin, schema=self.schema)
+        # AtualizaViewer(pathVW=self.pathVW, pathIF=self.pathIF, connProtocol=self.connectionProtocol, connFinance=self.connection, engineAdmin=self.engineAdmin, schema=self.schema)
 
     def hr(self):
         self.schemaHR = 'h_resources'

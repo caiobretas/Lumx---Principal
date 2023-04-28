@@ -1,4 +1,5 @@
 from repositories.repositoryTransactions import RepositoryTransaction
+from repositories.repositoryCryptoTransactions import RepositoryCryptoTransaction
 from entities.entityProjection import Projection
 
 class AssembleProjection:
@@ -9,4 +10,7 @@ class AssembleProjection:
         self.tableName = tableName
         
     def getRegisters(self) -> list[Projection]:
-        return RepositoryTransaction(self.connection, self.engine, self.schema, self.tableName).getProjection()
+        list_projection: list[Projection] = []
+        list_projection.extend(RepositoryTransaction(self.connection, self.engine, self.schema, 'movements').getProjection())
+        list_projection.extend(RepositoryCryptoTransaction(self.connection, self.engine, self.schema, 'movements_crypto').getProjection())
+        return sorted(list_projection, key=lambda projection: projection.data_lançamento, reverse=True)

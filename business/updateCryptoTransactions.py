@@ -38,14 +38,12 @@ class UpdateCryptoTransactions:
                     for transaction in list_transactions:
                         if transaction.datetime.date() >= date:
                                 list_new_transactions.append(transaction)
-                                TreatCryptoTransactions(transaction)
                     self.repositoryCryptoTransactions.insert(lst=list_new_transactions)
                     status = 'Complete'
                 else:
-                    for transaction in list_transactions:
-                        TreatCryptoTransactions(transaction)
-                    self.repositoryCryptoTransactions.insert(lst=list_transactions)
                     status = 'Reset'
+                    self.repositoryCryptoTransactions.insert(lst=list_transactions)
+                    
             
             except:
                 status = 'Failed'

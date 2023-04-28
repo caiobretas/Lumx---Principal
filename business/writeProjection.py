@@ -6,7 +6,7 @@ from viewers.viewerProjection import ViewerProjection
 class WriteProjection:
     def __init__(self, path, sheetName, connection, engine, schema, tableName):
         start_time = time()
-        print('\nUpdating transactions...')
+        print('\nWriting projection...')
         try:
             list_projection: list[Projection] = AssembleProjection(connection, engine, schema, tableName).getRegisters()
             ViewerProjection(path=path, sheetName=sheetName).insertViewerProjection(list_projection)

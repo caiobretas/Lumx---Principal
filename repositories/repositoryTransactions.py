@@ -37,7 +37,10 @@ class RepositoryTransaction ( RepositoryBase ):
             try:
                 placeholders = ','.join(['%s'] * len(values[0]))
             
-                query = f"""INSERT INTO {self.schema}.{self.tableName}(id, tipo, data, datapagamento, datavencimento, datacompetencia, valorprevisto, valorrealizado, percentualrateio, realizado, idcontaorigem, nomecontaorigem, codigoreduzidoorigem, idcontadestino, nomecontadestino, codigoreduzidodestino,  idcentrocusto, nomecentrocusto, idpessoa, nomepessoa, observacao, cpfcnpjpessoa, descricao, idunidadenegocio, nomeunidadenegocio, numeronotafiscal, conciliadoorigem, conciliadodestino, saldoiniciodiacontaativo, saldofimdiaccontaativo, idprojeto, nomeprojeto, nomeclassificacao, contaativo) VALUES ({placeholders});"""
+                query = f"""INSERT INTO {self.schema}.{self.tableName}
+                (id, tipo, data, datapagamento, datavencimento, datacompetencia, valorprevisto, valorrealizado, percentualrateio, realizado, idcontaorigem, nomecontaorigem, codigoreduzidoorigem, idcontadestino, nomecontadestino, codigoreduzidodestino,  idcentrocusto, nomecentrocusto, idpessoa, nomepessoa, observacao, cpfcnpjpessoa, descricao, idunidadenegocio, nomeunidadenegocio, numeronotafiscal, conciliadoorigem, conciliadodestino, saldoiniciodiacontaativo, saldofimdiaccontaativo, idprojeto, nomeprojeto, nomeclassificacao, contaativo)
+                VALUES ({placeholders})
+                on conflict (id) do nothing;"""
                     
                 cur.executemany(query, values)
                 self.connection.commit()
@@ -125,7 +128,7 @@ class RepositoryTransaction ( RepositoryBase ):
     def getProjection(self) -> list[Projection]:
         with self.connection.cursor() as cur:
              
-            query = f"""select distinct fm.*, subcategoria3, subcategoria2, subcategoria, categoria, categoriaprojecao
+            query = f"""select distinct fm.*, subcategoria3, subcategoria2, subcategoria, categoria, categoriaprojecao, projeto
             from {self.schema}.{self.tableName} as fm
             left join {self.schema}.categories as fc on fc.subcategoria4 = fm.nomeclassificacao order by data desc, realizado asc;"""
             try:
@@ -134,9 +137,9 @@ class RepositoryTransaction ( RepositoryBase ):
                 for row in cur.fetchall():
                     register = Projection(
                     id = row[0],
-                    data_lançamento = row[2],
-                    data_liquidação = row[3],
-                    datavencimento = row[4],
+                    data_lançamento = row[2].date() if type(row[2]) == datetime else None,
+                    data_liquidação = row[3].date() if type(row[3]) == datetime else None,
+                    datavencimento = row[4].date() if type(row[4]) == datetime else None,
                     valorprevisto = row[6],
                     valorrealizado = row[7],
                     moeda = 'BRL',
@@ -153,7 +156,6 @@ class RepositoryTransaction ( RepositoryBase ):
                     observacao = row[20],
                     descricao = row[22],
                     numeronotafiscal = row[25],
-                    nomeprojeto = row[31],
                     contaativo = row[33],
                     subcategoria4 = row[32],
                     subcategoria3 = row[34],
@@ -164,7 +166,8 @@ class RepositoryTransaction ( RepositoryBase ):
                     categoriacusto_receita = None,
                     hash = None,
                     check_conciliadoorigem = row[26],
-                    check_conciliadodestino = row[27]
+                    check_conciliadodestino = row[27],
+                    projeto = row[39]
                     )
                     list_projection.append(register)
                     
