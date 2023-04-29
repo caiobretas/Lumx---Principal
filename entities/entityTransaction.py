@@ -123,6 +123,8 @@ class TransactionCrypto:
         self.txreceipt_status = 0 if (self.isError != 0 and self.isError != None) else 1
         
         self.total = self.value + self.gasFee
+        
+        self.methodId = '0xa9059cbb' if (str(txnType) == 'ERC-20' and type == None and functionName == 0) else methodId
 
     def to_tuple(self) -> tuple:
         return (self.id, self.blockNumber,self.blockHash,self.datetime,self.hash,self.nonce,self.from_,self.to_,self.contractAddress,self.gas,self.gasPrice,self.gasUsed,self.cumulativeGasUsed,self.value,self.gasFee,self.total,self.tokenName,self.tokenSymbol,self.tokenDecimal,self.isError,self.txreceipt_status,self.type,self.methodId,self.functionName,self.txnType, self.blockchain, self.address, self.name, self.scan, self.description)

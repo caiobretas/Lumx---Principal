@@ -47,23 +47,6 @@ class RepositoryCryptoTransaction ( RepositoryBase ):
                 print(f'\nProblem inserting crypto transactions')
                 raise e
 
-    # def insert_reset(self, lst: list[TransactionCrypto]) -> None:
-    #     with self.connection.cursor() as cur:
-    #         csv_data = StringIO()
-    #         writer = csv.writer(csv_data)
-    #         for t in lst:
-    #             writer.writerow(t.to_tuple())
-    #         csv_data.seek(0)
-            
-    #         try:
-    #             cur.copy_from(csv_data, f"{self.schema}.{self.tableName}", sep=",", columns=YOUR_COLUMN_NAMES)
-    #         self.connection.commit()
-        
-    #     except Exception as e:
-    #         print(e)
-    #         print(f'\nProblem inserting crypto transactions')
-    #         raise e
-
     def deleteByDate(self, date)-> None:
         with self.connection.cursor() as cur:
             try:
@@ -154,12 +137,18 @@ from {self.schema}.{self.tableName} as m
             except:
                 raise Exception
 
-    def conciliate_withExcel(self) -> None:
+    def updatebyHash(self, hash, methodid, description, project) -> None:
         with self.connection.cursor() as cur:
             try:
-                query = f"""UPDATE {self.schema}.{self.tableName}
-                SET methodid = methodid,
-                """
+                query = f"""
+                UPDATE
+                    {self.schema}.{self.tableName}
+                SET
+                    methodid = '{methodid}',
+                    description = '{description}'
+                WHERE
+                    hash = '{hash}'
+                """ 
                 cur.execute(query=query)
                 self.connection.commit()
             except:

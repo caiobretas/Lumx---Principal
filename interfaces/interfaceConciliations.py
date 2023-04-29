@@ -8,7 +8,6 @@ class InterfaceConciliations(InterfaceBase):
     
     def getConciliations(self) -> list[Conciliation] | Exception:
         df: DataFrame = super().abreDataFrame()
-    
         try:
             list_aux: list[Conciliation] = []
             for index, row in df.iterrows():

@@ -4,14 +4,14 @@ from entities.entityCoin import Coin
 from entities.entityBook import Book
 from entities.entityTransaction import TransactionCrypto
 from business.loadTransactions import LoadTransactions
-from business.treatCryptoTransactions import TreatCryptoTransactions
+from business.conciliateCryptoTransactions import ConciliateCryptoTransactions
 from repositories.repositoryCryptoTransactions import RepositoryCryptoTransaction
 from repositories.repositoryBook import RepositoryBook
 from repositories.repositoryPrices import RepositoryPrices
 
 class UpdateCryptoTransactions:
     
-    def __init__(self, connection: str, engine: str, schema: str, tableName: str):
+    def __init__(self, path_interface, connection: str, engine: str, schema: str, tableName: str):
             
             start_time = time()
             list_coins: list[Coin] = RepositoryPrices(connection=connection, engine=engine, schema=schema, tableName='prices_crypto').getTokens()
@@ -44,7 +44,6 @@ class UpdateCryptoTransactions:
                     status = 'Reset'
                     self.repositoryCryptoTransactions.insert(lst=list_transactions)
                     
-            
             except:
                 status = 'Failed'
                 raise Exception
@@ -53,3 +52,4 @@ class UpdateCryptoTransactions:
                 try_time = time()
                 print('{} Status: {} - Time: {:.2f}s'.format(' ' * 3,status, try_time - start_time))
                 self.repositoryCryptoTransactions.delete_unknown_tokens(list_known_tokens=list_coins)
+                ConciliateCryptoTransactions(path_interface, connection, engine, schema, tableName)
