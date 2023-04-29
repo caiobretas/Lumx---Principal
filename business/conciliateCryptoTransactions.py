@@ -12,6 +12,7 @@ class ConciliateCryptoTransactions:
             for obj in list_conciliations:
                 RepositoryCryptoTransaction(connection, engine, schema, tableName).updatebyHash(obj.hash, obj.methodid, obj.description, obj.project)
                 status = 'Complete'
+                a =1
         except:
             status = 'Failed'
             raise Exception
