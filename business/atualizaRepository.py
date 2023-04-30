@@ -27,14 +27,13 @@ class AtualizaFinanceRepository:
         # self.repositoryProjects.insereProjeto(self.protocolData.lst_projects)
         # self.repositoryVolume.insereVolume(self.protocolData.lst_volume)
         # self.repositoryVolumeWallets.insereVolumeWallets(self.protocolData.lst_Wallets)
-        # self.repositoryBillings.insertBilling(self.protocolData.lst_billings)
+        # # self.repositoryBillings.insertBilling(self.protocolData.lst_billings)
 
         UpdateBook(connection=connFinance, engine=engine, schema=schema, tableName='book', path_interface=pathIF,sheetName_interface='book')
+        UpdateCategories(connection=connFinance, engine=engine,pathIF=pathIF,schema='finance', sheetName='categories', tableName='categories')
         UpdateCryptoTransactions(path_interface=pathIF, connection=connFinance, engine=engine, schema='finance', tableName='movements_crypto')
         UpdateCryptoPrices(connectionFinance=connFinance, engineAdmin=engine, schema=schema, tableName='prices_crypto')
-        UpdateCategories(connection=connFinance, engine=engine,pathIF=pathIF,schema='finance', sheetName='categories', tableName='categories')
         UpdateTransactions(connection=connFinance,engine=engine,schema='finance',tableName='movements')
         UpdateFutures(connection=connFinance,engine=engine,schema='finance',tableName='movements')
 
-        
         print('\nDatabase updated in {:.2f} seconds\n'.format(time() - timer))
