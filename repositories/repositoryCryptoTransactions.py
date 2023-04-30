@@ -83,7 +83,7 @@ class RepositoryCryptoTransaction ( RepositoryBase ):
 select
 m.id, m.hash, m.datetime, m.total, m.tokensymbol, pc.close, (m.total * pc.close) as total_BRL,
 b.name as de, b1.name as para, m.bank as contaativo, c.subcategoria4, c.subcategoria3,
-c.subcategoria2, c.subcategoria, c.categoria, c.categoriaprojecao
+c.subcategoria2, c.subcategoria, c.categoria, c.categoriaprojecao, m.description
 
 from {self.schema}.{self.tableName} as m
 	left join {self.schema}.categories as c on m.methodid = c.method_id
@@ -115,7 +115,7 @@ from {self.schema}.{self.tableName} as m
                     nomecentrocusto = None,
                     nomepessoa = None,
                     observacao = None,
-                    descricao = None,
+                    descricao = row[16],
                     numeronotafiscal = None,
                     contaativo = row[9],
                     subcategoria4 = row[10],

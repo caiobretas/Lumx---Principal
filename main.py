@@ -1,15 +1,17 @@
 import psycopg2
 from time import time
 from sqlalchemy import create_engine
+from datetime import datetime
 
 from business.atualizaRepository import AtualizaFinanceRepository
 from business.atualizaViewer import AtualizaViewer
 
 class Main:
     def __init__(self) -> None:
+        
         print('\nProgram starting')
         self.start_time = time()
-
+        self.today = datetime.now().date()
         self.pathDB = 'database.xlsx'
         self.pathIF = 'interface.xlsx'
         self.pathVW = 'viewer.xlsx'
