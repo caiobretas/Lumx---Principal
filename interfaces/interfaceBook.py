@@ -1,3 +1,4 @@
+import logging
 import pandas as pd
 from entities.entityBook import Book
 from interfaces.interfaceBase import InterfaceBase
@@ -13,24 +14,31 @@ class InterfaceBook(InterfaceBase):
             xlsx = pd.ExcelFile(self.path)
             sheet_names = xlsx.sheet_names
             return sheet_names
-        except Exception as e:
-            print("Erro ao obter nomes das sheets:", e)
-            return None
+        except:
+            raise Exception
    
     def getBook(self) -> list[Book]:
-        self.dataframe = super().abreDataFrame()
-        self.getSheets()
+        try:
+            self.dataframe = super().abreDataFrame()
+            sheets = self.getSheets()
 
-        list_books: list[Book] = []
-        for index, row in self.dataframe.iterrows():
-            book = Book(
-                address = row['address'] if row['address'] != 'nan' else None,
-                name = row['name'] if row['name'] != 'nan' else None,
-                is_lumx = bool(row[2]) if str(row[2]) != 'nan' else None,
-                is_safe = bool(row[3]) if str(row[3]) != 'nan' else None,
-                blockchain = str(row[4]) if str(row[4]) != 'nan' else None,
-                is_conversion = bool(row[5]) if str(row[5]) != 'nan' else None,
-                is_primarysale = bool(row[6]) if str(row[6]) != 'nan' else None,
-                is_secondarysale = bool(row[7]) if str(row[7]) != 'nan' else None)
-            list_books.append(book)
-        return list_books
+            list_books: list[Book] = []
+            self.dataframe.fillna(value=False, inplace=True)
+            for index, row in self.dataframe.iterrows():
+                book = Book(
+                    address = row[0],
+                    name = row[1],
+                    is_lumx = bool(row[2]),
+                    is_safe = bool(row[3]),
+                    blockchain = str(row[4]),
+                    is_conversion = bool(row[5]),
+                    is_primarysale = bool(row[6]),
+                    is_secondarysale = bool(row[7]))
+                book
+                
+                list_books.append(book)
+            return list_books
+        
+        except Exception as e:
+            logging.error(f"An error occurred while getting the book: {e}")
+            raise e

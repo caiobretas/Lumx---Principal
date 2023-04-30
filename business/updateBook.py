@@ -14,4 +14,5 @@ class UpdateBook:
             status = 'Complete'
         except:
             status = 'Failed'
+            raise Exception
         print('{} Status: {} - Time: {:.2f}s'.format(' ' * 3,status, try_time - start_time))

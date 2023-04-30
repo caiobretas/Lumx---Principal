@@ -1,3 +1,4 @@
+import logging
 from time import time
 from entities.entityCoin import Coin
 from entities.entityBook import Book
@@ -16,7 +17,8 @@ class UpdateCryptoTransactions:
             
             self.repositoryBook = RepositoryBook(connection=connection, engine=engine, schema=schema, tableName='book')
             list_coins: list[Coin] = RepositoryPrices(connection=connection, engine=engine, schema=schema, tableName='prices_crypto').getTokens()
-            list_wallets: list[Book] = self.repositoryBook.getBook()
+            self.list_addresses: list[Book] = self.repositoryBook.getBook()
+            self.list_wallets: list = self.repositoryBook.list_wallets
             self.list_conversion: list = self.repositoryBook.list_conversion
             self.list_primarysale: list = self.repositoryBook.list_primarysale
             self.list_secondarysale: list = self.repositoryBook.list_secondarysale
@@ -27,11 +29,10 @@ class UpdateCryptoTransactions:
                 apiKey = 'DUUV82YWBS4YIWEURM8V7N5AXWB5ZMJH3A'
 
                 list_transactions: list[TransactionCrypto] = []
-                for wallet in list_wallets:
+                for wallet in self.list_addresses:
                     if wallet.is_lumx:
-                        obj = LoadTransactions().loadCryptoTransactions(is_safe=wallet.is_safe,address=wallet.address, apiKey=apiKey, chain=wallet.blockchain, name=wallet.name)
-                        TreatCryptoTransactions()
-                        list_transactions.extend(obj)
+                        transaction_crypto = LoadTransactions().loadCryptoTransactions(is_safe=wallet.is_safe,address=wallet.address, apiKey=apiKey, chain=wallet.blockchain, name=wallet.name)
+                        list_transactions.extend(transaction_crypto)
                 
                 if self.repositoryCryptoTransactions.getDate() != None:
                     # get the higher date registered
@@ -40,18 +41,22 @@ class UpdateCryptoTransactions:
                     self.repositoryCryptoTransactions.deleteByDate(date=date)
 
                     list_new_transactions: list[TransactionCrypto] = []
-                    for transaction in list_transactions:
-                        if transaction.datetime.date() >= date:
-                                list_new_transactions.append(transaction)
-                                
+                    for transaction_crypto in list_transactions:
+                        if transaction_crypto.datetime.date() >= date:
+                            TreatCryptoTransactions(obj=transaction_crypto,list_wallets=self.list_wallets, list_conversion=self.list_conversion,list_primarysale=self.list_primarysale,list_secondarysale=self.list_secondarysale)
+                            list_new_transactions.append(transaction_crypto)
+                        
                     self.repositoryCryptoTransactions.insert(lst=list_new_transactions)
                     status = 'Complete'
                 else:
                     status = 'Reset'
+                    for obj in list_transactions:
+                        TreatCryptoTransactions(obj=obj,list_wallets=self.list_wallets, list_conversion=self.list_conversion,list_primarysale=self.list_primarysale,list_secondarysale=self.list_secondarysale)
                     self.repositoryCryptoTransactions.insert(lst=list_transactions)
-            except:
-                status = 'Failed'
-                raise Exception
+            
+            except Exception as e:
+                logging.error(f"An error occurred while getting the book: {e}")
+                raise e
             
             finally:
                 try_time = time()

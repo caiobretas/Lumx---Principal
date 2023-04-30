@@ -10,12 +10,13 @@ class InterfaceConciliations(InterfaceBase):
         df: DataFrame = super().abreDataFrame()
         try:
             list_aux: list[Conciliation] = []
+            df.fillna(value=0, inplace=True)
             for index, row in df.iterrows():
                 row = Conciliation(
-                hash = row['hash'],
-                methodid = row['methodid'],
-                description = row['description'],
-                project = row['project'],
+                hash = row['hash'] if row['hash'] != 0 else None,
+                methodid = row['methodid'] if row['methodid'] != 0 else None,
+                description = row['description'] if row['description'] != 0 else None,
+                project = row['project'] if row['project'] != 0 else None,
                 )
                 list_aux.append(row)
             return list_aux

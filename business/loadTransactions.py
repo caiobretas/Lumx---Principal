@@ -21,7 +21,7 @@ class LoadTransactions:
         
     def loadCryptoTransactions(self, is_safe: bool, address, apiKey, name: str = 'Unknown', chain: str='ethereum') -> list[TransactionCrypto]:
         list_total = []
-        if is_safe == False or chain.upper() == 'ETHEREUM':
+        if is_safe == False or (chain.upper() if chain != None else chain) == 'ETHEREUM':
             apiKey = 'DUUV82YWBS4YIWEURM8V7N5AXWB5ZMJH3A'
             list_normal = ControllerEtherscan().get_normalTransactions(name=name,address=address,apiKey=apiKey)
             list_internal = ControllerEtherscan().get_internalTransactions(name=name,address=address,apiKey=apiKey)
@@ -31,7 +31,7 @@ class LoadTransactions:
             list_total.extend(list_internal)
             list_total.extend(list_erc20)
      
-        if is_safe == False or chain.upper() == 'POLYGON':
+        if is_safe == False or (chain.upper() if chain != None else chain) == 'POLYGON':
             apiKey = 'V7J58GX39IDM5AQW3XQ8CX98N9E2GFGIKF'
             list_normal = ControllerPolygonscan().get_normalTransactions(name=name,address=address, apiKey=apiKey)
             list_internal = ControllerPolygonscan().get_internalTransactions(name=name,address=address, apiKey=apiKey)
