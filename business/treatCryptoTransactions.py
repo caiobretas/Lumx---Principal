@@ -4,7 +4,7 @@ class TreatCryptoTransactions:
 
     def categories(self, obj: TransactionCrypto, list_wallets, list_conversion, list_primarysale, list_secondarysale):
         if (obj.from_ in list_conversion) or (obj.to_ in list_conversion):
-            obj.methodId = '0x2130y'
+            obj.methodId = '0x2130'
             obj.description = 'Conversão monetária'
         if obj.from_ in list_primarysale:
             obj.methodId = '0x48s5'
