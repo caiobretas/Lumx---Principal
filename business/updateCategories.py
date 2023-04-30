@@ -15,9 +15,9 @@ class UpdateCategories:
                 tableName=tableName).insertCategories(lst=InterfaceCategories(pathIF=pathIF, sheetName=sheetName).getCategories())
             status = 'Complete'
             
-        except Exception as e:
+        except:
             status = 'Failed'
-            return None
+            raise Exception
         
         finally:
             try_time = time()

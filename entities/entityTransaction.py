@@ -95,8 +95,8 @@ class TransactionCrypto:
         self.datetime = datetime.fromtimestamp(timeStamp)
         self.hash = hash
         self.nonce = nonce
-        self.from_ = from_.lower()
-        self.to_ = to.lower()
+        self.from_ = str(from_).strip().lower()
+        self.to_ = str(to).strip().lower()
         self.contractAddress = contractAddress
         self.gas: float = gas
         self.gasPrice: float = (gasPrice / (10**float(tokenDecimal))) * (-1)
@@ -124,7 +124,8 @@ class TransactionCrypto:
         
         self.total = self.value + self.gasFee
         
-        self.methodId = '0xa9059cbb' if (str(txnType) == 'ERC-20' and type == None and functionName == 0) else methodId
+        self.methodId = '0xa9059cbb' if (str(txnType) == 'ERC-20' or str(txnType) == 'Internal') else methodId
+
 
     def to_tuple(self) -> tuple:
         return (self.id, self.blockNumber,self.blockHash,self.datetime,self.hash,self.nonce,self.from_,self.to_,self.contractAddress,self.gas,self.gasPrice,self.gasUsed,self.cumulativeGasUsed,self.value,self.gasFee,self.total,self.tokenName,self.tokenSymbol,self.tokenDecimal,self.isError,self.txreceipt_status,self.type,self.methodId,self.functionName,self.txnType, self.blockchain, self.address, self.name, self.scan, self.description)

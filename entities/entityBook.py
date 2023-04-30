@@ -1,7 +1,7 @@
 class Book:
     def __init__(self, address = None, name = None, is_lumx: bool = None, is_safe: bool = False, blockchain: str = None,  is_conversion: bool = None, is_primarysale: bool = None, is_secondarysale: bool = None):
 
-        self.address = address
+        self.address = str(address).strip().lower()
         self.name = name
         self.is_lumx = is_lumx
         self.is_safe = is_safe
