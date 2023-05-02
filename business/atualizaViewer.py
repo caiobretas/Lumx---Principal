@@ -54,6 +54,6 @@ class AtualizaViewer:
         
         # writes the transactions
         WriteProjection(connection=connFinance,engine=engineAdmin,schema=schema,path=pathVW,sheetName='Tabela Projeção', tableName='movements')
-        WriteTranscations(connection=connFinance,engine=engineAdmin,schema=schema,path=pathVW,sheetName='Movimentação', tableName='movements')
+        # WriteTranscations(connection=connFinance,engine=engineAdmin,schema=schema,path=pathVW,sheetName='Movimentação', tableName='movements')
 
         print('\nViewer updated in {:.2f} seconds\n'.format(time() - timer))
