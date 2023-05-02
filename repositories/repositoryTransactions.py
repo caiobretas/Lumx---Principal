@@ -159,16 +159,16 @@ class RepositoryTransaction ( RepositoryBase ):
                     numeronotafiscal = row[25],
                     contaativo = row[33],
                     subcategoria4 = row[32],
-                    subcategoria3 = row[34],
-                    subcategoria2 = row[35],
-                    subcategoria = row[36],
-                    categoria = row[37],
-                    categoriaprojecao = row[38],
+                    subcategoria3 = row[35],
+                    subcategoria2 = row[36],
+                    subcategoria = row[37],
+                    categoria = row[38],
+                    categoriaprojecao = row[39],
                     categoriacusto_receita = None,
                     hash = None,
                     check_conciliadoorigem = row[26],
                     check_conciliadodestino = row[27],
-                    projeto = row[39]
+                    projeto = row[40]
                     )
                     list_projection.append(register)
                     
@@ -176,3 +176,4 @@ class RepositoryTransaction ( RepositoryBase ):
                 return list_projection
             except:
                 raise Exception
+             
