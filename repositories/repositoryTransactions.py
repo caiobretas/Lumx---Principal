@@ -38,7 +38,7 @@ class RepositoryTransaction ( RepositoryBase ):
                 placeholders = ','.join(['%s'] * len(values[0]))
             
                 query = f"""INSERT INTO {self.schema}.{self.tableName}
-                (id, tipo, data, datapagamento, datavencimento, datacompetencia, valorprevisto, valorrealizado, percentualrateio, realizado, idcontaorigem, nomecontaorigem, codigoreduzidoorigem, idcontadestino, nomecontadestino, codigoreduzidodestino,  idcentrocusto, nomecentrocusto, idpessoa, nomepessoa, observacao, cpfcnpjpessoa, descricao, idunidadenegocio, nomeunidadenegocio, numeronotafiscal, conciliadoorigem, conciliadodestino, saldoiniciodiacontaativo, saldofimdiaccontaativo, idprojeto, nomeprojeto, nomeclassificacao, contaativo)
+                (id, tipo, data, datapagamento, datavencimento, datacompetencia, valorprevisto, valorrealizado, percentualrateio, realizado, idcontaorigem, nomecontaorigem, codigoreduzidoorigem, idcontadestino, nomecontadestino, codigoreduzidodestino,  idcentrocusto, nomecentrocusto, idpessoa, nomepessoa, observacao, cpfcnpjpessoa, descricao, idunidadenegocio, nomeunidadenegocio, numeronotafiscal, conciliadoorigem, conciliadodestino, saldoiniciodiacontaativo, saldofimdiaccontaativo, idprojeto, nomeprojeto, nomeclassificacao, contaativo, idkamino)
                 VALUES ({placeholders})
                 on conflict (id) do nothing;"""
                     
@@ -96,7 +96,8 @@ class RepositoryTransaction ( RepositoryBase ):
                     idprojeto = row[30],
                     nomeprojeto = row[31],
                     nomeclassificacao = row[32],
-                    contaativo = row[33])
+                    contaativo = row[33],
+                    idKamino=row[34])
                     list_transactions.append(transaction)
                 return list_transactions
 
