@@ -33,7 +33,7 @@ class AtualizaFinanceRepository:
         UpdateCategories(connection=connFinance, engine=engine,pathIF=pathIF,schema='finance', sheetName='categories', tableName='categories')
         # UpdateCryptoTransactions(path_interface=pathIF, connection=connFinance, engine=engine, schema='finance', tableName='movements_crypto')
         # UpdateCryptoPrices(connectionFinance=connFinance, engineAdmin=engine, schema=schema, tableName='prices_crypto')
-        # UpdateTransactions(connection=connFinance,engine=engine,schema='finance',tableName='movements')
-        # UpdateFutures(connection=connFinance,engine=engine,schema='finance',tableName='movements')
+        UpdateTransactions(connection=connFinance,engine=engine,schema='finance',tableName='movements')
+        UpdateFutures(connection=connFinance,engine=engine,schema='finance',tableName='movements')
 
         print('\nDatabase updated in {:.2f} seconds\n'.format(time() - timer))
