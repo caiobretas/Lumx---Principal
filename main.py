@@ -55,5 +55,4 @@ class Main:
 
     # def test(self):
 
-# Main().hr()
 Main().rotine()
