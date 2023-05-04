@@ -16,6 +16,6 @@ class ViewerPrices( ViewerBase ):
             sheet_name=self.sheetName,
             header=0
         )
-    
-    def insertViewerPrices(self, lst: list[Coin]):
+        
+    def insertPrices(self, lst: list[Coin]):
         super().salvaExcel(lst)

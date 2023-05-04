@@ -3,7 +3,7 @@ from entities.entityCoin import Coin
 from repositories.repositoryBase import RepositoryBase
 
 class RepositoryPrices( RepositoryBase ):
-    def __init__(self, connection: str, engine, schema, tableName):
+    def __init__(self, connection: str, engine, schema, tableName='prices_crypto'):
         super().__init__(connection, engine, schema, tableName)
         self.connection: psycopg2.connection = connection
         self.tableName = tableName
@@ -12,7 +12,7 @@ class RepositoryPrices( RepositoryBase ):
     def getPrices(self) -> list[Coin]:
         with self.connection.cursor() as cur:
             try:
-                query = f"""select id,date,high,low,open,volumefrom,volumeto,close,conversiontype,conversionsymbol from {self.schema}.{self.tableName} """
+                query = f"""select id,date,high,low,open,volumefrom,volumeto,close,conversiontype,conversionsymbol from {self.schema}.{self.tableName} order by date desc, conversionsymbol desc"""
                 cur.execute(query=query)
                 listCoins: list[Coin] = []
                 for row in cur.fetchall():

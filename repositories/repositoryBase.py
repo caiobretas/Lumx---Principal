@@ -5,7 +5,7 @@ from pandas import DataFrame
 
 class RepositoryBase:
     
-    def __init__(self, connection, engine: str, schema: str, tableName: str):
+    def __init__(self, connection, engine: str, schema: str, tableName):
         
         self.dbname = 'postgres'
         self.connection = connection

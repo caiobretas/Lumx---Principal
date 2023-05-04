@@ -12,10 +12,11 @@ class ViewerBase:
         return pd.read_excel(
             io=self.path,
             sheet_name=self.sheetName,
+
             header=0
         )   
     def salvaExcel(self, lst: list):
-        with pd.ExcelWriter(path=self.path, mode='a', if_sheet_exists='replace') as writer:
+        with pd.ExcelWriter(engine='openpyxl',path=self.path, mode='a', if_sheet_exists='replace') as writer:
             try:
                 dataFrame: DataFrame = pd.DataFrame([vars(obj) for obj in lst])
                 if 'datetime' in dataFrame.columns:

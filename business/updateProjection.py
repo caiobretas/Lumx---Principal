@@ -1,28 +1,40 @@
 from time import time
-
-from viewers.viewerVolumes import ViewerVolumes
-from viewers.viewerProjects import ViewerProjects
-from viewers.viewerBillings import ViewerBillings
 from viewers.viewerPrices import ViewerPrices
-from viewers.viewerControle import ViewerControle
-
-from business.calculaVolume import CalculaVolume
-from business.tiraCurrency import TiraCurrency
-from business.preencheControle import PreencheControle
-
-from business.getProtocoldata import GetProtocolData
-from business.getRepositoryData import GetRepositoryData
-
-from business.writeMovements import WriteTranscations
+from business.writePrices import WritePrices
 from business.writeProjection import WriteProjection
 
-# this instance is used to update all the viewers
-class AtualizaViewer:
-    def __init__(self, pathVW, pathIF, connProtocol, connFinance, engineAdmin, schema) -> None:
+class UpdateProjection(object):
+    def __init__(self, pathProjection, connProtocol, connFinance, engineAdmin, schema) -> None:
         timer = time()
         
+        WritePrices(path=pathProjection, sheetName = 'Tabela Cotações', connection=connFinance, engine=engineAdmin, schema=schema, tableName='prices_crypto').writePrices()
+        WriteProjection(path=pathProjection, connection=connFinance, engine=engineAdmin, schema=schema).insert_projectionTable(sheetName='Tabela Projeção')
+        
+        print('\Projection updated in {:.2f} seconds\n'.format(time() - timer))
+        
+        
+        
+        
+        # from viewers.viewerControle import ViewerControle        
+
+        # from viewers.viewerVolumes import ViewerVolumes
+        # from viewers.viewerProjects import ViewerProjects
+        # from viewers.viewerBillings import ViewerBillings
+        
+        
+
+        # from business.calculaVolume import CalculaVolume
+        # from business.tiraCurrency import TiraCurrency
+        # from business.preencheControle import PreencheControle
+
+        # from business.getProtocoldata import GetProtocolData
+        # from business.getRepositoryData import GetRepositoryData
+
+        # from business.writeMovements import WriteTranscations
+
+        
+        
         # self.viewerBillings = ViewerBillings(path=pathVW, sheetName  = 'Tabela Cobranças')
-        # self.viewerPrices = ViewerPrices(path=pathVW, sheetName = 'Tabela Cotações')
         # self.viewerProjects = ViewerProjects(path=pathVW, sheetName = 'Tabela Projetos')
         # self.viewerVolumes = ViewerVolumes(path=pathVW, sheetName = 'Tabela Volumes')
         # self.viewerVolumeWallets = ViewerVolumes(path=pathVW, sheetName = 'Tabela Wallets')
@@ -45,7 +57,6 @@ class AtualizaViewer:
 
         # timer = time()
 
-        # self.viewerPrices.insertViewerPrices(lst=self.repositoryData.lst_coinPrices)
         # self.viewerBillings.insertViewerBilling(lst=self.protocolData.lst_billings)
         # self.viewerProjects.insertViewerProject(lst=self.protocolData.lst_projects)
         # self.viewerVolumes.insertViewerVolumes(lst=self.repositoryData.lst_volumes)
@@ -53,7 +64,6 @@ class AtualizaViewer:
         # self.viewerControle.insertViewerControle(lst=self.repositoryData.lst_controle)
         
         # writes the transactions
-        WriteProjection(connection=connFinance,engine=engineAdmin,schema=schema,path=pathVW,sheetName='Tabela Projeção', tableName='movements')
+        # WritePrices()
+        
         # WriteTranscations(connection=connFinance,engine=engineAdmin,schema=schema,path=pathVW,sheetName='Movimentação', tableName='movements')
-
-        print('\nViewer updated in {:.2f} seconds\n'.format(time() - timer))

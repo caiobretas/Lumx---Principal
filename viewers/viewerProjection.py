@@ -11,11 +11,7 @@ class ViewerProjection( ViewerBase ):
         self.sheetName = sheetName
 
     def abreDataFrame(self) -> pd.DataFrame:
-        return pd.read_excel(
-            io = self.path,
-            sheet_name=self.sheetName,
-            header=0
-        )
+        super().abreDataFrame()
     
     def insertViewerProjection(self, lst: list[Projection]):
         super().salvaExcel(lst)

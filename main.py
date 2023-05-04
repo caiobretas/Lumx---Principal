@@ -4,7 +4,7 @@ from sqlalchemy import create_engine
 from datetime import datetime
 
 from business.atualizaRepository import AtualizaFinanceRepository
-from business.atualizaViewer import AtualizaViewer
+from business.updateProjection import UpdateProjection
 
 class Main:
     def __init__(self) -> None:
@@ -15,6 +15,7 @@ class Main:
         self.pathDB = 'database.xlsx'
         self.pathIF = 'interface.xlsx'
         self.pathVW = 'viewer.xlsx'
+        self.pathProjection = 'projection.xlsx'
         
         self.hostProtocol = 'protocol-prod.czhdzceztpsv.us-east-1.rds.amazonaws.com'
         self.portProtocol = '5432'
@@ -38,8 +39,8 @@ class Main:
         # from business.postTransaction import PostTransaction
         
         AtualizaFinanceRepository(connFinance=self.connection, engine=self.engineAdmin, schema=self.schema, pathIF=self.pathIF,connProtocol=self.connectionProtocol)
-        AtualizaViewer(pathVW=self.pathVW, pathIF=self.pathIF, connProtocol=self.connectionProtocol, connFinance=self.connection, engineAdmin=self.engineAdmin, schema=self.schema)
-
+        UpdateProjection(pathProjection=self.pathProjection, connProtocol=self.connectionProtocol, connFinance=self.connection, engineAdmin=self.engineAdmin, schema=self.schema)
+        
     def hr(self):
         self.schemaHR = 'h_resources'
 
