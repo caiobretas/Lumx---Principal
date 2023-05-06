@@ -17,5 +17,8 @@ class ViewerPrices( ViewerBase ):
             header=0
         )
         
-    def insertPrices(self, lst: list[Coin]):
-        super().salvaExcel(lst)
+    def insertPrices(self, list_obj: list[Coin]=None, list_dict=None):
+        if list_obj != None:
+            super().salvaExcel(list_=list_obj)
+        if list_dict != None:
+            super().salvaExcel(dict_=list_dict)

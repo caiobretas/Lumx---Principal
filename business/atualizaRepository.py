@@ -16,23 +16,11 @@ from business.updateBook import UpdateBook
 class AtualizaFinanceRepository:
     def __init__(self, connFinance, engine, schema, pathIF, connProtocol) -> None:
         timer = time()
-
-        # self.protocolData = GetProtocolData(pathIF=pathIF, conn=connProtocol)
-
-        # self.repositoryProjects = RepositoryProjects(connection=connFinance, engine=engine, schema=schema, tableName='projects')
-        # self.repositoryVolume = RepositoryVolume(connection=connFinance, engine=engine, schema=schema, tableName='projects_volumes')
-        # self.repositoryVolumeWallets = RepositoryVolume(connection=connFinance, engine=engine, schema=schema, tableName='projects_wallets')
-        # self.repositoryBillings = RepositoryBillings(connection=connFinance, engine=engine, schema=schema, tableName='projects_billings')
-
-        # self.repositoryProjects.insereProjeto(self.protocolData.lst_projects)
-        # self.repositoryVolume.insereVolume(self.protocolData.lst_volume)
-        # self.repositoryVolumeWallets.insereVolumeWallets(self.protocolData.lst_Wallets)
-        # # self.repositoryBillings.insertBilling(self.protocolData.lst_billings)
-
+        
         UpdateBook(connection=connFinance, engine=engine, schema=schema, tableName='book', path_interface=pathIF,sheetName_interface='book')
         UpdateCategories(connection=connFinance, engine=engine,pathIF=pathIF,schema='finance', sheetName='categories', tableName='categories')
-        # UpdateCryptoTransactions(path_interface=pathIF, connection=connFinance, engine=engine, schema='finance', tableName='movements_crypto')
-        # UpdateCryptoPrices(connectionFinance=connFinance, engineAdmin=engine, schema=schema, tableName='prices_crypto')
+        UpdateCryptoTransactions(path_interface=pathIF, connection=connFinance, engine=engine, schema='finance', tableName='movements_crypto')
+        UpdateCryptoPrices(connectionFinance=connFinance, engineAdmin=engine, schema=schema, tableName='prices_crypto')
         UpdateTransactions(connection=connFinance,engine=engine,schema='finance',tableName='movements')
         UpdateFutures(connection=connFinance,engine=engine,schema='finance',tableName='movements')
 

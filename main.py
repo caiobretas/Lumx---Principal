@@ -35,8 +35,6 @@ class Main:
         self.engineAdmin = create_engine(f'postgresql://{self.user}:{self.password}@{self.host}/{self.dbname}')
 
     def finance(self):
-        # from business.updateFiatTransactions import UpdateFiatTransactions
-        # from business.postTransaction import PostTransaction
         
         # AtualizaFinanceRepository(connFinance=self.connection, engine=self.engineAdmin, schema=self.schema, pathIF=self.pathIF,connProtocol=self.connectionProtocol)
         UpdateProjection(pathProjection=self.pathProjection, connProtocol=self.connectionProtocol, connFinance=self.connection, engineAdmin=self.engineAdmin, schema=self.schema)
@@ -53,7 +51,5 @@ class Main:
 
         print('\nRotine in {:.2f} seconds\n'.format(time() - self.start_time))
 
-
-    # def test(self):
 
 Main().rotine()
