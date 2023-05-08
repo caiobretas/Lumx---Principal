@@ -28,8 +28,7 @@ class RepositoryTransaction ( RepositoryBase ):
                     return cur.fetchone()[0]
             except ValueError:
                 print(ValueError)
-                raise ValueError('No futures found')
-                
+                raise ValueError('No futures found')  
                        
     def insert(self, lst: list[Transaction]) -> None:
         with self.connection.cursor() as cur:
@@ -50,7 +49,6 @@ class RepositoryTransaction ( RepositoryBase ):
                 print(f'\nNo new transactions found')
                 raise e
                 
-            
     def getTransactions(self) -> list[Transaction]:
         with self.connection.cursor() as cur: 
             try:

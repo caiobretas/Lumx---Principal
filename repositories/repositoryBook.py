@@ -17,7 +17,7 @@ class RepositoryBook ( RepositoryBase ):
             
                 query = f"""
 INSERT INTO {self.schema}.{self.tableName}
-(address, name, is_lumx, is_safe, blockchain, is_conversion, is_primarysale, is_secondarysale)
+(address, name, is_lumx, is_safe, blockchain, is_conversion, is_primarysale, is_secondarysale, project)
 VALUES ({placeholders})
 ON CONFLICT (address) DO UPDATE SET 
 name = EXCLUDED.name, 
@@ -26,7 +26,8 @@ is_safe = EXCLUDED.is_safe,
 blockchain = EXCLUDED.blockchain, 
 is_conversion = EXCLUDED.is_conversion,
 is_primarysale = EXCLUDED.is_primarysale, 
-is_secondarysale = EXCLUDED.is_secondarysale;
+is_secondarysale = EXCLUDED.is_secondarysale,
+project = EXCLUDED.project;
 """
                     
                 cur.executemany(query, values)

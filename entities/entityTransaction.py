@@ -44,10 +44,12 @@ class Transaction:
             self.valorrealizado = (-1) * valorrealizado if valorrealizado != None else None
             self.nomecontadestino = nomepessoa
             self.nomecontaorigem = contaativo
+        
 
         if self.tipo == 'Recebimento':
             self.nomecontadestino = contaativo
             self.nomecontaorigem = nomepessoa
+            
 
         
     def to_tuple(self) -> tuple:
@@ -71,7 +73,6 @@ class TransactionCrypto:
     gasUsed = 0,
     cumulativeGasUsed = None,
     value = None,
-    gasFee = None,
     total = None,
     tokenName = None,
     tokenSymbol = None,
@@ -86,7 +87,7 @@ class TransactionCrypto:
     blockchain=None,
     name: str=None,
     scan: str=None,
-    description: str=None
+    description: str=None,
     ):
         
         self.id = str(uuid4())

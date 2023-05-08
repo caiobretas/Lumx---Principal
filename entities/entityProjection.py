@@ -8,8 +8,8 @@ class Projection:
         self.data_lançamento = data_lançamento
         self.data_liquidação = data_liquidação
         self.datavencimento = datavencimento
-        self.valorprevisto = valorprevisto
-        self.valorrealizado = valorrealizado
+        self.valorprevisto = valorprevisto if valorprevisto is not None else 0
+        self.valorrealizado = valorrealizado if valorrealizado is not None else 0
         self.moeda = moeda
         self.cotação = cotação
         self.valorprevisto_BRL = valorprevisto_BRL
@@ -36,6 +36,9 @@ class Projection:
         self.hash = hash
         self.check_conciliadoorigem = check_conciliadoorigem
         self.check_conciliadodestino = check_conciliadodestino
-    
+
+        if self.moeda == 'BRL' and (self.valorprevisto < 0 or self.valorrealizado < 0):
+            self.de = 'Lumx Studios S/A'
+            
     def __repr__(self) -> str:
         return f'Data: {self.data_lançamento} - Categoria: {self.subcategoria4} - Valor: {self.valorprevisto} - Conta: {self.contaativo}\n'

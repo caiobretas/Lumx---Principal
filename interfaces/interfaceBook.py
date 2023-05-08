@@ -23,7 +23,7 @@ class InterfaceBook(InterfaceBase):
             sheets = self.getSheets()
 
             list_books: list[Book] = []
-            self.dataframe.fillna(value=False, inplace=True)
+            self.dataframe.fillna(value=bool(), inplace=True)
             for index, row in self.dataframe.iterrows():
                 book = Book(
                     address = row[0],
@@ -33,8 +33,8 @@ class InterfaceBook(InterfaceBase):
                     blockchain = str(row[4]),
                     is_conversion = bool(row[5]),
                     is_primarysale = bool(row[6]),
-                    is_secondarysale = bool(row[7]))
-                book
+                    is_secondarysale = bool(row[7]),
+                    project = str(row[8]))
                 
                 list_books.append(book)
             return list_books

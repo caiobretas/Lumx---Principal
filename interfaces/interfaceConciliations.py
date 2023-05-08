@@ -16,7 +16,6 @@ class InterfaceConciliations(InterfaceBase):
                 hash = row['hash'] if row['hash'] != 0 else None,
                 methodid = row['methodid'] if row['methodid'] != 0 else None,
                 description = row['description'] if row['description'] != 0 else None,
-                project = row['project'] if row['project'] != 0 else None,
                 )
                 list_aux.append(row)
             return list_aux

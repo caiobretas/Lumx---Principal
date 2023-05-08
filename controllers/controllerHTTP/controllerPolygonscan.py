@@ -1,3 +1,4 @@
+import logging
 import datetime
 from controllers.controllerHTTP.controllerHTTPBase import ControllerHTTPBase
 from entities.entityTransaction import TransactionCrypto
@@ -46,7 +47,7 @@ class ControllerPolygonscan(ControllerHTTPBase):
             return list_Transactions
             
         except Exception as e:
-            raise e
+            logging.error(f'{" "* 3} Erro: {e}')
         
     def get_internalTransactions(self, name, module: str = 'account', action: str = 'txlistinternal', address: not None | str = '<string>', startblock: int = 0, endblock: int = 99999999, page: int = 1, offset: str = 10000, sort: str = 'asc', apiKey: not None | str = '<string>') -> list[TransactionCrypto]:
         try:
