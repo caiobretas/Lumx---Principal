@@ -21,12 +21,19 @@ class GoogleSheets(ControllerGoogle):
         super().__init__()
         self.client = gspread.authorize(credentials=self.credentials)
         
+    def appendRow(self, values: list, sheetName, worksheetId: str):
+        try:
+            worksheet = self.client.open_by_key(worksheetId)
+            sheet = worksheet.worksheet(sheetName)
+            sheet.append_row(values)
+        except Exception as e:
+            logging.error(f'{" "* 3} Erro: {e}')
+            
     def updateWorksheet_byID(self, worksheetId: str, list_values: list, sheetName = None,range=None):
         try:
             worksheet = self.client.open_by_key(worksheetId)
             sheet = worksheet.worksheet(sheetName)
             sheet.update(range,list_values)
-            
         except Exception as e:
             logging.error(f'{" "* 3} Erro: {e}')
 

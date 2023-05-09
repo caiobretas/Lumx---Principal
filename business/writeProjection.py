@@ -1,3 +1,4 @@
+from datetime import datetime
 import logging
 from time import time
 from entities.entityProjection import Projection, Projection_Price
@@ -16,6 +17,9 @@ class WriteProjection:
         self.engine = engine
         self.schema = schema
         self.tableName = 'movements'
+        self.sheetMovementsProjection = 'Tabela Realizados'
+        self.sheetPricesProjection = 'Tabela Preços'
+        self.sheetUpdates = 'Registro Atualizações'
         
     def writeMovements(self):
         start_time = time()
@@ -24,7 +28,8 @@ class WriteProjection:
         try:
             list_objMovements: list[Projection] = AssembleProjection(self.connection, self.engine, self.schema, self.tableName).getRegisters()
             list_valuesMovements = TransformObj().objects_to_values(list_objMovements)
-            GoogleSheets().updateWorksheet_byID(worksheetId=self.worksheetId, list_values=list_valuesMovements, sheetName='Tabela Projeção', range='A2')
+            GoogleSheets().updateWorksheet_byID(worksheetId=self.worksheetId, list_values=list_valuesMovements, sheetName=self.sheetMovementsProjection, range='A2')
+            GoogleSheets().appendRow(values=[self.sheetMovementsProjection,datetime.now().strftime("%d/%m/%Y %H:%M:%S")], sheetName=self.sheetUpdates, worksheetId=self.worksheetId)
             status = 'Complete'
         except Exception as e:
             status = 'Failed'
@@ -35,14 +40,14 @@ class WriteProjection:
             print('{} Status: {} - Time: {:.2f}s'.format(' ' * 3,status, try_time - start_time))
             
     def writePrices(self):
-        
         repositoryPrices = RepositoryPrices(self.connection, self.engine, self.schema, self.tableName)
         start_time = time()
         print('\nWriting prices...')
         try:
             list_prices: list[Projection_Price] = repositoryPrices.getProjection()
             list_valuesPrices = TransformObj().objects_to_values(list_prices)
-            GoogleSheets().updateWorksheet_byID(worksheetId=self.worksheetId, list_values=list_valuesPrices, sheetName='Tabela Preços', range='A2')
+            GoogleSheets().updateWorksheet_byID(worksheetId=self.worksheetId, list_values=list_valuesPrices, sheetName=self.sheetPricesProjection, range='A2')
+            GoogleSheets().appendRow(values=[self.sheetPricesProjection,datetime.now().strftime("%d/%m/%Y %H:%M:%S")], sheetName=self.sheetUpdates, worksheetId=self.worksheetId)
             status = 'Complete'
         except:
             status = 'Failed'
