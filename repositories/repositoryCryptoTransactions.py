@@ -103,9 +103,8 @@ class RepositoryCryptoTransaction ( RepositoryBase ):
                 for row in cur.fetchall():
                     register = Projection(
                     id = row[0],
-                    data_lançamento = row[2].date() if type(row[2]) == datetime else None,
                     data_liquidação = row[2].date() if type(row[2]) == datetime else None,
-                    datavencimento = row[2].date() if type(row[2]) == datetime else None,
+                    data_vencimento = row[2].date() if type(row[2]) == datetime else None,
                     valorprevisto = row[3],
                     valorrealizado = row[3],
                     moeda = row[4],
@@ -133,7 +132,7 @@ class RepositoryCryptoTransaction ( RepositoryBase ):
                     hash = row[1],
                     check_conciliadoorigem = 1,
                     check_conciliadodestino = 1,
-                    projeto = row[18] if row[17] != None else row[17]
+                    projeto = row[18] if row[17] == None else row[17]
                     )
                     list_projection.append(register)
                     

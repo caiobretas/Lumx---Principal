@@ -13,4 +13,4 @@ class AssembleProjection:
         list_projection: list[Projection] = []
         list_projection.extend(RepositoryTransaction(self.connection, self.engine, self.schema, 'movements').getProjection())
         list_projection.extend(RepositoryCryptoTransaction(self.connection, self.engine, self.schema, 'movements_crypto').getProjection())
-        return sorted(list_projection, key=lambda projection: projection.data_lançamento, reverse=True)
+        return list_projection

@@ -1,5 +1,7 @@
+import logging
 import psycopg2
 from entities.entityCoin import Coin
+from entities.entityProjection import Projection_Price
 from repositories.repositoryBase import RepositoryBase
 
 class RepositoryPrices( RepositoryBase ):
@@ -84,3 +86,36 @@ class RepositoryPrices( RepositoryBase ):
         
         except:
             raise Exception
+        
+    def getProjection(self) -> list[Projection_Price]:
+        with self.connection.cursor() as cur:
+            try:
+                query = """CREATE TEMPORARY TABLE IF NOT EXISTS prices AS
+            SELECT
+                subqueryB.time, POWER(c.close, -1) * subqueryB.close AS close, subqueryB.conversionSymbol, subqueryB.date
+            FROM
+                finance.prices_crypto AS c
+            RIGHT JOIN (
+                SELECT
+                    time, close, conversionSymbol, date
+                FROM
+                    finance.prices_crypto
+                ) AS subqueryB ON c.time = subqueryB.time
+            WHERE
+                c.conversionsymbol = 'BRL';
+
+select time, close, conversionsymbol, date from prices
+order by date desc;
+
+"""
+                cur.execute(query=query)
+                listProjection_Prices: list[Projection_Price] = []
+                for row in cur.fetchall():
+                    obj = Projection_Price(
+                        date=row[3],
+                        token=row[2],
+                        close=row[1])
+                    listProjection_Prices.append(obj)
+                return listProjection_Prices
+            except Exception as e:
+                logging.error(f'{" "* 3} Erro: {e}')

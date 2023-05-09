@@ -21,17 +21,8 @@ class WritePrices:
         print('\nWriting prices...')
         
         try:
-            list_coins: list[Coin] = repositoryPrices.getPrices()
-            
-            list_filtered_attributes: list[dict] = []
-            for obj in list_coins:
-                new_obj: dict = {}
-                new_obj['id'] = obj.id
-                new_obj['date'] = obj.date
-                new_obj['token'] = obj.conversionsymbol
-                new_obj['close'] = obj.close
-                list_filtered_attributes.append(new_obj)
-            self.viewer.insertPrices(list_dict=list_filtered_attributes)
+            list_prices: list[Coin] = repositoryPrices.getProjection()
+            self.viewer.insertPrices(list_obj=list_prices)
             status = 'Complete'
         except:
             status = 'Failed'
@@ -39,4 +30,3 @@ class WritePrices:
         finally:
             try_time = time()
             print('{} Status: {} - Time: {:.2f}s'.format(' ' * 3,status, try_time - start_time))
-

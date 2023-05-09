@@ -42,7 +42,7 @@ class ControllerKamino ( ControllerHTTPBase ):
             list_aux: list[dict] = []
             for dict_ in super().get(endpoint=endpoint, headers=self.headers):
                 dict_ = Transfer(
-                id = dict_['ID'],
+                idKamino = dict_['ID'],
                 data  = dict_['Data'],
                 descricao = dict_['Descricao'],
                 valor = dict_['Valor'],

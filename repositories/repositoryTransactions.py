@@ -136,7 +136,6 @@ class RepositoryTransaction ( RepositoryBase ):
                 for row in cur.fetchall():
                     register = Projection(
                     id = row[0],
-                    data_lançamento = row[2].date() if type(row[2]) == datetime else None,
                     data_liquidação = row[3].date() if type(row[3]) == datetime else None,
                     datavencimento = row[4].date() if type(row[4]) == datetime else None,
                     valorprevisto = row[6],
