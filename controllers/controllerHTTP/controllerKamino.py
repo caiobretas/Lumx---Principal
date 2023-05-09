@@ -78,7 +78,7 @@ class ControllerKamino ( ControllerHTTPBase ):
             list_aux: list[Transaction] = [] 
             for row in super().get(type='CSV', endpoint=endpoint, headers=self.headers):
                 row: str = Transaction(
-                id = row['ID'],
+                idKamino = row['ID'],
                 tipo = row['Tipo'],
                 data = datetime.datetime.strptime(row['Data'],'%d/%m/%Y').date(),
                 datapagamento = datetime.datetime.strptime(row['DataPagamento'],'%d/%m/%Y').date() if row['DataPagamento'] != '' else None,

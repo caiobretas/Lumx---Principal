@@ -24,7 +24,7 @@ class WriteProjection:
         try:
             list_objMovements: list[Projection] = AssembleProjection(self.connection, self.engine, self.schema, self.tableName).getRegisters()
             list_valuesMovements = TransformObj().objects_to_values(list_objMovements)
-            GoogleSheets().updateWorksheet_byID(worksheetId=self.worksheetId, list_values=list_valuesMovements, sheetName='Tabela Movimentação', range='A2')
+            GoogleSheets().updateWorksheet_byID(worksheetId=self.worksheetId, list_values=list_valuesMovements, sheetName='Tabela Projeção', range='A2')
             status = 'Complete'
         except Exception as e:
             status = 'Failed'
