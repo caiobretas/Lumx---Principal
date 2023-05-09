@@ -44,7 +44,6 @@ class Transaction:
             self.valorrealizado = (-1) * valorrealizado if valorrealizado != None else None
             self.nomecontadestino = nomepessoa
             self.nomecontaorigem = contaativo
-        
 
         if self.tipo == 'Recebimento':
             self.nomecontadestino = contaativo
