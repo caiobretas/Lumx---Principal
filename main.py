@@ -50,4 +50,8 @@ class Main:
         self.finance()
         print('\nRotine in {:.2f} seconds\n'.format(time() - self.start_time))
 
-Main().rotine()
+# Main().rotine()
+
+
+from controllers.controllerHTTP.controllerGoogle import ControllerGoogle
+ControllerGoogle()
