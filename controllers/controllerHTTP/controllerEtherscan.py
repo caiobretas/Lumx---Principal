@@ -123,4 +123,6 @@ class ControllerEtherscan(ControllerHTTPBase):
             return list_erc20Transactions
         
         except Exception as e:
-            raise e
+            raise 
+       
+    

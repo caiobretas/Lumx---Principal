@@ -1,5 +1,5 @@
 class Category:
-    def __init__(self, id, projeto, method_id, subcategoria4, subcategoria3, subcategoria2, subcategoria, categoria, categoriaprojecao):
+    def __init__(self, id, projeto, method_id, subcategoria4, subcategoria3, subcategoria2, subcategoria, categoria, categoriaprojecao, categoriacustoreceita):
         self.id = id
         self.projeto = projeto
         self.method_id = method_id
@@ -9,3 +9,4 @@ class Category:
         self.subcategoria = subcategoria
         self.categoria = categoria
         self.categoriaprojecao = categoriaprojecao
+        self.categoriacustoreceita = categoriacustoreceita

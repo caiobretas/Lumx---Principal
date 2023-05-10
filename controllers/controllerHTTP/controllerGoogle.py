@@ -23,8 +23,8 @@ class GoogleSheets(ControllerGoogle):
         
     def appendRow(self, values: list, sheetName, worksheetId: str):
         try:
-            worksheet = self.client.open_by_key(worksheetId)
-            sheet = worksheet.worksheet(sheetName)
+            worksheet: gspread.Spreadsheet = self.client.open_by_key(worksheetId)
+            sheet: gspread.worksheet.Worksheet = worksheet.worksheet(sheetName)
             sheet.append_row(values)
         except Exception as e:
             logging.error(f'{" "* 3} Erro: {e}')
@@ -36,4 +36,6 @@ class GoogleSheets(ControllerGoogle):
             sheet.update(range,list_values)
         except Exception as e:
             logging.error(f'{" "* 3} Erro: {e}')
+    
+    
 

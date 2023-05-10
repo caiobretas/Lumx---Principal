@@ -169,3 +169,4 @@ class RepositoryCryptoTransaction ( RepositoryBase ):
                 self.connection.commit()
             except:
                 raise Exception
+    

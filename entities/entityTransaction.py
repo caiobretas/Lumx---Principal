@@ -86,7 +86,7 @@ class TransactionCrypto:
     blockchain=None,
     name: str=None,
     scan: str=None,
-    description: str=None,
+    description: str=None
     ):
         
         self.id = str(uuid4())
@@ -125,13 +125,13 @@ class TransactionCrypto:
         self.total = self.value + self.gasFee
         
         self.methodId = '0xa9059cbb' if (str(txnType) == 'ERC-20' or str(txnType) == 'Internal') else methodId
-
-
+        
     def to_tuple(self) -> tuple:
         return (self.id, self.blockNumber,self.blockHash,self.datetime,self.hash,self.nonce,self.from_,self.to_,self.contractAddress,self.gas,self.gasPrice,self.gasUsed,self.cumulativeGasUsed,self.value,self.gasFee,self.total,self.tokenName,self.tokenSymbol,self.tokenDecimal,self.isError,self.txreceipt_status,self.type,self.methodId,self.functionName,self.txnType, self.blockchain, self.address, self.name, self.scan, self.description)
-     
+             
+    
     def __repr__(self) -> str:
-        return f'Bank: {self.name} - Type: {self.txnType} - Chain: {self.blockchain} - Symbol: {self.tokenSymbol} - Datetime: {self.datetime}'
+        return f'Page = {self.page} - Bank: {self.name} - Type: {self.txnType} - Chain: {self.blockchain} - Symbol: {self.tokenSymbol} - Datetime: {self.datetime}'
     
     def __str__(self) -> str:
         return f'Transação {self.txnType} - ID: {self.id}'

@@ -1,3 +1,4 @@
+import logging
 from pandas import DataFrame
 from interfaces.interfaceBase import InterfaceBase
 from entities.entityCategory import Category
@@ -21,9 +22,12 @@ class InterfaceCategories(InterfaceBase):
                       subcategoria2 = row['subcategoria2'],
                       subcategoria = row['subcategoria'],
                       categoria = row['categoria'],
-                      categoriaprojecao = row['categoriaprojecao'])
+                      categoriaprojecao = row['categoriaprojecao'],
+                      categoriacustoreceita= row['categoriacustoreceita']
+                      )
                 list_aux.append(row)
             return list_aux
-        except:
+        except Exception as e:
+            logging.error(f'Erro: {e}')
             print('Error getting categories')
             raise Exception

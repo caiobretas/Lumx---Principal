@@ -27,11 +27,11 @@ class UpdateCryptoTransactions:
             try:
                 self.repositoryCryptoTransactions = RepositoryCryptoTransaction(connection=connection, engine=engine, schema=schema, tableName=tableName)
                 apiKey = 'DUUV82YWBS4YIWEURM8V7N5AXWB5ZMJH3A'
-
+                
                 list_transactions: list[TransactionCrypto] = []
                 for wallet in self.list_addresses:
                     if wallet.is_lumx:
-                        transaction_crypto = LoadTransactions().loadCryptoTransactions(is_safe=wallet.is_safe,address=wallet.address, apiKey=apiKey, chain=wallet.blockchain, name=wallet.name)
+                        transaction_crypto = LoadTransactions().loadCryptoTransactions(is_safe=wallet.is_safe,address=wallet.address, chain=wallet.blockchain, name=wallet.name)
                         list_transactions.extend(transaction_crypto)
                 
                 if self.repositoryCryptoTransactions.getDate() != None:

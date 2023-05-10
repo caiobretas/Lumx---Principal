@@ -1,6 +1,7 @@
 from datetime import datetime
 from entities.entityTransaction import Transaction
 from entities.entityProjection import Projection
+from entities.entityBankAccount import BankAccount
 from repositories.repositoryBase import RepositoryBase
 import psycopg2
 
@@ -97,6 +98,7 @@ class RepositoryTransaction ( RepositoryBase ):
                     contaativo = row[33],
                     idKamino=row[34])
                     list_transactions.append(transaction)
+                    self.bankAccount = BankAccount(obj=row).deposit(transaction.valorrealizado, )
                 return list_transactions
 
             except Exception as e:
