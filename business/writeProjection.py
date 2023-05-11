@@ -28,7 +28,7 @@ class WriteProjection:
         try:
             list_objMovements: list[Projection] = AssembleProjection(self.connection, self.engine, self.schema, self.tableName).getRegisters()
             list_valuesMovements = TransformObj().objects_to_values(list_objMovements)
-            GoogleSheets().updateWorksheet_byID(worksheetId=self.worksheetId, list_values=list_valuesMovements, sheetName=self.sheetMovementsProjection, range='A2')
+            GoogleSheets().overwriteWorksheet_byID(worksheetId=self.worksheetId, list_values=list_valuesMovements, sheetName=self.sheetMovementsProjection, range='A2')
             GoogleSheets().appendRow(values=[self.sheetMovementsProjection,datetime.now().strftime("%d/%m/%Y %H:%M:%S")], sheetName=self.sheetUpdates, worksheetId=self.worksheetId)
             status = 'Complete'
         except Exception as e:
@@ -46,7 +46,7 @@ class WriteProjection:
         try:
             list_prices: list[Projection_Price] = repositoryPrices.getProjection()
             list_valuesPrices = TransformObj().objects_to_values(list_prices)
-            GoogleSheets().updateWorksheet_byID(worksheetId=self.worksheetId, list_values=list_valuesPrices, sheetName=self.sheetPricesProjection, range='A2')
+            GoogleSheets().overwriteWorksheet_byID(worksheetId=self.worksheetId, list_values=list_valuesPrices, sheetName=self.sheetPricesProjection, range='A2')
             GoogleSheets().appendRow(values=[self.sheetPricesProjection,datetime.now().strftime("%d/%m/%Y %H:%M:%S")], sheetName=self.sheetUpdates, worksheetId=self.worksheetId)
             status = 'Complete'
         except:
