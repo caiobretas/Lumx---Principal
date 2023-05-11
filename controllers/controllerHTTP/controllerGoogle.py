@@ -47,6 +47,3 @@ class GoogleSheets(ControllerGoogle):
             sheet.append_rows(values=list_values,table_range=range)
         except Exception as e:
             logging.error(f'{" "* 3} Erro: {e}')
-    
-    
-
