@@ -56,6 +56,7 @@ class UpdateCryptoTransactions:
             
             except Exception as e:
                 logging.error(f"An error occurred while getting the book: {e}")
+                status = 'Failed'
                 raise e
             
             finally:

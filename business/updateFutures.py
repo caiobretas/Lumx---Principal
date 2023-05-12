@@ -13,7 +13,7 @@ class UpdateFutures:
         try:
             date = self.repositoryTransaction.getDate(realizado=0).strftime("%y-%m-%d")
             periodoDe = datetime.strftime(datetime.strptime(date, "%y-%m-%d"), "%m-%d-%y")
-            periodoAte = datetime.strftime((datetime.strptime(date, "%y-%m-%d") + timedelta(days=365)), "%m-%d-%y")
+            periodoAte = datetime.strftime((datetime.strptime(date, "%y-%m-%d") + timedelta(days=720)), "%m-%d-%y")
             self.repositoryTransaction.deleteFutures()
             self.repositoryTransaction.insert(
                     lst=LoadTransactions(
