@@ -1,3 +1,4 @@
+import logging
 import csv
 from io import StringIO
 from datetime import datetime
@@ -87,15 +88,18 @@ class RepositoryCryptoTransaction ( RepositoryBase ):
             SELECT
                 m.id, m.hash, m.datetime, m.total, m.tokensymbol, pc.close, (m.total * pc.close) as total_BRL,
                 b.name as de, b1.name as para, m.bank as contaativo, c.subcategoria4, c.subcategoria3,
-                c.subcategoria2, c.subcategoria, c.categoria, c.categoriaprojecao, m.description, c.projeto as c_project, b.project as b_project
+                c.subcategoria2, c.subcategoria, c.categoria, c.categoriaprojecao, c.categoriacustoreceita, m.description, c.projeto as c_project, b.project as b_project, b1.project as b1_project
             FROM
                 {self.schema}.{self.tableName} as m
 	            LEFT JOIN {self.schema}.categories as c on m.methodid = c.method_id
-            LEFT JOIN {self.schema}.book as b on m.from_ = b.address
-            LEFT JOIN {self.schema}.book as b1 on m.to_ = b1.address
-            LEFT JOIN prices as pc on pc.conversionsymbol = m.tokensymbol and date(pc.date) = date(m.datetime)
+            	LEFT JOIN {self.schema}.book as b on m.from_ = b.address
+            	LEFT JOIN {self.schema}.book as b1 on m.to_ = b1.address
+            	LEFT JOIN prices as pc on pc.conversionsymbol = m.tokensymbol and date(pc.date) = date(m.datetime)
+
             ORDER BY
                 date desc, tokensymbol asc;
+                
+             		;
 """
             try:
                 cur.execute(query=query)
@@ -115,11 +119,11 @@ class RepositoryCryptoTransaction ( RepositoryBase ):
                     recorrente = None,
                     de = row[7],
                     para = row[8],
-                    percentualrateio = None,
+                    percentualrateio = 100,
                     nomecentrocusto = None,
                     nomepessoa = None,
                     observacao = None,
-                    descricao = row[16],
+                    descricao = row[17],
                     numeronotafiscal = None,
                     contaativo = row[9],
                     subcategoria4 = row[10],
@@ -128,20 +132,19 @@ class RepositoryCryptoTransaction ( RepositoryBase ):
                     subcategoria = row[13],
                     categoria = row[14],
                     categoriaprojecao = row[15],
-                    categoriacusto_receita = None,
+                    categoriacusto_receita=row[16],
                     hash = row[1],
                     check_conciliadoorigem = 1,
                     check_conciliadodestino = 1,
-                    projeto = row[18] if row[17] == None else row[17]
+                    projeto = row[18] if row[18] != None else row[19] if row[3] > 0 else row[20]
                     )
                     list_projection.append(register)
-                    
                 self.connection.commit()
                 return list_projection
-            except:
-                raise Exception
+            except Exception as e:
+                logging.error(f"{''*3}{e}")
 
-    def updatebyHash(self, hash, methodid, description, project) -> None:
+    def updatebyHash(self, hash, methodid, description) -> None:
         with self.connection.cursor() as cur:
             try:
                 query = f"""
@@ -153,20 +156,7 @@ class RepositoryCryptoTransaction ( RepositoryBase ):
                 WHERE
                     hash = '{hash}'
                 """
-                
-                # UPDATE {self.schema}.{self.tableName}
-                # SET
-                #     methodid = COALESCE('{methodid}', methodid),
-                #     description = COALESCE('{description}', description),
-                #     project = COALESCE('{project}', project)
-                # WHERE
-                #     hash = '{hash}' AND
-                #     '{methodid}' IS NOT NULL AND
-                #     '{description}' IS NOT NULL AND
-                #     '{project}' IS NOT NULL
- 
                 cur.execute(query=query)
                 self.connection.commit()
             except:
                 raise Exception
-    
