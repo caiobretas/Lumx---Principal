@@ -22,7 +22,7 @@ class UpdateCryptoPrices:
             status = 'Updating'
             
         except ValueError as ve:
-            print(f'Aviso: {ve}')
+            print(f'{"" * 3}Warning: {ve}')
             status = 'Empty'
             date = datetime(year=2021, month=12, day=31).date()
 
@@ -46,4 +46,3 @@ class UpdateCryptoPrices:
             finally:
                 try_time = time()
                 print('{} Status: {} - Time: {:.2f}s'.format(' ' * 3,status, try_time - start_time))
-    

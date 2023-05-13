@@ -17,7 +17,7 @@ class UpdateCategories:
             
         except:
             status = 'Failed'
-            raise Exception
+            return None
         
         finally:
             try_time = time()

@@ -9,10 +9,10 @@ class InterfaceCategories(InterfaceBase):
     
     def getCategories(self) -> list[Category] | None:
         df: DataFrame = super().abreDataFrame()
-        a = df.empty 
         if df.empty == False:
+            
             try:
-                # df.fillna(value="", inplace=True)
+                df.fillna(value="", inplace=True)
                 list_aux: list[Category] = []
                 for index, row in df.iterrows():
                     row = Category(

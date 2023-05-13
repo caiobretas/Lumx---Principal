@@ -1,4 +1,3 @@
-
 import logging
 from repositories.repositoryBase import RepositoryBase
 from entities.entityCategory import Category
@@ -25,17 +24,17 @@ class RepositoryCategories( RepositoryBase ):
                         method_id = EXCLUDED.method_id,
                         subcategoria4 = EXCLUDED.subcategoria4,
                         subcategoria3 = EXCLUDED.subcategoria3, 
-                        subcategoria2 = EXCLUDED.subcategoria,
+                        subcategoria2 = EXCLUDED.subcategoria2,
                         subcategoria = EXCLUDED.subcategoria,
                         categoria = EXCLUDED.categoria,
                         categoriaprojecao = EXCLUDED.categoriaprojecao"""
 
                     cur.executemany(query, values)
                     self.connection.commit()
-
+    
                 except Exception as e:
-                    logging.error(f"Error: {e}")
-                    raise Exception
+                    logging.error(f"{e}")
+                    return None
         else:
             return None
     def getCategories(self):

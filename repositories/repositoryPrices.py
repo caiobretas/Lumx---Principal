@@ -67,6 +67,19 @@ class RepositoryPrices( RepositoryBase ):
                     (id, time, date, high, low, open, volumefrom,
                     volumeto, close, conversiontype, conversionsymbol)
                     VALUES ({placeholders})
+                    ON CONFLICT (id) DO
+                    UPDATE SET
+                    id = EXCLUDED.id,
+                    time = EXCLUDED.time,
+                    date = EXCLUDED.date,
+                    high = EXCLUDED.high,
+                    low = EXCLUDED.low,
+                    open = EXCLUDED.open,
+                    volumefrom = EXCLUDED.volumefrom,
+                    volumeto = EXCLUDED.volumeto,
+                    close = EXCLUDED.close,
+                    conversiontype = EXCLUDED.conversiontype,
+                    conversionsymbol = EXCLUDED.conversionsymbol
                     """
 
                 cur.executemany(query, values)
