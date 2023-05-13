@@ -42,10 +42,10 @@ class Main:
     def hr(self):
         self.schemaHR = 'h_resources'
 
-        from business.UpdateContacts import UpdateContacts
+        from business.updateContacts import UpdateContacts
         UpdateContacts(connection=self.connection, engine=self.engineAdmin, schema=self.schemaHR, tableName='contacts')
     
-    def rotine(self):
+    def rotine(self): 
 
         self.finance()
         print('\nRotine in {:.2f} seconds\n'.format(time() - self.start_time))
