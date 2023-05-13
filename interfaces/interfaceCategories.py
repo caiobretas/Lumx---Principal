@@ -9,7 +9,6 @@ class InterfaceCategories(InterfaceBase):
     
     def getCategories(self) -> list[Category] | Exception:
         df: DataFrame = super().abreDataFrame()
-    
         try:
             list_aux: list[Category] = []
             for index, row in df.iterrows():

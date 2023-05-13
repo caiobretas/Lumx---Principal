@@ -34,7 +34,6 @@ class WriteProjection:
         except Exception as e:
             status = 'Failed'
             logging.error(f'{" "* 3} Erro: {e}')
-            raise Exception
         finally:
             try_time = time()
             print('{} Status: {} - Time: {:.2f}s'.format(' ' * 3,status, try_time - start_time))
@@ -49,9 +48,9 @@ class WriteProjection:
             GoogleSheets().overwriteWorksheet_byID(worksheetId=self.worksheetId, list_values=list_valuesPrices, sheetName=self.sheetPricesProjection, range='A2')
             GoogleSheets().appendRow(values=[self.sheetPricesProjection,datetime.now().strftime("%d/%m/%Y %H:%M:%S")], sheetName=self.sheetUpdates, worksheetId=self.worksheetId)
             status = 'Complete'
-        except:
+        except Exception as e:
             status = 'Failed'
-            raise Exception
+            logging.error(f'{" "* 3} Erro: {e}')
         finally:
             try_time = time()
             print('{} Status: {} - Time: {:.2f}s'.format(' ' * 3,status, try_time - start_time))

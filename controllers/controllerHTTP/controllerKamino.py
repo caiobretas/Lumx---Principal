@@ -1,8 +1,8 @@
 import uuid
 import datetime
+import logging
 
 from controllers.controllerHTTP.controllerHTTPBase import ControllerHTTPBase
-
 from entities.entityTransfers import Transfer
 from entities.entityTransaction import Transaction
 from entities.entityContact import Contact
@@ -161,4 +161,42 @@ class ControllerKamino ( ControllerHTTPBase ):
             raise Exception
         finally:
             status = 'Complete'
+    
+    # def getCategory(self, id:str=None, active:bool=False, onlyBank:bool=False) -> list[Category1]:
+    #     try:
+    #         url = '/api/financeiro/planoconta/lista'
+    #         endpoint = self.baseUrl + url
         
+    #         list_categories = list[Category1]
+    #         for dict_category in super().get(endpoint=endpoint,headers=self.headers):
+    #             dict_category = Category1(
+    #                 id = dict_category['NumeroID'],
+    #                 idplanoconta = dict_category['IDPlanoConta'],
+    #                 idpai = dict_category['IDPai'],
+    #                 nome = dict_category['Nome'],
+    #                 ativo = dict_category['Ativo'],
+    #                 controlasaldo = dict_category['ControlaSaldo'],
+    #                 tipo = dict_category['Tipo'],
+    #                 descricaotipo = dict_category['DescricaoTipo'],
+    #                 cartaocredito = dict_category['CartaoCredito'],
+    #                 tipocontagerencial = dict_category['TipoContaGerencial'],
+    #                 idtipoimposto = dict_category['IDTipoImposto'],
+    #                 nivel = dict_category['Nivel'],
+    #                 grupocontacorrente = dict_category['GrupoContaCorrente'],
+    #                 valoratual = dict_category['ValorAtual'],
+    #                 saldobloqueado = dict_category['SaldoBloqueado'],
+    #                 idcontabanco = dict_category['IDContaBanco'],
+    #                 usarextratobanco = dict_category['UsarExtratoBanco'],
+    #                 kamino = dict_category['Kamino'],
+    #                 excluifluxocaixa = dict_category['ExcluiFluxoCaixa'],
+    #                 codigoexterno = dict_category['CodigoExterno'],
+    #                 dataultimoextratoconciliado = dict_category['DataUltimoExtratoConciliado'],
+    #                 dataultimoextratopendente = dict_category['DataUltimoExtratoPendente'])
+    #             list_categories.append(dict_category)
+    #         status = 'Success'
+    #         return list_categories
+    #     except Exception as e:
+    #         logging.error(f'{" "* 3} Erro: {e}')
+    #         status = 'Failed'
+    #     finally:
+    #         print(f"Status: {status}")

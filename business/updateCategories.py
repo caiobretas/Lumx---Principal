@@ -12,7 +12,7 @@ class UpdateCategories:
                 connection=connection,
                 engine=engine,
                 schema=schema,
-                tableName=tableName).insertCategories(lst=InterfaceCategories(pathIF=pathIF, sheetName=sheetName).getCategories())
+                tableName=tableName).insertCategories(list_category=InterfaceCategories(pathIF=pathIF, sheetName=sheetName).getCategories())
             status = 'Complete'
             
         except:

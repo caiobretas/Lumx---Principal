@@ -27,7 +27,7 @@ blockchain = EXCLUDED.blockchain,
 is_conversion = EXCLUDED.is_conversion,
 is_primarysale = EXCLUDED.is_primarysale, 
 is_secondarysale = EXCLUDED.is_secondarysale,
-project = EXCLUDED.project;
+project = EXCLUDED.project
 """
                     
                 cur.executemany(query, values)

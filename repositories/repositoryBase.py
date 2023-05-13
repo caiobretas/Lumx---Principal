@@ -8,8 +8,8 @@ class RepositoryBase:
     def __init__(self, connection, engine: str, schema: str, tableName):
         
         self.dbname = 'postgres'
-        self.connection = connection
-        self.cursor = connection.cursor()
+        self.connection: psycopg2.connection = connection
+        self.cursor = self.connection.cursor()
 
         self.engine = engine
         self.schema = schema

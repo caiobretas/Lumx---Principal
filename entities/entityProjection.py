@@ -12,7 +12,7 @@ class Projection:
         self.moeda = moeda
         self.cotação = cotação
         self.valorprevisto_BRL = valorprevisto_BRL
-        self.valorrealizado_BRL = valorrealizado_BRL
+        self.valorrealizado_BRL = valorrealizado_BRL if valorrealizado_BRL is not None else 0
         self.realizado = realizado
         self.recorrente = recorrente
         self.de = de
@@ -47,4 +47,3 @@ class Projection_Price:
         self.date = date.date()
         self.token = token
         self.close = close
-        

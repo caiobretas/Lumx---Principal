@@ -38,7 +38,7 @@ class RepositoryTransaction ( RepositoryBase ):
                 placeholders = ','.join(['%s'] * len(values[0]))
             
                 query = f"""INSERT INTO {self.schema}.{self.tableName}
-                (id, tipo, data, datapagamento, datavencimento, datacompetencia, valorprevisto, valorrealizado, percentualrateio, realizado, idcontaorigem, nomecontaorigem, codigoreduzidoorigem, idcontadestino, nomecontadestino, codigoreduzidodestino,  idcentrocusto, nomecentrocusto, idpessoa, nomepessoa, observacao, cpfcnpjpessoa, descricao, idunidadenegocio, nomeunidadenegocio, numeronotafiscal, conciliadoorigem, conciliadodestino, saldoiniciodiacontaativo, saldofimdiaccontaativo, idprojeto, nomeprojeto, nomeclassificacao, contaativo, idkamino)
+                (id, tipo, data, datapagamento, datavencimento, datacompetencia, valorprevisto, valorrealizado, percentualrateio, realizado, idcontaorigem, nomecontaorigem, codigoreduzidoorigem, idcontadestino, nomecontadestino, codigoreduzidodestino,  idcentrocusto, nomecentrocusto, idpessoa, nomepessoa, observacao, cpfcnpjpessoa, descricao, idunidadenegocio, nomeunidadenegocio, numeronotafiscal, conciliadoorigem, conciliadodestino, saldoiniciodiacontaativo, saldofimdiaccontaativo, idprojeto, nomeprojeto, idclassificacao, contaativo, idkamino)
                 VALUES ({placeholders})
                 on conflict (idKamino) do nothing;"""
                     
@@ -94,7 +94,7 @@ class RepositoryTransaction ( RepositoryBase ):
                     saldofimdiaccontaativo = row[29],
                     idprojeto = row[30],
                     nomeprojeto = row[31],
-                    nomeclassificacao = row[32],
+                    idclassificacao = row[32],
                     contaativo = row[33],
                     idKamino=row[34])
                     list_transactions.append(transaction)
@@ -138,36 +138,36 @@ class RepositoryTransaction ( RepositoryBase ):
                 for row in cur.fetchall():
                     register = Projection(
                     id = row[0],
-                    data_liquidação = row[3].date() if type(row[3]) == datetime else None,
-                    data_vencimento = row[4].date() if type(row[4]) == datetime else None,
-                    valorprevisto = row[6],
-                    valorrealizado = row[7],
+                    data_liquidação = row[1].date() if type(row[1]) == datetime else None,
+                    data_vencimento = row[2].date() if type(row[2]) == datetime else None,
+                    valorprevisto = row[3],
+                    valorrealizado = row[4],
                     moeda = 'BRL',
                     cotação = 1,
-                    valorprevisto_BRL = row[6],
-                    valorrealizado_BRL = row[7],
-                    realizado = row[9],
+                    valorprevisto_BRL = row[3],
+                    valorrealizado_BRL = row[4],
+                    realizado = row[5],
                     recorrente = None,
-                    de = row[11],
-                    para = row[14],
+                    de = row[6] if row[3] > 0 else row[7],
+                    para = row[7] if row[3] < 0 else row[6],
                     percentualrateio = row[8],
-                    nomecentrocusto = row[17],
-                    nomepessoa = row[19],
-                    observacao = row[20],
-                    descricao = row[22],
-                    numeronotafiscal = row[25],
-                    contaativo = row[33],
-                    subcategoria4 = row[32],
-                    subcategoria3 = row[35],
-                    subcategoria2 = row[36],
-                    subcategoria = row[37],
-                    categoria = row[38],
-                    categoriaprojecao = row[39],
-                    categoriacusto_receita = None,
+                    nomecentrocusto = row[9],
+                    nomepessoa = row[10],
+                    observacao = row[11],
+                    descricao = row[12],
+                    numeronotafiscal = row[13],
+                    contaativo = row[14],
+                    subcategoria4 = row[15],
+                    subcategoria3 = row[16],
+                    subcategoria2 = row[17],
+                    subcategoria = row[18],
+                    categoria = row[19],
+                    categoriaprojecao = row[20],
+                    categoriacusto_receita = row[21],
                     hash = None,
-                    check_conciliadoorigem = row[26],
-                    check_conciliadodestino = row[27],
-                    projeto = row[40]
+                    check_conciliadoorigem = row[22],
+                    check_conciliadodestino = row[23],
+                    projeto = row[24]
                     )
                     list_projection.append(register)
                     

@@ -1,6 +1,6 @@
 import psycopg2
 from time import time
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, Engine
 from datetime import datetime
 
 from business.atualizaRepository import AtualizaFinanceRepository
@@ -30,10 +30,10 @@ class Main:
         self.password = 'financeiro2502lumx..'
         self.dbname = 'postgres'
         self.schema = 'finance'
-        self.connectionProtocol = psycopg2.connect(host=self.hostProtocol, port=self.portProtocol, dbname=self.dbnameProtocol, user=self.userProtocol, password=self.passwordProtocol)
-        self.connection = psycopg2.connect(host=self.host, port=self.port, dbname= self.dbname, user=self.user, password=self.password)
-        self.engineAdmin = create_engine(f'postgresql://{self.user}:{self.password}@{self.host}/{self.dbname}')
-
+        self.connectionProtocol: psycopg2.connection = psycopg2.connect(host=self.hostProtocol, port=self.portProtocol, dbname=self.dbnameProtocol, user=self.userProtocol, password=self.passwordProtocol)
+        self.connection: psycopg2.connection = psycopg2.connect(host=self.host, port=self.port, dbname= self.dbname, user=self.user, password=self.password)
+        self.engineAdmin: Engine = create_engine(f'postgresql://{self.user}:{self.password}@{self.host}/{self.dbname}')
+        
     def finance(self):
         
         AtualizaFinanceRepository(connFinance=self.connection, engine=self.engineAdmin, schema=self.schema, pathIF=self.pathIF,connProtocol=self.connectionProtocol)

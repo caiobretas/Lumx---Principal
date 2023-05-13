@@ -2,7 +2,7 @@ from uuid import uuid4
 from datetime import datetime, timedelta
 
 class Transaction:
-    def __init__(self,id=None,idKamino=None, tipo=None, data=None, datapagamento=None, datavencimento=None, datacompetencia=None, valorprevisto=None, valorrealizado=None, percentualrateio=None, realizado=None, idcontaorigem=None, nomecontaorigem=None, codigoreduzidoorigem=None, idcontadestino =None, nomecontadestino=None, codigoreduzidodestino=None, idcentrocusto =None, nomecentrocusto=None, idpessoa =None, nomepessoa=None, observacao=None, cpfcnpjpessoa=None, descricao=None, idunidadenegocio=None, nomeunidadenegocio=None, numeronotafiscal=None, conciliadoorigem=None, conciliadodestino=None, saldoiniciodiacontaativo=None, saldofimdiaccontaativo=None, idprojeto=None, nomeprojeto=None, nomeclassificacao=None, contaativo=None):
+    def __init__(self,id=None,idKamino=None, tipo=None, data=None, datapagamento=None, datavencimento=None, datacompetencia=None, valorprevisto=None, valorrealizado=None, percentualrateio=None, realizado=None, idcontaorigem=None, nomecontaorigem=None, codigoreduzidoorigem=None, idcontadestino =None, nomecontadestino=None, codigoreduzidodestino=None, idcentrocusto =None, nomecentrocusto=None, idpessoa =None, nomepessoa=None, observacao=None, cpfcnpjpessoa=None, descricao=None, idunidadenegocio=None, nomeunidadenegocio=None, numeronotafiscal=None, conciliadoorigem=None, conciliadodestino=None, saldoiniciodiacontaativo=None, saldofimdiaccontaativo=None, idprojeto=None, nomeprojeto=None, nomeclassificacao=None, idclassificacao=None, contaativo=None):
         self.id = str(uuid4()) if id == None else id
         self.idKamino = idKamino
         self.tipo = tipo
@@ -37,6 +37,7 @@ class Transaction:
         self.idprojeto = idprojeto
         self.nomeprojeto = nomeprojeto
         self.nomeclassificacao = nomeclassificacao
+        self.idclassificacao = idclassificacao
         self.contaativo = contaativo
 
         if self.tipo == 'Pagamento':
@@ -44,19 +45,22 @@ class Transaction:
             self.valorrealizado = (-1) * valorrealizado if valorrealizado != None else None
             self.nomecontadestino = nomepessoa
             self.nomecontaorigem = contaativo
+            self.idclassificacao = idcontadestino
 
         if self.tipo == 'Recebimento':
             self.nomecontadestino = contaativo
             self.nomecontaorigem = nomepessoa
-            
-
+            self.idclassificacao = idcontaorigem
         
+        if self.idclassificacao == '704030080001':
+            self.tipo = 'Transferência'
+
     def to_tuple(self) -> tuple:
-        return (self.id, self.tipo, self.data, self.datapagamento, self.datavencimento, self.datacompetencia, self.valorprevisto, self.valorrealizado, self.percentualrateio, self.realizado, self.idcontaorigem, self.nomecontaorigem, self.codigoreduzidoorigem, self.idcontadestino , self.nomecontadestino, self.codigoreduzidodestino, self.idcentrocusto , self.nomecentrocusto, self.idpessoa , self.nomepessoa, self.observacao, self.cpfcnpjpessoa, self.descricao, self.idunidadenegocio, self.nomeunidadenegocio, self.numeronotafiscal, self.conciliadoorigem, self.conciliadodestino, self.saldoiniciodiacontaativo, self.saldofimdiaccontaativo, self.idprojeto, self.nomeprojeto, self.nomeclassificacao, self.contaativo, self.idKamino)
+        return (self.id, self.tipo, self.data, self.datapagamento, self.datavencimento, self.datacompetencia, self.valorprevisto, self.valorrealizado, self.percentualrateio, self.realizado, self.idcontaorigem, self.nomecontaorigem, self.codigoreduzidoorigem, self.idcontadestino , self.nomecontadestino, self.codigoreduzidodestino, self.idcentrocusto , self.nomecentrocusto, self.idpessoa , self.nomepessoa, self.observacao, self.cpfcnpjpessoa, self.descricao, self.idunidadenegocio, self.nomeunidadenegocio, self.numeronotafiscal, self.conciliadoorigem, self.conciliadodestino, self.saldoiniciodiacontaativo, self.saldofimdiaccontaativo, self.idprojeto, self.nomeprojeto, self.idclassificacao, self.contaativo, self.idKamino)
      
     def __repr__(self) -> str:
         return f'ID = {self.id}\n'
-
+    
 class TransactionCrypto:
     def __init__(self,
     blockNumber = None,
@@ -128,10 +132,9 @@ class TransactionCrypto:
         
     def to_tuple(self) -> tuple:
         return (self.id, self.blockNumber,self.blockHash,self.datetime,self.hash,self.nonce,self.from_,self.to_,self.contractAddress,self.gas,self.gasPrice,self.gasUsed,self.cumulativeGasUsed,self.value,self.gasFee,self.total,self.tokenName,self.tokenSymbol,self.tokenDecimal,self.isError,self.txreceipt_status,self.type,self.methodId,self.functionName,self.txnType, self.blockchain, self.address, self.name, self.scan, self.description)
-             
     
     def __repr__(self) -> str:
-        return f'Page = {self.page} - Bank: {self.name} - Type: {self.txnType} - Chain: {self.blockchain} - Symbol: {self.tokenSymbol} - Datetime: {self.datetime}'
+        return f'Transação {self.txnType} - ID: {self.id}'
     
     def __str__(self) -> str:
         return f'Transação {self.txnType} - ID: {self.id}'
