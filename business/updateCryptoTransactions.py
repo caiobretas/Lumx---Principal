@@ -26,8 +26,6 @@ class UpdateCryptoTransactions:
             print('\nUpdating Crypto Transactions...')
             try:
                 self.repositoryCryptoTransactions = RepositoryCryptoTransaction(connection=connection, engine=engine, schema=schema, tableName=tableName)
-                apiKey = 'DUUV82YWBS4YIWEURM8V7N5AXWB5ZMJH3A'
-                
                 list_transactions: list[TransactionCrypto] = []
                 for wallet in self.list_addresses:
                     if wallet.is_lumx:

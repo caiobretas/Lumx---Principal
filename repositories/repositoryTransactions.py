@@ -40,7 +40,7 @@ class RepositoryTransaction ( RepositoryBase ):
                 query = f"""INSERT INTO {self.schema}.{self.tableName}
                 (id, tipo, data, datapagamento, datavencimento, datacompetencia, valorprevisto, valorrealizado, percentualrateio, realizado, idcontaorigem, nomecontaorigem, codigoreduzidoorigem, idcontadestino, nomecontadestino, codigoreduzidodestino,  idcentrocusto, nomecentrocusto, idpessoa, nomepessoa, observacao, cpfcnpjpessoa, descricao, idunidadenegocio, nomeunidadenegocio, numeronotafiscal, conciliadoorigem, conciliadodestino, saldoiniciodiacontaativo, saldofimdiaccontaativo, idprojeto, nomeprojeto, nomeclassificacao, contaativo, idkamino)
                 VALUES ({placeholders})
-                on conflict (id) do nothing;"""
+                on conflict (idKamino) do nothing;"""
                     
                 cur.executemany(query, values)
                 self.connection.commit()

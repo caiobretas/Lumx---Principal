@@ -24,4 +24,4 @@ class AtualizaFinanceRepository:
         UpdateTransactions(connection=connFinance,engine=engine,schema='finance',tableName='movements')
         UpdateFutures(connection=connFinance,engine=engine,schema='finance',tableName='movements')
 
-        # print('\nDatabase updated in {:.2f} seconds\n'.format(time() - timer))
+        print('\nDatabase updated in {:.2f} seconds\n'.format(time() - timer))
