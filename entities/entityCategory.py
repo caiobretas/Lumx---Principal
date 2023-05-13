@@ -3,16 +3,16 @@ from typing import Any
 
 class Category:
     def __init__(self, id, projeto, method_id, subcategoria4, subcategoria3, subcategoria2, subcategoria, categoria, categoriaprojecao, categoriacustoreceita):
-        self.id = id
-        self.projeto = projeto
-        self.method_id = method_id
-        self.subcategoria4 = subcategoria4
-        self.subcategoria3 = subcategoria3
-        self.subcategoria2 = subcategoria2
-        self.subcategoria = subcategoria
-        self.categoria = categoria
-        self.categoriaprojecao = categoriaprojecao
-        self.categoriacustoreceita = categoriacustoreceita
+        self.id = id if id != "" else None
+        self.projeto = projeto if projeto != "" else None
+        self.method_id = method_id if method_id != "" else None
+        self.subcategoria4 = subcategoria4 if subcategoria4 != "" else None
+        self.subcategoria3 = subcategoria3 if subcategoria3 != "" else None
+        self.subcategoria2 = subcategoria2 if subcategoria2 != "" else None
+        self.subcategoria = subcategoria if subcategoria != "" else None
+        self.categoria = categoria if categoria != "" else None
+        self.categoriaprojecao = categoriaprojecao if categoriaprojecao != "" else None
+        self.categoriacustoreceita = categoriacustoreceita if categoriacustoreceita != "" else None
     def to_tuple(self):
         return (self.id, self.projeto, self.method_id, self.subcategoria4, self.subcategoria3, self.subcategoria2, self.subcategoria, self.categoria, self.categoriaprojecao, self.categoriacustoreceita)
 
