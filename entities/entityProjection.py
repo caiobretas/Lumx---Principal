@@ -32,7 +32,8 @@ class Projection:
         categoriacusto_receita: str = None,
         hash: str = None,
         check_conciliadoorigem: bool = None,
-        check_conciliadodestino: bool = None):
+        check_conciliadodestino: bool = None,
+        produto: str = None):
         
         self.id = id
         self.data_liquidação = data_liquidação
@@ -48,10 +49,10 @@ class Projection:
         self.de = de
         self.para = para
         self.percentualrateio = percentualrateio
-        self.nomecentrocusto = nomecentrocusto
-        self.nomepessoa = nomepessoa
+        self.nomecentrocusto = nomecentrocusto if nomecentrocusto != None else "Lumx"
+        self.nomepessoa = nomepessoa if nomepessoa != None else "Lumx Studios S/A"
         self.observacao = observacao
-        self.descricao = descricao
+        self.descricao = descricao if descricao != None else "Sem descrição"
         self.numeronotafiscal = numeronotafiscal
         self.contaativo = contaativo
         self.projeto = projeto
@@ -65,18 +66,20 @@ class Projection:
         self.hash = hash
         self.check_conciliadoorigem = check_conciliadoorigem
         self.check_conciliadodestino = check_conciliadodestino
+        self.produto = produto
 
         if self.moeda == 'BRL' and (self.valorprevisto < 0 or self.valorrealizado < 0):
             self.de = 'Lumx Studios S/A'
-            self.para = self.nomepessoa if self.nomepessoa != None else'Lumx Studios S/A'
+            self.para = self.nomepessoa
             
         if self.moeda == 'BRL' and (self.valorprevisto > 0 or self.valorrealizado > 0):
-            self.de = self.nomepessoa if self.nomepessoa != None else'Lumx Studios S/A'
+            self.de = self.nomepessoa
             self.para = 'Lumx Studios S/A'
         
         if self.moeda == 'BRL' and self.subcategoria4 == "Transferências":
             self.de = 'Lumx Studios S/A'
             self.para = 'Lumx Studios S/A'
+            self.nomepessoa = 'Lumx Studios S/A'
             
         if self.projeto == None:
             self.projeto = "Lumx"

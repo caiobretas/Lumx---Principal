@@ -72,23 +72,24 @@ class RepositoryCryptoTransaction ( RepositoryBase ):
     def getProjection(self) -> list[Projection]:
         with self.connection.cursor() as cur:
              
-            query = f"""CREATE TEMPORARY TABLE IF NOT EXISTS prices AS
-            SELECT
-                subqueryB.time, POWER(c.close, -1) * subqueryB.close AS close, subqueryB.conversionSymbol, subqueryB.date
-            FROM
-                {self.schema}.prices_crypto AS c
-            RIGHT JOIN (
+            query = f"""
+            CREATE TEMPORARY TABLE IF NOT EXISTS prices AS
                 SELECT
-                    time, close, conversionSymbol, date
+                    subqueryB.time, POWER(c.close, -1) * subqueryB.close AS close, subqueryB.conversionSymbol, subqueryB.date
                 FROM
-                    {self.schema}.prices_crypto
-                ) AS subqueryB ON c.time = subqueryB.time
-            WHERE
-                c.conversionsymbol = 'BRL';
+                    {self.schema}.prices_crypto AS c
+                RIGHT JOIN (
+                    SELECT
+                        time, close, conversionSymbol, date
+                    FROM
+                        {self.schema}.prices_crypto
+                    ) AS subqueryB ON c.time = subqueryB.time
+                WHERE
+                    c.conversionsymbol = 'BRL';
             SELECT
                 m.id, m.hash, m.datetime, m.total, m.tokensymbol, pc.close, (m.total * pc.close) as total_BRL,
                 b.name as de, b1.name as para, m.bank as contaativo, c.subcategoria4, c.subcategoria3,
-                c.subcategoria2, c.subcategoria, c.categoria, c.categoriaprojecao, c.categoriacustoreceita, m.description, c.projeto as c_project, b.project as b_project, b1.project as b1_project
+                c.subcategoria2, c.subcategoria, c.categoria, c.categoriaprojecao, c.categoriacustoreceita, m.description, c.projeto as c_project, b.project as b_project, b1.project as b1_project, c.produto
             FROM
                 {self.schema}.{self.tableName} as m
 	            LEFT JOIN {self.schema}.categories as c on m.methodid = c.method_id
@@ -136,7 +137,8 @@ class RepositoryCryptoTransaction ( RepositoryBase ):
                     hash = row[1],
                     check_conciliadoorigem = 1,
                     check_conciliadodestino = 1,
-                    projeto = row[18] if row[18] != None else row[19] if row[3] > 0 else row[20]
+                    projeto = row[18] if row[18] != None else row[19] if row[3] > 0 else row[20],
+                    produto = row[21]
                     )
                     list_projection.append(register)
                 self.connection.commit()

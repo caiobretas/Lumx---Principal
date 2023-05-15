@@ -133,7 +133,7 @@ class RepositoryTransaction ( RepositoryBase ):
                         valorprevisto, valorrealizado, realizado, contaativo, nomepessoa, percentualrateio,nomecentrocusto,
                         nomepessoa, observacao, descricao, numeronotafiscal, contaativo, fc.subcategoria4, fc.subcategoria3,
                         fc.subcategoria2, fc.subcategoria, fc.categoria, fc.categoriaprojecao,fc.categoriacustoreceita, conciliadoorigem,
-                        conciliadodestino, fc.projeto
+                        conciliadodestino, fc.projeto, fc.produto
 
                         from {self.schema}.{self.tableName} as fm
                         left join {self.schema}.categories as fc on fc.id = fm.idclassificacao
@@ -173,7 +173,8 @@ class RepositoryTransaction ( RepositoryBase ):
                     hash = None,
                     check_conciliadoorigem = row[22],
                     check_conciliadodestino = row[23],
-                    projeto = row[24]
+                    projeto = row[24],
+                    produto = row[25]
                     )
                     list_projection.append(register)
                     

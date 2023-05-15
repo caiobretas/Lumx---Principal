@@ -14,20 +14,22 @@ class RepositoryCategories( RepositoryBase ):
                     placeholders = ','.join(['%s'] * len(values[0]))
                     query = f"""
                         INSERT INTO {self.schema}.{self.tableName}
-                        (id, projeto, method_id, subcategoria4, subcategoria3,
+                        (id, projeto, produto, method_id, subcategoria4, subcategoria3,
                         subcategoria2,subcategoria,categoria,categoriaprojecao,
                         categoriacustoreceita)
                         VALUES ({placeholders})
                         ON CONFLICT (id) DO UPDATE SET 
                         id = EXCLUDED.id,
                         projeto = EXCLUDED.projeto,
+                        produto = EXCLUDED.produto,
                         method_id = EXCLUDED.method_id,
                         subcategoria4 = EXCLUDED.subcategoria4,
                         subcategoria3 = EXCLUDED.subcategoria3, 
                         subcategoria2 = EXCLUDED.subcategoria2,
                         subcategoria = EXCLUDED.subcategoria,
                         categoria = EXCLUDED.categoria,
-                        categoriaprojecao = EXCLUDED.categoriaprojecao"""
+                        categoriaprojecao = EXCLUDED.categoriaprojecao,
+                        categoriacustoreceita = EXCLUDED.categoriacustoreceita"""
 
                     cur.executemany(query, values)
                     self.connection.commit()

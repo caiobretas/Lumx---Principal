@@ -2,9 +2,10 @@ from typing import Any
 
 
 class Category:
-    def __init__(self, id, projeto, method_id, subcategoria4, subcategoria3, subcategoria2, subcategoria, categoria, categoriaprojecao, categoriacustoreceita):
+    def __init__(self, id, projeto, produto, method_id, subcategoria4, subcategoria3, subcategoria2, subcategoria, categoria, categoriaprojecao, categoriacustoreceita):
         self.id = id if id != "" else None
         self.projeto = projeto if projeto != "" else None
+        self.produto = produto if produto != "" else None
         self.method_id = method_id if method_id != "" else None
         self.subcategoria4 = subcategoria4 if subcategoria4 != "" else None
         self.subcategoria3 = subcategoria3 if subcategoria3 != "" else None
@@ -14,7 +15,7 @@ class Category:
         self.categoriaprojecao = categoriaprojecao if categoriaprojecao != "" else None
         self.categoriacustoreceita = categoriacustoreceita if categoriacustoreceita != "" else None
     def to_tuple(self):
-        return (self.id, self.projeto, self.method_id, self.subcategoria4, self.subcategoria3, self.subcategoria2, self.subcategoria, self.categoria, self.categoriaprojecao, self.categoriacustoreceita)
+        return (self.id, self.projeto, self.produto, self.method_id, self.subcategoria4, self.subcategoria3, self.subcategoria2, self.subcategoria, self.categoria, self.categoriaprojecao, self.categoriacustoreceita)
 
 # # class Category1:
 #     def __init__(self,

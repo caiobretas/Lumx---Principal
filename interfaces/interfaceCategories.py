@@ -18,6 +18,7 @@ class InterfaceCategories(InterfaceBase):
                     row = Category(
                         id = row['id'],
                         projeto = row['projeto'],
+                        produto = row['produto'],
                         method_id = row['method_id'],
                         subcategoria4 = row['subcategoria4'],
                         subcategoria3 = row['subcategoria3'],
