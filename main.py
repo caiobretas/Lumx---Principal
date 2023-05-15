@@ -41,8 +41,7 @@ class Main:
         
     def hr(self):
         self.schemaHR = 'h_resources'
-
-        from business.updateContacts import UpdateContacts
+        from business.UpdateContacts import UpdateContacts
         UpdateContacts(connection=self.connection, engine=self.engineAdmin, schema=self.schemaHR, tableName='contacts')
     
     def rotine(self): 

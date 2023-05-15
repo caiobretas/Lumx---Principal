@@ -27,7 +27,7 @@ class UpdateFutures:
             # put on limit dates
             now: datetime = datetime.now()
             periodoDe = now.strftime("%m-%d-%y")
-            periodoAte = (now + timedelta(days=370)).strftime("%m-%d-%y")
+            periodoAte = (now + timedelta(days=720)).strftime("%m-%d-%y")
             list_transactions = LoadTransactions(periodoDe=periodoDe, periodoAte=periodoAte, apenasRealizados=False).loadTransactions()
             self.repositoryTransaction.insert(lst=list_transactions)
             status = 'Complete'

@@ -68,9 +68,18 @@ class Projection:
 
         if self.moeda == 'BRL' and (self.valorprevisto < 0 or self.valorrealizado < 0):
             self.de = 'Lumx Studios S/A'
+        if self.moeda == 'BRL' and (self.valorprevisto > 0 or self.valorrealizado > 0):
+            self.para = 'Lumx Studios S/A'    
+        if self.projeto == None:
+            self.projeto = "Lumx"
+        if self.de == None:
+            self.de = "Desconhecido"
+        if self.para == None:
+            self.para = "Desconhecido"   
             
     def __repr__(self) -> str:
         return f'Categoria: {self.subcategoria4} - Valor: {self.valorprevisto} - Conta: {self.contaativo}\n'
+
 class Projection_Price:
     def __init__(self, date: datetime=None, token:str=None, close: float=None):
         self.id = str(date.day) + str(date.month) + str(date.year) + str(token)
