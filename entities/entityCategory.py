@@ -14,6 +14,7 @@ class Category:
         self.categoria = categoria if categoria != "" else None
         self.categoriaprojecao = categoriaprojecao if categoriaprojecao != "" else None
         self.categoriacustoreceita = categoriacustoreceita if categoriacustoreceita != "" else None
+    
     def to_tuple(self):
         return (self.id, self.projeto, self.produto, self.method_id, self.subcategoria4, self.subcategoria3, self.subcategoria2, self.subcategoria, self.categoria, self.categoriaprojecao, self.categoriacustoreceita)
 
