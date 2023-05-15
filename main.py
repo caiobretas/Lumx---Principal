@@ -36,7 +36,7 @@ class Main:
         
     def finance(self):
         
-        # AtualizaFinanceRepository(connFinance=self.connection, engine=self.engineAdmin, schema=self.schema, pathIF=self.pathIF,connProtocol=self.connectionProtocol)
+        AtualizaFinanceRepository(connFinance=self.connection, engine=self.engineAdmin, schema=self.schema, pathIF=self.pathIF,connProtocol=self.connectionProtocol)
         UpdateProjection(connFinance=self.connection, engineAdmin=self.engineAdmin, schema=self.schema)
         
     def hr(self):
@@ -51,3 +51,5 @@ class Main:
         print('\nRotine in {:.2f} seconds\n'.format(time() - self.start_time))
 
 Main().rotine()
+# from controllers.controllerHTTP.controllerGoogle import GoogleGmail
+# GoogleGmail().setMessage()
