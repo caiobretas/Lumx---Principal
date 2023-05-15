@@ -68,14 +68,23 @@ class Projection:
 
         if self.moeda == 'BRL' and (self.valorprevisto < 0 or self.valorrealizado < 0):
             self.de = 'Lumx Studios S/A'
+            self.para = self.nomepessoa if self.nomepessoa != None else'Lumx Studios S/A'
+            
         if self.moeda == 'BRL' and (self.valorprevisto > 0 or self.valorrealizado > 0):
-            self.para = 'Lumx Studios S/A'    
+            self.de = self.nomepessoa if self.nomepessoa != None else'Lumx Studios S/A'
+            self.para = 'Lumx Studios S/A'
+        
+        if self.moeda == 'BRL' and self.subcategoria4 == "Transferências":
+            self.de = 'Lumx Studios S/A'
+            self.para = 'Lumx Studios S/A'
+            
         if self.projeto == None:
             self.projeto = "Lumx"
-        if self.de == None:
-            self.de = "Desconhecido"
-        if self.para == None:
-            self.para = "Desconhecido"   
+        
+        if self.moeda != 'BRL' and self.de == None:
+            self.de = 'Desconhecido'
+        if self.moeda != 'BRL' and self.para == None:
+            self.para = 'Desconhecido'
             
     def __repr__(self) -> str:
         return f'Categoria: {self.subcategoria4} - Valor: {self.valorprevisto} - Conta: {self.contaativo}\n'
