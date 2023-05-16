@@ -2,30 +2,36 @@ from __future__ import print_function
 import json
 import base64
 import logging
+from flask import Flask
 from googleapiclient.errors import HttpError
 import gspread
-from google.oauth2.service_account import Credentials
 from oauth2client.service_account import ServiceAccountCredentials
-
-from controllers.controllerHTTP.controllerHTTPBase import ControllerHTTPBase
+from google_auth_oauthlib.flow import InstalledAppFlow
 
 class ControllerGoogle:
     def __init__(self):
         try:
-            credentialsPath = 'credentials/credentialsGoogle.json'
-            scopes = [
+            webService_credentials_path = 'credentials/credentialsGoogle/webServicecredentials.json'
+            oauth2_credentials_path = 'credentials/credentialsGoogle/oAuth2_credentials.json'
+            scopes =[
                 'https://www.googleapis.com/auth/spreadsheets',
                 'https://mail.google.com',
                 'https://www.googleapis.com/auth/gmail.modify',
                 'https://www.googleapis.com/auth/gmail.compose',
                 'https://www.googleapis.com/auth/gmail.send',
                 'https://mail.google.com/',
-                    ]
+                ]
 
-            with open(credentialsPath, 'r') as arquivo:
-                self.jsoncredentials = json.load(arquivo)
-
-            self.credentials: ServiceAccountCredentials = ServiceAccountCredentials.from_json_keyfile_name(filename=credentialsPath, scopes=scopes)
+            with open(webService_credentials_path) as arquivo:
+                self.jsonWebServicecredentials = json.load(arquivo)
+            with open(oauth2_credentials_path) as arquivo:
+                self.jsonoauth2credentials = json.load(arquivo)
+            
+            # with Flask(__name__).run(port=8000) as app:
+            #     self.oauth2credentials = InstalledAppFlow.from_client_secrets_file(oauth2_credentials_path, scopes=scopes).run_local_server(port=5000)
+            #     return app
+            self.webserviceCredentials: ServiceAccountCredentials = ServiceAccountCredentials.from_json_keyfile_name(filename=webService_credentials_path, scopes=scopes)
+        
         except Exception as e:
             logging.error(f'{" "* 3} Erro: {e}')
     
@@ -33,7 +39,7 @@ from gspread import Spreadsheet, Worksheet
 class GoogleSheets(ControllerGoogle):
     def __init__(self):
         super().__init__()
-        self.client = gspread.authorize(credentials=self.credentials)
+        self.client = gspread.authorize(credentials=self.webserviceCredentials)
         
     def getRow(self, rowNumber, sheetName, worksheetId: str):
         try:
@@ -61,28 +67,18 @@ class GoogleSheets(ControllerGoogle):
             sheet.append_rows(values=list_values,table_range=range)
         except Exception as e:
             logging.error(f'{" "* 3} Erro: {e}')
-            
 
 from email.message import EmailMessage
 from googleapiclient.discovery import Resource, build
-class GoogleGmail(ControllerGoogle):
-    
-    def __init__(self):
 
+class GoogleGmail(ControllerGoogle):
+
+    def __init__(self):
         try:
             super().__init__()
-            self.service: Resource = build('gmail', 'v1', credentials=self.credentials)
-            c = dir(self.service.users().drafts())
-
-        except Exception as e:
-            logging.error(e)
+            # self.oauth2credentials = InstalledAppFlow.from_client_secrets_file(self.oauth2_credentials_path, scopes=scopes)
             
-class GoogleGmail(ControllerGoogle):
-
-    def __init__(self):
-        try:
-            super().__init__()
-            self.service = build('gmail', 'v1', credentials=self.credentials)
+            self.service = build('gmail', 'v1', credentials=self.oauth2credentials)
         except Exception as e:
             logging.error(e)
 
@@ -100,5 +96,6 @@ class GoogleGmail(ControllerGoogle):
             self.service.users().messages().send(userId='me', body=create_message).execute()
             print('E-mail enviado com sucesso!')
         except HttpError as error:
+            logging.error(error)
             print(f'Erro ao enviar e-mail: {error}')
             
