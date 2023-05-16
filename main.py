@@ -35,7 +35,6 @@ class Main:
         self.engineAdmin: Engine = create_engine(f'postgresql://{self.user}:{self.password}@{self.host}/{self.dbname}')
         
     def finance(self):
-        
         AtualizaFinanceRepository(connFinance=self.connection, engine=self.engineAdmin, schema=self.schema, pathIF=self.pathIF,connProtocol=self.connectionProtocol)
         UpdateProjection(connFinance=self.connection, engineAdmin=self.engineAdmin, schema=self.schema)
         
@@ -44,7 +43,7 @@ class Main:
         from business.updateContacts import UpdateContacts
         UpdateContacts(connection=self.connection, engine=self.engineAdmin, schema=self.schemaHR, tableName='contacts')
     
-    def rotine(self): 
+    def rotine(self):
 
         self.finance()
         print('\nRotine in {:.2f} seconds\n'.format(time() - self.start_time))
