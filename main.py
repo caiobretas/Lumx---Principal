@@ -71,6 +71,10 @@ class Main:
 #     main = Main()
 #     main.routine()
 
-Main().routine()
+# Main().routine()
+
 from controllers.controllerHTTP.controllerGoogle import GoogleGmail
-GoogleGmail().setMessage()
+for i in range(0,10):
+    gmail = GoogleGmail()
+    gmail.setMessage()
+# GoogleGmail().getEmails()

@@ -50,23 +50,24 @@ class GoogleSheets(ControllerGoogle):
 
 from email.message import EmailMessage
 from googleapiclient.discovery import build
-
+from googleapiclient.discovery import Resource
 class GoogleGmail(ControllerGoogle):
 
     def __init__(self):
         try:
             super().__init__()
 
-            self.service = build('gmail', 'v1', credentials=self.credential)
+            self.service: Resource = build('gmail', 'v1', credentials=self.credential)
+            
         except Exception as e:
             logging.error(e)
 
     def setMessage(self):
         message = EmailMessage()
-        message.set_content('Consegui')
-        message['To'] = 'caio.bretas@lumxstudios.com'
+        message.set_content('Tu é gay man?')
+        message['To'] = 'joao.fernandes@lumxstudios.com'
         message['From'] = 'financeiro@lumxstudios.com'
-        message['Subject'] = 'E-mail teste API GMAIL'
+        message['Subject'] = 'Tu é man?'
         encoded_message = base64.urlsafe_b64encode(message.as_bytes()).decode()
         create_message = {
             'raw': encoded_message
@@ -77,14 +78,19 @@ class GoogleGmail(ControllerGoogle):
         except HttpError as error:
             logging.error(error)
             print(f'Erro ao enviar e-mail: {error}')
+    
+    def getEmails(self):
+        try:
+            response = self.service.users().messages().list(userId='me').execute()
+            # Obter os IDs dos emails retornados
+            messages = response.get('messages', [])
 
-    class GoogleGmail(ControllerGoogle):
-
-        def __init__(self):
-            try:
-                super().__init__()
-                # self.oauth2credentials = InstalledAppFlow.from_client_secrets_file(self.oauth2_credentials_path, SCOPES=SCOPES)
-                
-                self.service = build('drive', 'v2', credentials=self.credential)
-            except Exception as e:
-                logging.error(e)
+            # Iterar sobre os emails
+            for message in messages:
+                email_id = message['id']
+                # Você pode fazer outras chamadas à API do Gmail para obter detalhes específicos do email usando o ID, como o assunto, remetente, etc.
+                email = self.service.users().messages().get(userId='me', id=email_id).execute()
+                subject = email['payload']['headers'][18]['value']  # Exemplo para obter o assunto do email
+                print(subject)
+        except Exception as e:
+            logging.error(e)
