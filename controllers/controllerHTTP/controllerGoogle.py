@@ -9,15 +9,17 @@ class ControllerGoogle:
         
         try:
             self.credential = MyCredentials.get_credentials()
-        
         except Exception as e:
             logging.error(f'{" "* 3} Erro: {e}')
-    
+            
 from gspread import Spreadsheet, Worksheet            
 class GoogleSheets(ControllerGoogle):
     def __init__(self):
         super().__init__()
-        self.client = gspread.authorize(credentials=self.credential)
+        try:
+            self.client = gspread.authorize(credentials=self.credential)
+        except Exception as e:
+            logging.error(e)
         
     def getRow(self, rowNumber, sheetName, worksheetId: str):
         try:
@@ -54,8 +56,7 @@ class GoogleGmail(ControllerGoogle):
     def __init__(self):
         try:
             super().__init__()
-            # self.oauth2credentials = InstalledAppFlow.from_client_secrets_file(self.oauth2_credentials_path, SCOPES=SCOPES)
-            
+
             self.service = build('gmail', 'v1', credentials=self.credential)
         except Exception as e:
             logging.error(e)
@@ -63,7 +64,7 @@ class GoogleGmail(ControllerGoogle):
     def setMessage(self):
         message = EmailMessage()
         message.set_content('Consegui')
-        message['To'] = 'arthur.marques@lumxstudios.com'
+        message['To'] = 'caio.bretas@lumxstudios.com'
         message['From'] = 'financeiro@lumxstudios.com'
         message['Subject'] = 'E-mail teste API GMAIL'
         encoded_message = base64.urlsafe_b64encode(message.as_bytes()).decode()
@@ -76,4 +77,14 @@ class GoogleGmail(ControllerGoogle):
         except HttpError as error:
             logging.error(error)
             print(f'Erro ao enviar e-mail: {error}')
-            
+
+    class GoogleGmail(ControllerGoogle):
+
+        def __init__(self):
+            try:
+                super().__init__()
+                # self.oauth2credentials = InstalledAppFlow.from_client_secrets_file(self.oauth2_credentials_path, SCOPES=SCOPES)
+                
+                self.service = build('drive', 'v2', credentials=self.credential)
+            except Exception as e:
+                logging.error(e)
