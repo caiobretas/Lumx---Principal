@@ -1,36 +1,14 @@
 from __future__ import print_function
-import json
 import base64
 import logging
-from flask import Flask
 from googleapiclient.errors import HttpError
 import gspread
-from oauth2client.service_account import ServiceAccountCredentials
-from google_auth_oauthlib.flow import InstalledAppFlow
-
+from entities.Credentials import MyCredentials
 class ControllerGoogle:
     def __init__(self):
+        
         try:
-            webService_credentials_path = 'credentials/credentialsGoogle/webServicecredentials.json'
-            oauth2_credentials_path = 'credentials/credentialsGoogle/oAuth2_credentials.json'
-            scopes =[
-                'https://www.googleapis.com/auth/spreadsheets',
-                'https://mail.google.com',
-                'https://www.googleapis.com/auth/gmail.modify',
-                'https://www.googleapis.com/auth/gmail.compose',
-                'https://www.googleapis.com/auth/gmail.send',
-                'https://mail.google.com/',
-                ]
-
-            with open(webService_credentials_path) as arquivo:
-                self.jsonWebServicecredentials = json.load(arquivo)
-            with open(oauth2_credentials_path) as arquivo:
-                self.jsonoauth2credentials = json.load(arquivo)
-            
-            # with Flask(__name__).run(port=8000) as app:
-            #     self.oauth2credentials = InstalledAppFlow.from_client_secrets_file(oauth2_credentials_path, scopes=scopes).run_local_server(port=5000)
-            #     return app
-            self.webserviceCredentials: ServiceAccountCredentials = ServiceAccountCredentials.from_json_keyfile_name(filename=webService_credentials_path, scopes=scopes)
+            self.credential = MyCredentials.get_credentials()
         
         except Exception as e:
             logging.error(f'{" "* 3} Erro: {e}')
@@ -39,7 +17,7 @@ from gspread import Spreadsheet, Worksheet
 class GoogleSheets(ControllerGoogle):
     def __init__(self):
         super().__init__()
-        self.client = gspread.authorize(credentials=self.webserviceCredentials)
+        self.client = gspread.authorize(credentials=self.credential)
         
     def getRow(self, rowNumber, sheetName, worksheetId: str):
         try:
@@ -69,25 +47,25 @@ class GoogleSheets(ControllerGoogle):
             logging.error(f'{" "* 3} Erro: {e}')
 
 from email.message import EmailMessage
-from googleapiclient.discovery import Resource, build
+from googleapiclient.discovery import build
 
 class GoogleGmail(ControllerGoogle):
 
     def __init__(self):
         try:
             super().__init__()
-            # self.oauth2credentials = InstalledAppFlow.from_client_secrets_file(self.oauth2_credentials_path, scopes=scopes)
+            # self.oauth2credentials = InstalledAppFlow.from_client_secrets_file(self.oauth2_credentials_path, SCOPES=SCOPES)
             
-            self.service = build('gmail', 'v1', credentials=self.oauth2credentials)
+            self.service = build('gmail', 'v1', credentials=self.credential)
         except Exception as e:
             logging.error(e)
 
     def setMessage(self):
         message = EmailMessage()
-        message.set_content('Teste')
-        message['To'] = 'caiodbretas@icloud.com'
-        message['From'] = 'caio.bretas@lumxstudios.com'
-        message['Subject'] = 'Teste'
+        message.set_content('Consegui')
+        message['To'] = 'arthur.marques@lumxstudios.com'
+        message['From'] = 'financeiro@lumxstudios.com'
+        message['Subject'] = 'E-mail teste API GMAIL'
         encoded_message = base64.urlsafe_b64encode(message.as_bytes()).decode()
         create_message = {
             'raw': encoded_message
