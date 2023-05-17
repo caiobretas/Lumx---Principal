@@ -1,3 +1,4 @@
+import logging
 import datetime
 from controllers.controllerHTTP.controllerHTTPBase import ControllerHTTPBase
 from entities.entityTransaction import TransactionCrypto
@@ -46,7 +47,7 @@ class ControllerEtherscan(ControllerHTTPBase):
             return list_Transactions
             
         except Exception as e:
-            raise e
+            logging.error(e)
         
     def get_internalTransactions(self, name, module: str = 'account', action: str = 'txlistinternal', address: not None | str = '<string>', startblock: int = 0, endblock: int = 99999999, page: int = 1, offset: str = 10000, sort: str = 'asc', apiKey: not None | str = '<string>') -> list[TransactionCrypto]:
         try:
@@ -79,11 +80,10 @@ class ControllerEtherscan(ControllerHTTPBase):
                 scan = 'https://etherscan.io'
                 )
                 list_internalTransactions.append(transaction)
-            
             return list_internalTransactions
         
         except Exception as e:
-            raise e
+            logging.error(e)
         
     def get_erc20Transactions(self, name, module: str = 'account', action: str = 'tokentx', address: not None | str = '<string>', startblock: int = 0, endblock: int = 99999999, page: int = 1, offset: str = 10000, sort: str = 'asc', apiKey: not None | str = '<string>') -> list[TransactionCrypto]:
         try:
@@ -123,6 +123,6 @@ class ControllerEtherscan(ControllerHTTPBase):
             return list_erc20Transactions
         
         except Exception as e:
-            raise 
+            logging.error(e) 
        
     

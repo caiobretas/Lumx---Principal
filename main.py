@@ -57,7 +57,7 @@ class Main:
         
     def hr(self):
         self.schemaHR = 'h_resources'
-        from business.updateContacts import UpdateContacts
+        from business.UpdateContacts import UpdateContacts
         UpdateContacts(connection=self.connection, engine=self.engineAdmin, schema=self.schemaHR, tableName='contacts')
     
     def routine(self):
@@ -71,10 +71,10 @@ class Main:
 #     main = Main()
 #     main.routine()
 
-# Main().routine()
+Main().routine()
 
-from controllers.controllerHTTP.controllerGoogle import GoogleGmail
-for i in range(0,10):
-    gmail = GoogleGmail()
-    gmail.setMessage()
-# GoogleGmail().getEmails()
+# from controllers.controllerHTTP.controllerGoogle import GoogleGmail
+
+# gmail = GoogleGmail()
+# gmail.setMessage()
+# # GoogleGmail().getEmails()
