@@ -1,3 +1,4 @@
+import logging
 import csv
 from json import loads
 from requests import get, post
@@ -12,11 +13,11 @@ class ControllerHTTPBase:
     def get(self, endpoint: str, headers: str | None = None, type = 'JSON') -> list:
         if type.upper() == 'JSON':
             try:
-                return loads(get(endpoint, headers=headers).text)
+                result = loads(get(endpoint, headers=headers).text)
+                return result
             
             except Exception as e:
-                print(f'\nErr: {e}\n')
-                raise e
+                logging.error(e)
             
         elif type.upper() == 'CSV':
             try:

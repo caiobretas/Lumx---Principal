@@ -1,5 +1,5 @@
 import logging
-from time import time
+from time import time, sleep
 from entities.entityCoin import Coin
 from entities.entityBook import Book
 from entities.entityTransaction import TransactionCrypto
@@ -31,7 +31,9 @@ class UpdateCryptoTransactions:
                     if wallet.is_lumx:
                         transaction_crypto = LoadTransactions().loadCryptoTransactions(is_safe=wallet.is_safe,address=wallet.address, chain=wallet.blockchain, name=wallet.name)
                         list_transactions.extend(transaction_crypto)
-                
+                        print(f'{" "*5}{wallet.name} transactions imported successfully.')
+                    else:
+                        None
                 if self.repositoryCryptoTransactions.getDate() != None:
                     # get the higher date registered
                     date = self.repositoryCryptoTransactions.getDate()
@@ -53,7 +55,7 @@ class UpdateCryptoTransactions:
                     self.repositoryCryptoTransactions.insert(lst=list_transactions)
             
             except Exception as e:
-                logging.error(f"An error occurred while getting the book: {e}")
+                logging.error(e)
                 status = 'Failed'
                 raise e
             

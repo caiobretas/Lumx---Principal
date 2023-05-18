@@ -1,19 +1,20 @@
+from time import sleep
 from controllers.controllerHTTP.controllerKamino import ControllerKamino
 from controllers.controllerHTTP.controllerEtherscan import ControllerEtherscan
 from controllers.controllerHTTP.controllerPolygonscan import ControllerPolygonscan
+from repositories.repositoryBook import RepositoryBook
 from entities.entityTransaction import Transaction, TransactionCrypto
 
 class LoadTransactions:
     def __init__(self, periodoDe=None, periodoAte=None, apenasRealizados=False):
         self.controllerKamino = ControllerKamino()
-        self.contollerEtherscan = ControllerEtherscan()
         self.periodoDe = periodoDe
         self.periodoAte = periodoAte
         self.apenasRealizados = apenasRealizados
 
     def loadTransactions(self) -> list[Transaction]:
         try:
-            return self.controllerKamino.getTransactions(periodoDe=self.periodoDe, periodoAte=self.periodoAte, apenasRealizados=self.apenasRealizados)
+            return ControllerKamino().getTransactions(periodoDe=self.periodoDe, periodoAte=self.periodoAte, apenasRealizados=self.apenasRealizados)
        
         except Exception as e:
             print(f'Error: {e}.\n\nperiodoDe e periodoAte não podem ser None\nperiodoDe = {self.periodoDe}\nperiodoAte = {self.periodoAte}')
@@ -32,12 +33,13 @@ class LoadTransactions:
             list_total.extend(list_erc20)
             
         if is_safe == False or (chain.upper() if chain != None else chain) == 'POLYGON':
-            list_normal = ControllerPolygonscan().get_normalTransactions(name=name,address=address, apiKey='V7J58GX39IDM5AQW3XQ8CX98N9E2GFGIKF')
-            list_internal = ControllerPolygonscan().get_internalTransactions(name=name,address=address, apiKey='KQ68YCC4GFIJHZC2CVK1WSDR2CSJF8HYWT')
-            list_erc20 = ControllerPolygonscan().get_erc20Transactions(name=name,address=address, apiKey='Z94QWY9H56KEKDSXET7QAHAR4V7WTTEQX2')
+            list_normal = ControllerPolygonscan().get_normalTransactions(name=name,address=address, apiKey='C2KGG1M5CP9QHJH4K183BJQZ611H6EM9CP')
+            list_internal = ControllerPolygonscan().get_internalTransactions(name=name,address=address, apiKey='UQMSW9NT6T8IPXWW264RSTKBE872B4HE7N')
+            list_erc20 = ControllerPolygonscan().get_erc20Transactions(name=name,address=address, apiKey='UQMSW9NT6T8IPXWW264RSTKBE872B4HE7N')
             
             list_total.extend(list_normal)
             list_total.extend(list_internal)
             list_total.extend(list_erc20)
-        print(f'{" " * 6}{name} transactions imported successfully')
         return list_total
+        
+        

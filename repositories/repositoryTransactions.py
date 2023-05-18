@@ -157,7 +157,7 @@ class RepositoryTransaction ( RepositoryBase ):
                     de = row[6] if row[3] > 0 else row[7],
                     para = row[7] if row[3] < 0 else row[6],
                     percentualrateio = row[8],
-                    nomecentrocusto = row[9],
+                    nomecentrocusto = row[9] if row[9] != None else "Lumx",
                     nomepessoa = row[10],
                     observacao = row[11],
                     descricao = row[12],

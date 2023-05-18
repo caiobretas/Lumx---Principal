@@ -18,7 +18,7 @@ class UpdateFutures:
             self.repositoryTransaction.insert(
                     lst=LoadTransactions(
                     periodoDe=periodoDe,
-                    periodoAte=datetime.strptime(date, "%y-%m-%d") + timedelta(days=365),
+                    periodoAte=datetime.strptime(date, "%y-%m-%d") + timedelta(days=720),
                     apenasRealizados=False).loadTransactions()
                     )
             status = 'Complete'

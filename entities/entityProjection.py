@@ -1,8 +1,8 @@
 from uuid import UUID
 from datetime import datetime
 class Projection:
-    def __init__(
-        self,id: UUID = None,
+    def __init__(self,
+        id: UUID = None,
         data_liquidação: datetime = None,
         data_vencimento: datetime = None,
         valorprevisto: float = None,

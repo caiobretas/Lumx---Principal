@@ -2,6 +2,7 @@ import logging
 import datetime
 from controllers.controllerHTTP.controllerHTTPBase import ControllerHTTPBase
 from entities.entityTransaction import TransactionCrypto
+import requests
 
 class ControllerEtherscan(ControllerHTTPBase):
     def __init__ (self):
@@ -12,7 +13,6 @@ class ControllerEtherscan(ControllerHTTPBase):
             filtros = f'?module={module}&action={action}&address={address}&startblock={startblock}&endblock={endblock}&page={page}&offset={10000}&sort={sort}&apikey={apiKey}'
             endpoint = self.baseUrl + filtros
             result = super().get(endpoint=endpoint)['result']
-
             list_Transactions: list[TransactionCrypto] = []
             for dict in result:
                 transaction = TransactionCrypto(
@@ -124,5 +124,3 @@ class ControllerEtherscan(ControllerHTTPBase):
         
         except Exception as e:
             logging.error(e) 
-       
-    

@@ -43,7 +43,7 @@ class ControllerPolygonscan(ControllerHTTPBase):
                 scan = 'https://polygonscan.com'
                 )
                 list_Transactions.append(transaction)
-            
+
             return list_Transactions
             
         except Exception as e:
@@ -117,8 +117,7 @@ class ControllerPolygonscan(ControllerHTTPBase):
                 scan = 'https://polygonscan.com'
                 )
                 list_erc20Transactions.append(transaction)
-            
             return list_erc20Transactions
         
         except Exception as e:
-            raise e
+            logging.error(e)

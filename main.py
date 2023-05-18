@@ -1,5 +1,4 @@
 import psycopg2
-from server import Server
 from time import time
 from sqlalchemy import create_engine, Engine
 from datetime import datetime
@@ -53,7 +52,7 @@ class Main:
 
     def finance(self):
         AtualizaFinanceRepository(connFinance=self.connection, engine=self.engineAdmin, schema=self.schema, pathIF=self.pathIF,connProtocol=self.connectionProtocol)
-        UpdateProjection(connFinance=self.connection, engineAdmin=self.engineAdmin, schema=self.schema)
+        # UpdateProjection(connFinance=self.connection, engineAdmin=self.engineAdmin, schema=self.schema)
         
     def hr(self):
         self.schemaHR = 'h_resources'
@@ -63,13 +62,6 @@ class Main:
     def routine(self):
         self.finance()
         print('\nRoutine in {:.2f} seconds\n'.format(time() - self.start_time))
-
-# if __name__ == '__main__':
-#     server = Server()
-#     server.start()
-
-#     main = Main()
-#     main.routine()
 
 Main().routine()
 
