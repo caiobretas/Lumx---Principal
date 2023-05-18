@@ -52,7 +52,7 @@ class Main:
 
     def finance(self):
         AtualizaFinanceRepository(connFinance=self.connection, engine=self.engineAdmin, schema=self.schema, pathIF=self.pathIF,connProtocol=self.connectionProtocol)
-        # UpdateProjection(connFinance=self.connection, engineAdmin=self.engineAdmin, schema=self.schema)
+        UpdateProjection(connFinance=self.connection, engineAdmin=self.engineAdmin, schema=self.schema)
         
     def hr(self):
         self.schemaHR = 'h_resources'
