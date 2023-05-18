@@ -41,5 +41,3 @@ class LoadTransactions:
             list_total.extend(list_internal)
             list_total.extend(list_erc20)
         return list_total
-        
-        
