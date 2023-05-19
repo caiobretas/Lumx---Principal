@@ -48,7 +48,7 @@ class Main:
         )
 
     def finance(self):
-        # UpdateFinanceRepository(self.connection,self.engineAdmin)
+        UpdateFinanceRepository(self.connection,self.engineAdmin)
         UpdateProjection(self.connection,self.engineAdmin)
         
     # def hr(self):
