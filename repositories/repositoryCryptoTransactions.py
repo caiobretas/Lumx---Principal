@@ -9,11 +9,12 @@ from repositories.repositoryBase import RepositoryBase
 import psycopg2
 
 class RepositoryCryptoTransaction ( RepositoryBase ):
-    def __init__(self, connection: str, engine: str, schema: str, tableName: str):
-        self.tableName = tableName
-        self.schema = schema
+    def __init__(self, connection: str, engine: str):
         self.connection: psycopg2.connection = connection
-        super().__init__(connection, engine, schema, tableName)
+        
+        self.schema = 'finance'
+        self.tableName = 'movements_crypto'
+        super().__init__(connection, engine, self.schema, self.tableName)
 
     def getDate(self) -> datetime:
         with self.connection.cursor() as cur:

@@ -7,11 +7,13 @@ import psycopg2
 
 
 class RepositoryTransaction ( RepositoryBase ):
-    def __init__(self, connection: str, engine: str, schema: str, tableName: str):
-        self.tableName = tableName
-        self.schema = schema
+    def __init__(self, connection: str, engine: str):
+        self.tableName = 'movements'
+        self.schema = 'finance'
         self.connection: psycopg2.connection = connection
-        super().__init__(connection, engine, schema, tableName)
+
+        self.transactions = []
+        super().__init__(connection, engine, self.schema, self.tableName)
 
     def getDate(self, realizado: int = 1) -> datetime:
 
@@ -58,10 +60,9 @@ class RepositoryTransaction ( RepositoryBase ):
                 order by data desc;
                 """
                 cur.execute(query)
-                
-                list_transactions: list[Transaction] = []
+                self.idfutures = list[int] = []
                 for row in cur.fetchall():
-                    transaction = Transaction(
+                    transaction: Transaction = Transaction(
                     id = row[0],
                     tipo = row[1],
                     data = row[2],
@@ -97,9 +98,11 @@ class RepositoryTransaction ( RepositoryBase ):
                     idclassificacao = row[32],
                     contaativo = row[33],
                     idKamino=row[34])
-                    list_transactions.append(transaction)
-                    self.bankAccount = BankAccount(obj=row).deposit(transaction.valorrealizado, )
-                return list_transactions
+                    self.transactions.append(transaction)
+                    
+                    
+                # desativar o retorno quando fizer a atualização do sistema (pegar transações pelo self após usar o método)
+                return self.transactions
 
             except Exception as e:
                 raise e
@@ -182,4 +185,3 @@ class RepositoryTransaction ( RepositoryBase ):
                 return list_projection
             except:
                 raise Exception
-             

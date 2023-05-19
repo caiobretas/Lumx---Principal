@@ -1,9 +1,10 @@
 import psycopg2
+import json
 from time import time
-from sqlalchemy import create_engine, Engine
+from sqlalchemy import create_engine
 from datetime import datetime
 
-from business.atualizaRepository import AtualizaFinanceRepository
+from business.atualizaRepository import UpdateFinanceRepository
 from business.updateProjection import UpdateProjection
 
 from time import time
@@ -14,10 +15,6 @@ class Main:
         print('\nProgram starting')
         self.start_time = time()
         self.today = datetime.now().date()
-        self.pathDB = 'database.xlsx'
-        self.pathIF = 'interface.xlsx'
-        self.pathVW = 'viewer.xlsx'
-        self.pathProjection = 'projection.xlsx'
         
         self.hostProtocol = 'protocol-prod.czhdzceztpsv.us-east-1.rds.amazonaws.com'
         self.portProtocol = '5432'
@@ -51,13 +48,13 @@ class Main:
         )
 
     def finance(self):
-        AtualizaFinanceRepository(connFinance=self.connection, engine=self.engineAdmin, schema=self.schema, pathIF=self.pathIF,connProtocol=self.connectionProtocol)
-        UpdateProjection(connFinance=self.connection, engineAdmin=self.engineAdmin, schema=self.schema)
+        # UpdateFinanceRepository(self.connection,self.engineAdmin)
+        UpdateProjection(self.connection,self.engineAdmin)
         
-    def hr(self):
-        self.schemaHR = 'h_resources'
-        from business.UpdateContacts import UpdateContacts
-        UpdateContacts(connection=self.connection, engine=self.engineAdmin, schema=self.schemaHR, tableName='contacts')
+    # def hr(self):
+    #     self.schemaHR = 'h_resources'
+    #     from business.updateContacts import UpdateContacts
+    #     UpdateContacts(connection=self.connection, engine=self.engineAdmin, schema=self.schemaHR, tableName='contacts')
     
     def routine(self):
         self.finance()
@@ -65,6 +62,9 @@ class Main:
 
 Main().routine()
 
+from controllers.controllerHTTP.controllerKamino import ControllerKamino
+list_transactions = ControllerKamino().getTransactions()
+print(list_transactions)
 # from controllers.controllerHTTP.controllerGoogle import GoogleGmail
 
 # gmail = GoogleGmail()

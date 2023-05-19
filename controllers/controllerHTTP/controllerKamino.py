@@ -75,18 +75,19 @@ class ControllerKamino ( ControllerHTTPBase ):
             filtros = f'?periodoDe={periodoDe}&periodoAte={periodoAte}&competenciaDe={competenciaDe}&competenciaAte={competenciaAte}&apenasRealizados={apenasRealizados}&incluirRateio={incluirRateio}&guidFormato={guidFormato}&idBanco={idBanco}&separador={separador}&tipoArquivo={tipoArquivo}&removerCabecalho={removerCabecalho}'
             endpoint = self.baseUrl + url + filtros
             
+            self.futures: list[Transaction] = []
             list_aux: list[Transaction] = [] 
             for row in super().get(type='CSV', endpoint=endpoint, headers=self.headers):
-                row: str = Transaction(
+                obj: Transaction = Transaction(
                 idKamino = row['ID'],
                 tipo = row['Tipo'],
                 data = datetime.datetime.strptime(row['Data'],'%d/%m/%Y').date(),
                 datapagamento = datetime.datetime.strptime(row['DataPagamento'],'%d/%m/%Y').date() if row['DataPagamento'] != '' else None,
                 datavencimento = datetime.datetime.strptime(row['DataVencimento'],'%d/%m/%Y').date(),
                 datacompetencia = datetime.datetime.strptime(row['DataCompetencia'],'%d/%m/%Y').date(),
-                valorprevisto = float(row['ValorPrevisto'].replace(',','.')),
-                valorrealizado = float(row['ValorRealizado'].replace(',','.')) if row['ValorRealizado'] != '' else None,
-                percentualrateio = float(row['PercentualRateio'].replace(',','.')) if row['PercentualRateio'] != '' else None,
+                valorprevisto = float(str(row['ValorPrevisto']).replace(',','.')),
+                valorrealizado = float(str(row['ValorRealizado']).replace(',','.')) if row['ValorRealizado'] != '' else None,
+                percentualrateio = float(str(row['PercentualRateio']).replace(',','.')) if row['PercentualRateio'] != '' else None,
                 realizado = int(row['Realizado']) if row['Realizado'] != '' else None,
                 idcontaorigem = int(row['IDContaOrigem']) if row['IDContaOrigem'] != '' else None,
                 nomecontaorigem = row['NomeContaOrigem'],
@@ -112,7 +113,10 @@ class ControllerKamino ( ControllerHTTPBase ):
                 nomeprojeto = row['NomeProjeto'],
                 nomeclassificacao = row['NomeClassificacao'],
                 contaativo = row['ContaAtivo'])
-                list_aux.append(row)
+                list_aux.append(obj)
+                
+                if obj.realizado == 0:
+                    self.futures.append(obj)
                 
             return list_aux
             
@@ -158,11 +162,11 @@ class ControllerKamino ( ControllerHTTPBase ):
             
             return list_contacts
         except:
-            raise Exception
+            logging.error()
         finally:
             status = 'Complete'
     
-    # def getCategory(self, id:str=None, active:bool=False, onlyBank:bool=False) -> list[Category1]:
+    # def getCategory(self, id:str=None, active:bool=False, onlyBank:bool=True) -> list[Category1]:
     #     try:
     #         url = '/api/financeiro/planoconta/lista'
     #         endpoint = self.baseUrl + url

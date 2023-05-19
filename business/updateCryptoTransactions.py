@@ -12,11 +12,11 @@ from repositories.repositoryPrices import RepositoryPrices
 
 class UpdateCryptoTransactions:
     
-    def __init__(self, path_interface, connection: str, engine: str, schema: str, tableName: str):
+    def __init__(self, connection: str, engine: str):
             start_time = time()
             
-            self.repositoryBook = RepositoryBook(connection=connection, engine=engine, schema=schema, tableName='book')
-            list_coins: list[Coin] = RepositoryPrices(connection=connection, engine=engine, schema=schema, tableName='prices_crypto').getTokens()
+            self.repositoryBook = RepositoryBook(connection,engine)
+            list_coins: list[Coin] = RepositoryPrices(connection,engine).getTokens()
             self.list_addresses: list[Book] = self.repositoryBook.getBook()
             self.list_wallets: list = self.repositoryBook.list_wallets
             self.list_conversion: list = self.repositoryBook.list_conversion
@@ -25,11 +25,11 @@ class UpdateCryptoTransactions:
             
             print('\nUpdating Crypto Transactions...')
             try:
-                self.repositoryCryptoTransactions = RepositoryCryptoTransaction(connection=connection, engine=engine, schema=schema, tableName=tableName)
+                self.repositoryCryptoTransactions = RepositoryCryptoTransaction(connection,engine)
                 list_transactions: list[TransactionCrypto] = []
                 for wallet in self.list_addresses:
                     if wallet.is_lumx:
-                        transaction_crypto = LoadTransactions().loadCryptoTransactions(is_safe=wallet.is_safe,address=wallet.address, chain=wallet.blockchain, name=wallet.name)
+                        transaction_crypto = LoadTransactions().loadCryptoTransactions(wallet.is_safe,wallet.address, wallet.name, wallet.blockchain)
                         list_transactions.extend(transaction_crypto)
                         print(f'{" "*5}{wallet.name} transactions imported successfully.')
                     else:
@@ -63,4 +63,4 @@ class UpdateCryptoTransactions:
                 try_time = time()
                 print('{} Status: {} - Time: {:.2f}s'.format(' ' * 3,status, try_time - start_time))
                 self.repositoryCryptoTransactions.delete_unknown_tokens(list_known_tokens=list_coins)
-                ConciliateCryptoTransactions(path_interface, connection, engine, schema, tableName)
+                ConciliateCryptoTransactions(connection, engine)

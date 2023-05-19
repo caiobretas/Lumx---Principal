@@ -18,7 +18,7 @@ class ControllerHTTPBase:
             
             except Exception as e:
                 logging.error(e)
-            
+                
         elif type.upper() == 'CSV':
             try:
                 response = get(endpoint, headers=headers)

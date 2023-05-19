@@ -1,22 +1,20 @@
+import logging
 from time import time
-from interfaces.interfaceCategories import InterfaceCategories
 from repositories.repositoryCategories import RepositoryCategories
 
 class UpdateCategories:
-    def __init__(self, connection, engine, pathIF, schema, sheetName, tableName):
+    def __init__(self, connection, engine):
         start_time = time()
         
         print('\nUpdating Categories...')
         try:
-            RepositoryCategories(
-                connection=connection,
-                engine=engine,
-                schema=schema,
-                tableName=tableName).insertCategories(list_category=InterfaceCategories(pathIF=pathIF, sheetName=sheetName).getCategories())
+            repositoryCategories = RepositoryCategories(connection, engine)
+            repositoryCategories.insertCategories(repositoryCategories.getCategories_fromExcel())
             status = 'Complete'
             
-        except:
+        except Exception as e:
             status = 'Failed'
+            logging.error(e)
             return None
         
         finally:

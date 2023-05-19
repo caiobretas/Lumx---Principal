@@ -10,25 +10,24 @@ import pandas as pd
 # from viewers.viewerProjection import ViewerProjection
 
 class WriteProjection:
-    def __init__(self, worksheetId, connection, engine, schema):
+    def __init__(self, worksheetId, connection, engine):
         
         self.worksheetId = worksheetId
         self.connection = connection
         self.engine = engine
-        self.schema = schema
         self.tableName = 'movements'
         self.sheetMovementsProjection = 'Tabela Realizados'
         self.sheetPricesProjection = 'Tabela Preços'
         self.sheetUpdates = 'Registro Atualizações'
         
-    def writeMovements(self):
+    def writeTransactions(self):
         start_time = time()
         print('\nWriting database...')
         
         try:
-            list_objMovements: list[Projection] = AssembleProjection(self.connection, self.engine, self.schema, self.tableName).getRegisters()
+            list_objMovements: list[Projection] = AssembleProjection(self.connection, self.engine).getRegisters()
             list_valuesMovements = TransformObj().objects_to_values(list_objMovements)
-            GoogleSheets().overwriteWorksheet_byID(worksheetId=self.worksheetId, list_values=list_valuesMovements, sheetName=self.sheetMovementsProjection, range='A2')
+            GoogleSheets().overwriteWorksheet_byID(self.worksheetId, list_valuesMovements, self.sheetMovementsProjection, range='A2')
             GoogleSheets().appendRow(values=[self.sheetMovementsProjection,datetime.now().strftime("%d/%m/%Y %H:%M:%S")], sheetName=self.sheetUpdates, worksheetId=self.worksheetId)
             status = 'Complete'
         except Exception as e:
@@ -39,7 +38,7 @@ class WriteProjection:
             print('{} Status: {} - Time: {:.2f}s'.format(' ' * 3,status, try_time - start_time))
             
     def writePrices(self):
-        repositoryPrices = RepositoryPrices(self.connection, self.engine, self.schema, self.tableName)
+        repositoryPrices = RepositoryPrices(self.connection, self.engine)
         start_time = time()
         print('\nWriting prices...')
         try:

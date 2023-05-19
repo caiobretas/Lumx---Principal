@@ -6,8 +6,9 @@ from pandas import DataFrame
 class RepositoryBase:
     
     def __init__(self, connection, engine: str, schema: str, tableName):
-        
+        self.path = 'interface.xlsx' # excel
         self.dbname = 'postgres'
+        
         self.connection: psycopg2.connection = connection
         self.cursor = self.connection.cursor()
 
@@ -42,3 +43,29 @@ class RepositoryBase:
         
         except:
             print('\nErro ao executar script SQL - Controller')
+            
+            
+    def openDataFrame(self) -> pd.DataFrame: # excel
+        try:
+            return pd.read_excel(
+            io=self.path,
+            sheet_name=self.tableName,
+            header=0
+        )
+        except:
+            raise Exception
+    
+    def salvaInterface(self, lst: list):
+        with pd.ExcelWriter(path=self.path, mode='a', if_sheet_exists='overlay') as writer:
+            try:
+                dataFrame: DataFrame = pd.DataFrame([vars(obj) for obj in lst])
+                
+                dataFrame.to_excel(
+                    writer, 
+                    sheet_name=self.worksheetName, 
+                    index=False,
+                    engine='openpyxl',
+                    # float_format="%.2f",
+                )
+            except Exception as ex:
+                print("Houve um erro ao salvar dados na Interface. \n{}".format(ex))

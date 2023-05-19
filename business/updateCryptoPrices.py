@@ -5,8 +5,8 @@ from repositories.repositoryPrices import RepositoryPrices
 from business.loadPrices import LoadPrices
 
 class UpdateCryptoPrices:
-    def __init__(self, connectionFinance, engineAdmin, schema,tableName):
-        self.repositoryPrices = RepositoryPrices(connection=connectionFinance, engine=engineAdmin, schema=schema, tableName=tableName)
+    def __init__(self, connection, engine):
+        self.repositoryPrices = RepositoryPrices(connection, engine)
         
         start_time = time()
 
@@ -38,7 +38,7 @@ class UpdateCryptoPrices:
                 self.repositoryPrices.insertPrice(list_coin=newPrices_list)
                 status = 'Complete'
                 
-            except Exception as e:
+            except Exception:
                 status = 'Failed'
                 raise Exception
                 # raise KeyError('Erro')

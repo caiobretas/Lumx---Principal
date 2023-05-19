@@ -1,13 +1,15 @@
 from pandas import DataFrame
-from interfaces.interfaceBase import InterfaceBase
+from repositories.repositoryBase import RepositoryBase
 from entities.entityConciliation import Conciliation
 
-class InterfaceConciliations(InterfaceBase):
-    def __init__(self, pathIF, sheetName='conciliations'):
-        super().__init__(path=pathIF, sheetName=sheetName)
+class RepositoryConciliations(RepositoryBase):
+    def __init__(self, connection, engine):
+        self.schema = 'finance'
+        self.sheetName = 'conciliations'
+        super().__init__(connection,engine,self.schema,self.sheetName)
     
-    def getConciliations(self) -> list[Conciliation] | Exception:
-        df: DataFrame = super().abreDataFrame()
+    def getConciliations_fromExcel(self) -> list[Conciliation] | Exception: # excel
+        df: DataFrame = super().openDataFrame()
         try:
             list_aux: list[Conciliation] = []
             df.fillna(value=0, inplace=True)

@@ -5,11 +5,13 @@ from entities.entityProjection import Projection_Price
 from repositories.repositoryBase import RepositoryBase
 
 class RepositoryPrices( RepositoryBase ):
-    def __init__(self, connection: str, engine, schema, tableName='prices_crypto'):
-        super().__init__(connection, engine, schema, tableName)
+    def __init__(self, connection: str, engine):
+        self.schema = 'finance' 
+        self.tableName = 'prices_crypto'
         self.connection: psycopg2.connection = connection
-        self.tableName = tableName
-        self.schema = schema
+        
+        super().__init__(connection, engine, self.schema, self.tableName)
+        
     
     def getPrices(self) -> list[Coin]:
         with self.connection.cursor() as cur:

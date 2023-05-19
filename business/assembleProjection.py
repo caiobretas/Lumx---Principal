@@ -3,14 +3,12 @@ from repositories.repositoryCryptoTransactions import RepositoryCryptoTransactio
 from entities.entityProjection import Projection
 
 class AssembleProjection:
-    def __init__(self, connection, engine, schema, tableName):
+    def __init__(self, connection, engine):
         self.connection = connection
         self.engine = engine
-        self.schema = schema
-        self.tableName = tableName
-        
+
     def getRegisters(self) -> list[Projection]:
         list_projection: list[Projection] = []
-        list_projection.extend(RepositoryTransaction(self.connection, self.engine, self.schema, 'movements').getProjection())
-        list_projection.extend(RepositoryCryptoTransaction(self.connection, self.engine, self.schema, 'movements_crypto').getProjection())
+        list_projection.extend(RepositoryTransaction(self.connection, self.engine).getProjection())
+        list_projection.extend(RepositoryCryptoTransaction(self.connection, self.engine).getProjection())
         return list_projection

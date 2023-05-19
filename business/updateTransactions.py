@@ -5,9 +5,9 @@ from repositories.repositoryTransactions import RepositoryTransaction
 
 class UpdateTransactions:
     
-    def __init__(self, connection, engine, schema, tableName):
+    def __init__(self, connection, engine):
         start_time = time()
-        self.repositoryTransaction = RepositoryTransaction(connection, engine, schema, tableName)
+        self.repositoryTransaction = RepositoryTransaction(connection, engine)
         
         print('\nUpdating transactions...')
 
