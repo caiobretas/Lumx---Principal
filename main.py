@@ -6,6 +6,7 @@ from datetime import datetime
 
 from business.atualizaRepository import UpdateFinanceRepository
 from business.updateProjection import UpdateProjection
+from entities.entityTransaction import Transaction
 
 from time import time
 from datetime import datetime
@@ -43,28 +44,26 @@ class Main:
             user=self.user,
             password=self.password
         )
-        self.engineAdmin = create_engine(
+        self.engine = create_engine(
             f'postgresql://{self.user}:{self.password}@{self.host}/{self.dbname}'
         )
 
     def finance(self):
-        # UpdateFinanceRepository(self.connection,self.engineAdmin)
-        UpdateProjection(self.connection,self.engineAdmin)
+        UpdateFinanceRepository(self.connection,self.engine)
+        UpdateProjection(self.connection,self.engine)
         
     # def hr(self):
     #     self.schemaHR = 'h_resources'
     #     from business.updateContacts import UpdateContacts
-    #     UpdateContacts(connection=self.connection, engine=self.engineAdmin, schema=self.schemaHR, tableName='contacts')
+    #     UpdateContacts(connection=self.connection, engine=self.engine, schema=self.schemaHR, tableName='contacts')
     
     def routine(self):
         self.finance()
         print('\nRoutine in {:.2f} seconds\n'.format(time() - self.start_time))
 
-Main().routine()
+from business.updateFutures import UpdateFutures
 
-from controllers.controllerHTTP.controllerKamino import ControllerKamino
-list_transactions = ControllerKamino().getTransactions()
-print(list_transactions)
+UpdateFutures(Main().connection, Main().engine)
 # from controllers.controllerHTTP.controllerGoogle import GoogleGmail
 
 # gmail = GoogleGmail()
