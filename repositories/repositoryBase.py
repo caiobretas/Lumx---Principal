@@ -7,7 +7,7 @@ class RepositoryBase:
     
     def __init__(self, connection, engine: str, schema: str, tableName):
         self.path = 'interface.xlsx' # excel
-        self.dbname = 'postgres'
+        self.dbname = 'postgres' # postgres
         
         self.connection: psycopg2.connection = connection
         self.cursor = self.connection.cursor()
