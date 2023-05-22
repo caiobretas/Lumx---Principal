@@ -1,14 +1,6 @@
 import psycopg2
-import json
 from time import time
 from sqlalchemy import create_engine
-from datetime import datetime
-
-from business.atualizaRepository import UpdateFinanceRepository
-from business.updateProjection import UpdateProjection
-from entities.entityTransaction import Transaction
-
-from time import time
 from datetime import datetime
 
 class Main:
@@ -48,24 +40,25 @@ class Main:
             f'postgresql://{self.user}:{self.password}@{self.host}/{self.dbname}'
         )
 
+    def sender(self):
+        from business.evaluateInvoiceRequest import EvaluateInvoiceRequest
+        result = EvaluateInvoiceRequest(self.connection, self.engine).createRequests()
+        return result
+    
     def finance(self):
+        from business.atualizaRepository import UpdateFinanceRepository
+        from business.updateProjection import UpdateProjection
         UpdateFinanceRepository(self.connection,self.engine)
         UpdateProjection(self.connection,self.engine)
         
-    # def hr(self):
-    #     self.schemaHR = 'h_resources'
-    #     from business.updateContacts import UpdateContacts
-    #     UpdateContacts(connection=self.connection, engine=self.engine, schema=self.schemaHR, tableName='contacts')
+    def hr(self):
+        from business.updateContacts import UpdateContacts
+        UpdateContacts(connection=self.connection, engine=self.engine)
     
     def routine(self):
+        self.hr()
         self.finance()
+        self.sender()
         print('\nRoutine in {:.2f} seconds\n'.format(time() - self.start_time))
 
-from business.updateFutures import UpdateFutures
-
-UpdateFutures(Main().connection, Main().engine)
-# from controllers.controllerHTTP.controllerGoogle import GoogleGmail
-
-# gmail = GoogleGmail()
-# gmail.setMessage()
-# # GoogleGmail().getEmails()
+Main().routine()

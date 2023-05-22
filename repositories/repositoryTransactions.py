@@ -12,7 +12,7 @@ from sqlalchemy import MetaData
 
 class RepositoryTransaction ( RepositoryBase ):
     def __init__(self, connection: str, engine: str):
-        self.tableName = 'movements2'
+        self.tableName = 'movements'
         self.schema = 'finance'
         self.connection: psycopg2.connection = connection
         self.metadata = MetaData(schema=self.schema)
@@ -328,3 +328,16 @@ class RepositoryTransaction ( RepositoryBase ):
                 return list_projection
             except:
                 raise Exception
+
+    def runQuery(self, query: str) -> list:
+        try:
+            with self.connection.cursor() as cur:
+                query = str(query)
+                cur.execute(query)
+                result_list: list[Transaction] = []
+                for row in cur.fetchall():
+                    result_list.append(row)
+                return result_list
+            
+        except Exception as e:
+            logging.error(e)

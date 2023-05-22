@@ -12,9 +12,9 @@ class UpdateFinanceRepository:
         
         UpdateBook(connection,engine) # update book repository from 'interface.xlsx'
         UpdateCategories(connection, engine)
-        # UpdateCryptoTransactions(connection, engine)
-        # UpdateCryptoPrices(connection,engine)
-        # UpdateTransactions(connection,engine)
-        # UpdateFutures(connection,engine)
+        UpdateCryptoTransactions(connection, engine)
+        UpdateCryptoPrices(connection,engine)
+        UpdateTransactions(connection,engine)
+        UpdateFutures(connection,engine)
 
         print('\nDatabase updated in {:.2f} seconds\n'.format(time() - timer))

@@ -5,7 +5,7 @@ from entities.entityProjection import Projection, Projection_Price
 from business.transformObjDict import TransformObj
 from business.assembleProjection import AssembleProjection
 from repositories.repositoryPrices import RepositoryPrices
-from controllers.controllerHTTP.controllerGoogle import GoogleSheets
+from controllers.controllerGoogle.controllerGoogleSheets import GoogleSheets
 import pandas as pd
 # from viewers.viewerProjection import ViewerProjection
 

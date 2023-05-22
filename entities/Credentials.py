@@ -5,7 +5,7 @@ from google_auth_oauthlib.flow import InstalledAppFlow, Flow
 from google.oauth2.credentials import Credentials
 
 class MyCredentials:
-    creds = None  # Variável estática para armazenar as credenciais
+    creds = None  # static variable to store credentials
     credentialToken_path = 'credentials/credentialsGoogle/token.json'
     oauth2_credentials_path = 'credentials/credentialsGoogle/oAuth2_credentials.json'
     SCOPES = [
@@ -13,8 +13,19 @@ class MyCredentials:
         'https://www.googleapis.com/auth/gmail.modify',
         'https://www.googleapis.com/auth/gmail.compose',
         'https://www.googleapis.com/auth/gmail.send',
-        'https://mail.google.com/'
+        'https://mail.google.com/',
+        'https://www.googleapis.com/auth/documents',        
+        'https://www.googleapis.com/auth/documents.readonly',
+        'https://www.googleapis.com/auth/drive',
+        'https://www.googleapis.com/auth/drive.file',
+        'https://www.googleapis.com/auth/drive.readonly',
+        'https://www.googleapis.com/auth/drive.appdata',
+        'https://www.googleapis.com/auth/drive.metadata',
+        'https://www.googleapis.com/auth/drive.metadata.readonly',
+        'https://www.googleapis.com/auth/drive.photos.readonly',
+
     ]
+    
     @staticmethod
     def get_credentials() -> Credentials:
         creds = MyCredentials.creds

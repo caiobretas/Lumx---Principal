@@ -23,7 +23,7 @@ class UpdateTransactions:
         finally:
             try:
                 lst = LoadTransactions(periodoDe=self.periodoDe,apenasRealizados=True).loadTransactions()
-                self.repositoryTransaction.insert(lst=lst)
+                self.repositoryTransaction.insert(lst)
                 status = 'Complete'
             except:
                 # put on a limit date 
