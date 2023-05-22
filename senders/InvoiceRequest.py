@@ -1,6 +1,6 @@
 from controllers.controllerGoogle.controllerGoogleGmail import GoogleGmail
 from entities.entityEmailRequest import EmailRequest
-
+from datetime import timedelta
 class InvoiceRequest:
     
     def setMessage(self) -> tuple:
@@ -16,16 +16,16 @@ class InvoiceRequest:
         
     def __init__(self, request: EmailRequest, value):
         self.request = request
-        self.from_: str = 'caio.bretas@lumxstudios.com'
+        self.from_: str = 'financeiro@lumxstudios.com'
         self.datetime = request.datetime
         self.KaminoId_transaction: str = request.external_id
         self.contactId: str = request.contact_id
         self.contactName: str = request.contact_name
         # self.contactEmail: str = request.to_ tirei para fins de teste
-        self.contactEmail = 'financeiro@lumxstudios.com'
+        self.contactEmail = 'caio.bretas@lumxstudios.com'
         self.invoiceValue: float = value
         
-        self.date = request.datetime.strftime('%m/%Y')
+        self.date = (request.datetime - timedelta(days=30)).strftime('%m/%Y')
     
         request.request_type = 'Invoice'
         request.from_ = self.from_
