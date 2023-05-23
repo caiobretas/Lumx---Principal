@@ -62,7 +62,7 @@ class Main:
     def routine(self):
         self.hr()
         self.finance()
-        # self.sender()
+        self.flows()
         print('\nRoutine in {:.2f} seconds\n'.format(time() - self.start_time))
 
-Main().flows()
+Main().routine()
