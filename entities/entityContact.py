@@ -31,7 +31,7 @@ class Contact:
         self.tipochavepix = TipoChavePix
 
     def __repr__(self):
-        return f'ID: {self.idpessoa} - Name: {self.nome} - Telefone: {self.telefone}'
+        return f'Contact'
 
     def to_tuple(self) -> tuple:
         return (self.id,self.idpessoa,self.nome,self.cpfcnpj,self.nomefantasia,self.logradouro,self.nro,self.complemento,self.bairro,self.cep,self.cidade,self.uf,self.nomepais,self.ativo,self.email,self.telefone,self.cliente,self.fornecedor,self.sexo,self.rg,self.orgaoemissorrg,self.ufemissorrg,self.clientedesde,self.idclassificacaopreferencial,self.idcentrocustopreferencial,self.observacoes,self.chavepix,self.tipochavepix)

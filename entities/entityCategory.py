@@ -2,8 +2,9 @@ from typing import Any
 
 
 class Category:
-    def __init__(self, id, projeto, produto, method_id, subcategoria4, subcategoria3, subcategoria2, subcategoria, categoria, categoriaprojecao, categoriacustoreceita):
+    def __init__(self, id=None, recorrencia=None, projeto=None, produto=None, method_id=None, subcategoria4=None, subcategoria3=None, subcategoria2=None, subcategoria=None, categoria=None, categoriaprojecao=None, categoriacustoreceita=None):
         self.id = id if id != "" else None
+        self.recorrencia = recorrencia if recorrencia is not None else 'Pontual'
         self.projeto = projeto if projeto != "" else None
         self.produto = produto if produto != "" else None
         self.method_id = method_id if method_id != "" else None
@@ -16,52 +17,4 @@ class Category:
         self.categoriacustoreceita = categoriacustoreceita if categoriacustoreceita != "" else None
     
     def to_tuple(self):
-        return (self.id, self.projeto, self.produto, self.method_id, self.subcategoria4, self.subcategoria3, self.subcategoria2, self.subcategoria, self.categoria, self.categoriaprojecao, self.categoriacustoreceita)
-
-# # class Category1:
-#     def __init__(self,
-#         id=None,
-#         idplanoconta=None,
-#         idpai=None,
-#         nome=None,
-#         ativo=None,
-#         controlasaldo=None,
-#         tipo=None,
-#         descricaotipo=None,
-#         cartaocredito=None,
-#         tipocontagerencial=None,
-#         idtipoimposto=None,
-#         nivel=None,
-#         grupocontacorrente=None,
-#         valoratual=None,
-#         saldobloqueado=None,
-#         idcontabanco=None,
-#         usarextratobanco=None,
-#         kamino=None,
-#         excluifluxocaixa=None,
-#         codigoexterno=None,
-#         dataultimoextratoconciliado=None,
-#         dataultimoextratopendente=None):
-
-#         self.id = id
-#         self.idplanoconta = idplanoconta
-#         self.idpai = idpai
-#         self.nome = nome
-#         self.ativo = ativo
-#         self.controlasaldo = controlasaldo
-#         self.tipo = tipo
-#         self.descricaotipo = descricaotipo
-#         self.cartaocredito = cartaocredito
-#         self.tipocontagerencial = tipocontagerencial
-#         self.idtipoimposto = idtipoimposto
-#         self.nivel = nivel
-#         self.grupocontacorrente = grupocontacorrente
-#         self.valoratual = valoratual
-#         self.saldobloqueado = saldobloqueado
-#         self.idcontabanco = idcontabanco
-#         self.usarextratobanco = usarextratobanco
-#         self.kamino = kamino
-#         self.excluifluxocaixa = excluifluxocaixa
-#         self.codigoexterno = codigoexterno
-#         self.dataultimoextratoconciliado = dataultimoextratoconciliado
-#         self.dataultimoextratopendente = dataultimoextratopendente
+        return (self.id, self.recorrencia, self.projeto, self.produto, self.method_id, self.subcategoria4, self.subcategoria3, self.subcategoria2, self.subcategoria, self.categoria, self.categoriaprojecao, self.categoriacustoreceita)

@@ -25,14 +25,28 @@ class GoogleSheets(ControllerGoogle):
             sheet.append_row(values)
         except Exception as e:
             logging.error(f'{" "* 3} Erro: {e}')
+    
+    def clearSheet(self,worksheetId,sheetName=None,headers=False):
+        worksheet = self.client.open_by_key(worksheetId)
+        sheet = worksheet.worksheet(sheetName)
+        headers = self.getRow(1,sheetName,worksheetId) if headers is None else headers
+        sheet.clear()
             
-    def overwriteWorksheet_byID(self, worksheetId: str, list_values: list, sheetName = None,range=None):
-        try:
-            worksheet = self.client.open_by_key(worksheetId)
-            sheet = worksheet.worksheet(sheetName)
-            headers = self.getRow(1,sheetName,worksheetId)
-            sheet.clear()
-            sheet.append_row(values=headers, table_range='A1')
-            sheet.append_rows(values=list_values,table_range=range)
-        except Exception as e:
-            logging.error(f'{" "* 3} Erro: {e}')
+    def overwriteWorksheet_byID(self,worksheetId:str,list_values:list,sheetName=None,range=None,headers=None):
+        if list_values != None:
+            try:
+                worksheet = self.client.open_by_key(worksheetId)
+                
+                sheet = worksheet.worksheet(sheetName)
+                
+                headers = self.getRow(1,sheetName,worksheetId) if headers is None else headers
+                sheet.clear()
+                sheet.append_row(values=headers, table_range='A1')
+                sheet.append_rows(values=list_values,table_range=range)
+                
+            except Exception as e:
+                logging.error(f'{" "* 3} Erro: {e}')
+        else:
+            None
+            
+    

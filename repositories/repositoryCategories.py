@@ -19,12 +19,12 @@ class RepositoryCategories( RepositoryBase ):
                     placeholders = ','.join(['%s'] * len(values[0]))
                     query = f"""
                         INSERT INTO {self.schema}.{self.tableName}
-                        (id, projeto, produto, method_id, subcategoria4, subcategoria3,
+                        (id, recorrencia, projeto, produto, method_id, subcategoria4, subcategoria3,
                         subcategoria2,subcategoria,categoria,categoriaprojecao,
                         categoriacustoreceita)
                         VALUES ({placeholders})
                         ON CONFLICT (id) DO UPDATE SET 
-                        id = EXCLUDED.id,
+                        recorrencia = EXCLUDED.recorrencia,
                         projeto = EXCLUDED.projeto,
                         produto = EXCLUDED.produto,
                         method_id = EXCLUDED.method_id,
@@ -53,6 +53,7 @@ class RepositoryCategories( RepositoryBase ):
             for index, row in df.iterrows():
                 row = Category(
                     id = row['id'],
+                    recorrencia= row['recorrência'],
                     projeto = row['projeto'],
                     produto = row['produto'],
                     method_id = row['method_id'],

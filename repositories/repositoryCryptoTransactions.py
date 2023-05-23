@@ -90,7 +90,7 @@ class RepositoryCryptoTransaction ( RepositoryBase ):
             SELECT
                 m.id, m.hash, m.datetime, m.total, m.tokensymbol, pc.close, (m.total * pc.close) as total_BRL,
                 b.name as de, b1.name as para, m.bank as contaativo, c.subcategoria4, c.subcategoria3,
-                c.subcategoria2, c.subcategoria, c.categoria, c.categoriaprojecao, c.categoriacustoreceita, m.description, c.projeto as c_project, b.project as b_project, b1.project as b1_project, c.produto
+                c.subcategoria2, c.subcategoria, c.categoria, c.categoriaprojecao, c.categoriacustoreceita, m.description, c.projeto as c_project, b.project as b_project, b1.project as b1_project, c.produto, c.recorrencia
             FROM
                 {self.schema}.{self.tableName} as m
 	            LEFT JOIN {self.schema}.categories as c on m.methodid = c.method_id
@@ -118,7 +118,7 @@ class RepositoryCryptoTransaction ( RepositoryBase ):
                     valorprevisto_BRL = row[6],
                     valorrealizado_BRL = row[6],
                     realizado = 1,
-                    recorrente = None,
+                    recorrencia = row[22],
                     de = row[7],
                     para = row[8],
                     percentualrateio = 100,

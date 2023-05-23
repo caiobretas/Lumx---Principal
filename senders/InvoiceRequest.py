@@ -4,6 +4,7 @@ from datetime import timedelta
 class InvoiceRequest:
     
     def setMessage(self) -> tuple:
+        self.from_: str = 'financeiro@lumxstudios.com'
         subject = f'NFS-e {self.contactName} - {self.date}'
         message = f'Prezado(a) {self.contactName},\n\nFavor responder a este e-mail com a Nota Fiscal de Serviços referente ao mês {self.date}\n\nValor: R${self.invoiceValue}\n\nEsta é uma mensagem automática'
         self.request.subject = subject
@@ -16,7 +17,6 @@ class InvoiceRequest:
         
     def __init__(self, request: EmailRequest, value):
         self.request = request
-        self.from_: str = 'financeiro@lumxstudios.com'
         self.datetime = request.datetime
         self.KaminoId_transaction: str = request.external_id
         self.contactId: str = request.contact_id

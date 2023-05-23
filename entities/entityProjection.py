@@ -12,7 +12,7 @@ class Projection:
         valorprevisto_BRL: float = None,
         valorrealizado_BRL: float = None,
         realizado: bool = None,
-        recorrente: bool = None,
+        recorrencia: bool = None,
         de: str = None,
         para: str = None,
         percentualrateio: float = None,
@@ -45,7 +45,7 @@ class Projection:
         self.valorprevisto_BRL = valorprevisto_BRL
         self.valorrealizado_BRL = valorrealizado_BRL if data_liquidação is not None else 0
         self.realizado = realizado
-        self.recorrente = recorrente
+        self.recorrencia = recorrencia
         self.de = de
         self.para = para
         self.percentualrateio = percentualrateio

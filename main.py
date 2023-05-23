@@ -45,14 +45,18 @@ class Main:
         result = EvaluateInvoiceRequest(self.connection, self.engine).createRequests()
         return result
     
+    def flows(self):
+        from business.financeControl import Flow
+        Flow(self.connection, self.engine).salaryFlow()
+    
     def finance(self):
         from business.atualizaRepository import UpdateFinanceRepository
-        from business.updateProjection import UpdateProjection
+        from business.updateProjection import UpdateProjection    
         UpdateFinanceRepository(self.connection,self.engine)
         UpdateProjection(self.connection,self.engine)
         
     def hr(self):
-        from business.updateContacts import UpdateContacts
+        from business.UpdateContacts import UpdateContacts
         UpdateContacts(connection=self.connection, engine=self.engine)
     
     def routine(self):
@@ -61,4 +65,4 @@ class Main:
         # self.sender()
         print('\nRoutine in {:.2f} seconds\n'.format(time() - self.start_time))
 
-Main().routine()
+Main().flows()

@@ -279,7 +279,7 @@ class RepositoryTransaction ( RepositoryBase ):
                         valorprevisto, valorrealizado, realizado, contaativo, nomepessoa, percentualrateio,nomecentrocusto,
                         nomepessoa, observacao, descricao, numeronotafiscal, contaativo, fc.subcategoria4, fc.subcategoria3,
                         fc.subcategoria2, fc.subcategoria, fc.categoria, fc.categoriaprojecao,fc.categoriacustoreceita, conciliadoorigem,
-                        conciliadodestino, fc.projeto, fc.produto
+                        conciliadodestino, fc.projeto, fc.produto, fc.recorrencia
 
                         from {self.schema}.{self.tableName} as fm
                         left join {self.schema}.categories as fc on fc.id = fm.idclassificacao
@@ -299,7 +299,7 @@ class RepositoryTransaction ( RepositoryBase ):
                     valorprevisto_BRL = row[3],
                     valorrealizado_BRL = row[4],
                     realizado = row[5],
-                    recorrente = None,
+                    recorrencia = row[26],
                     de = row[6] if row[3] > 0 else row[7],
                     para = row[7] if row[3] < 0 else row[6],
                     percentualrateio = row[8],
