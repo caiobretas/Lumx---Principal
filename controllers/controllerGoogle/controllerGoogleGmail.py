@@ -16,6 +16,32 @@ class GoogleGmail(ControllerGoogle):
         except Exception as e:
             logging.error(e)
 
+    def createDraft(self, from_, to, subject, message_body):
+        '''Create a draft and return the id'''
+        try:
+            message = EmailMessage()
+            message.set_content(message_body)
+            message['To'] = f'{to}'
+            message['From'] = f'{from_}'
+            message['Subject'] = f'{subject}'
+            # message['Cc'] = 'caiodbretas@icloud.com'
+            encoded_message = base64.urlsafe_b64encode(message.as_bytes()).decode()
+            create_message = {
+            'message': {
+                'raw': encoded_message
+            }
+        }
+            draft = self.service.users().drafts().create(userId='me', body=create_message).execute()
+            return draft['id']
+        except Exception as e:
+            logging.error(e)
+    
+    def sendDraft(self, draft_id):
+        '''Sends a draft and returns the email ID'''
+        body = {'id': draft_id}
+        email = self.service.users().drafts().send(userId='me', body=body).execute()
+        return email['id']
+    
     def sendMessage(self, subject, content, to, from_):
         message = EmailMessage()
         message.set_content(content)
@@ -33,19 +59,35 @@ class GoogleGmail(ControllerGoogle):
             logging.error(error)
             print(f'Erro ao enviar e-mail: {error}')
     
-    def getEmails(self):        
+    def getMessagebyId(self,messageId):
         try:
-            response = self.service.users().messages().list(userId='me').execute()
-            # Obter os IDs dos emails retornados
-            messages = response.get('messages', [])
+            emailmessage = self.service.users().messages().get(userId='me',id=f'{messageId}').execute()
+            return emailmessage
+        except HttpError as error:
+            emailmessage = None
+            logging.error(error)
+            return None
+        
+    def getThreadById(self,threadId):
+        try:
+            thread = self.service.users().threads().get(userId='me',id=f'{threadId}').execute()
+            return thread
+        except HttpError as error:
+            thread = None
+            logging.error(error)
+            return None
+    # def getEmails(self):        
+        # try:
+        #     response = self.service.users().messages().list(userId='me').execute()
+        #     # Obter os IDs dos emails retornados
+        #     messages = response.get('messages', [])
 
-            # Iterar sobre os emails
-            for message in messages:
-                email_id = message['id']
-                # Você pode fazer outras chamadas à API do Gmail para obter detalhes específicos do email usando o ID, como o assunto, remetente, etc.
-                email = self.service.users().messages().get(userId='me', id=email_id).execute()
-                subject = email['payload']['headers'][18]['value']  # Exemplo para obter o assunto do email
-                print(subject)
-        except Exception as e:
-            logging.error(e)
-            
+        #     # Iterar sobre os emails
+        #     for message in messages:
+        #         email_id = message['id']
+        #         # Você pode fazer outras chamadas à API do Gmail para obter detalhes específicos do email usando o ID, como o assunto, remetente, etc.
+        #         email = self.service.users().messages().get(userId='me', id=email_id).execute()
+        #         subject = email['payload']['headers'][18]['value']  # Exemplo para obter o assunto do email
+        #         print(subject)
+        # except Exception as e:
+        #     logging.error(e)

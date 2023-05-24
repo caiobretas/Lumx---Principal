@@ -40,18 +40,21 @@ class Main:
             f'postgresql://{self.user}:{self.password}@{self.host}/{self.dbname}'
         )
 
-    def sender(self):
+    def emailrequests(self):
         from business.evaluateInvoiceRequest import EvaluateInvoiceRequest
-        result = EvaluateInvoiceRequest(self.connection, self.engine).createRequests()
-        return result
+        EvaluateInvoiceRequest(self.connection, self.engine).createInvoiceRequest() # send the Invoice Request by e-mail
     
     def flows(self):
         from business.financeControl import Flow
         Flow(self.connection, self.engine).salaryFlow()
-    
+        
+    def admin(self):
+        from business.updateEmailRequests import UpdateEmailRequests
+        UpdateEmailRequests(self.connection, self.engine)
+        
     def finance(self):
         from business.atualizaRepository import UpdateFinanceRepository
-        from business.updateProjection import UpdateProjection    
+        from business.updateProjection import UpdateProjection
         UpdateFinanceRepository(self.connection,self.engine)
         UpdateProjection(self.connection,self.engine)
         
@@ -66,3 +69,4 @@ class Main:
         print('\nRoutine in {:.2f} seconds\n'.format(time() - self.start_time))
 
 Main().routine()
+# Main().admin()

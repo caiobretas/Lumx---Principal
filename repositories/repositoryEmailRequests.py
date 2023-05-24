@@ -17,9 +17,9 @@ class RepositoryEmailRequests(RepositoryBase):
                     placeholders = ','.join(['%s'] * len(values[0]))
                     query = f"""
                         INSERT INTO {self.schema}.{self.tableName}
-                        (id, external_id, draft_id, email_id,datetime,request_type,contact_id,from_,to_,subject,answered,atacchment,pending,concluded)
+                        (id, external_id, draft_id, email_id,datetime,request_type,contact_id,from_,to_,subject,answered,attachment, attachment_id,pending,concluded)
                         VALUES ({placeholders})
-                        ON CONFLICT DO UPDATE SET
+                        ON CONFLICT (email_id) DO UPDATE SET
                         draft_id = EXCLUDED.draft_id,
                         email_id = EXCLUDED.email_id,
                         datetime = EXCLUDED.datetime,
@@ -29,7 +29,8 @@ class RepositoryEmailRequests(RepositoryBase):
                         to_ = EXCLUDED.to_,
                         subject = EXCLUDED.subject,
                         answered = EXCLUDED.answered,
-                        atacchment = EXCLUDED.atacchment,
+                        attachment = EXCLUDED.attachment,
+                        attachment_id = EXCLUDED.attachment,
                         pending = EXCLUDED.pending,
                         concluded = EXCLUDED.concluded
                         """
@@ -42,10 +43,10 @@ class RepositoryEmailRequests(RepositoryBase):
         else:
             return None
         
-    def getEmailRequests(self):
+    def getEmailRequests(self, concludedOnly=False):
         try:
             with self.connection.cursor() as cursor:
-                query = f'select * from {self.schema}.{self.tableName}'
+                query = f'select * from {self.schema}.{self.tableName}' if not concludedOnly else f'select * from {self.schema}.{self.tableName} where not concluded'
                 cursor.execute(query)
                 list_requests: list[EmailRequest] = []
                 for row in cursor.fetchall():
@@ -61,9 +62,10 @@ class RepositoryEmailRequests(RepositoryBase):
                         to_ = row[8],
                         subject = row[9],
                         answered = row[10],
-                        atacchment = row[11],
-                        pending = row[12],
-                        concluded = row[13])
+                        attachment = row[11],
+                        attachment_id = row[12],
+                        pending = row[13],
+                        concluded = row[14])
                     list_requests.append(email_request)
             return list_requests        
         except Exception as e:

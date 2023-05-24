@@ -28,7 +28,8 @@ class Flow(FinanceControl):
     valorprevisto * (-1),
     hr.tipochavepix,
     hr.chavepix,
-    fm.numeronotafiscal
+    fm.numeronotafiscal,
+    fm.idkamino
 FROM
     {self.repositoryTransaction.schema}.{self.repositoryTransaction.tableName} AS fm
 LEFT JOIN
@@ -67,6 +68,6 @@ WHERE
                 liberados_values_list.append((transactiondate,category,contactName,contactEmail,transationValue,contactPixKey,contactPixKeyType))
             else:
                 aguardandoNFSe_values_list.append((transactiondate,category,contactName,contactEmail,transationValue,contactPixKey,contactPixKeyType))
-        
+                
         GoogleSheets().overwriteWorksheet_byID(worksheetid, liberados_values_list, sheetName='Liberados')
         GoogleSheets().overwriteWorksheet_byID(worksheetid, aguardandoNFSe_values_list, sheetName='Aguardando NFSe')

@@ -34,7 +34,12 @@ class EvaluateInvoiceRequest:
         except Exception as e:
             logging.error(e)
     
-    def createRequests(self) -> list[EmailRequest]:
+    def updateRequestsTable(self,list_requests) -> None: # postgresql
+        from repositories.repositoryEmailRequests import RepositoryEmailRequests
+        RepositoryEmailRequests(self.connection, self.engine).insertEmailRequests(list_requests)  
+        
+    def createInvoiceRequest(self) -> list[EmailRequest]:
+        '''Return the list of invoice requests created'''
         for row in self.getMissingInvoices():
             request = EmailRequest(
                 external_id = row[7],
@@ -43,10 +48,20 @@ class EvaluateInvoiceRequest:
                 contact_name=row[3],
                 to_=row[4],
                 )
-            InvoiceRequest(request, row[5])
-            self.list_requests.append(request)
+            invoiceRequest = InvoiceRequest(request, row[5])
+            emailRequest = EmailRequest(
+                external_id=invoiceRequest.KaminoId_transaction,
+                draft_id=invoiceRequest.request.draft_id,
+                email_id=invoiceRequest.request.email_id,
+                datetime=invoiceRequest.request.datetime,
+                request_type=invoiceRequest.request.request_type,
+                contact_id=invoiceRequest.request.contact_id,
+                contact_name=invoiceRequest.request.contact_name,
+                from_=invoiceRequest.request.from_,
+                to_=invoiceRequest.request.to_,
+                subject=invoiceRequest.request.subject)
+            self.list_requests.append(emailRequest)
+        
+        #  writes the requests created in the database
+        self.updateRequestsTable(self.list_requests)
         return self.list_requests
-            
-    def updateRequestsTable(self) -> None: # postgresql
-        from repositories.repositoryEmailRequests import RepositoryEmailRequests
-        RepositoryEmailRequests(self.connection, self.engine).insertEmailRequests(self.list_requests)        
