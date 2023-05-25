@@ -18,6 +18,7 @@ class EmailRequest:
         pending=False,
         concluded=False,
         contact_name=None,
+        secondaryemail = None
         ):
         self.id = str(uuid4()) if id == None else id
         self.external_id = external_id
@@ -35,6 +36,7 @@ class EmailRequest:
         self.pending = pending
         self.concluded = concluded
         self.contact_name = contact_name
+        self.secondaryemail = secondaryemail
 
     def __repr__(self) -> str:
         return f'Date: {self.datetime} - Request Type: {self.request_type} - To: {self.to_} - Concluded: {self.concluded}'

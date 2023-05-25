@@ -59,7 +59,7 @@ class Main:
         UpdateProjection(self.connection,self.engine)
         
     def hr(self):
-        from business.UpdateContacts import UpdateContacts
+        from business.updateContacts import UpdateContacts
         UpdateContacts(connection=self.connection, engine=self.engine)
     
     def routine(self):
@@ -68,5 +68,8 @@ class Main:
         self.flows()
         print('\nRoutine in {:.2f} seconds\n'.format(time() - self.start_time))
 
-Main().routine()
+# Main().routine()
 # Main().admin()
+
+Main().hr()
+# Main().emailrequests()

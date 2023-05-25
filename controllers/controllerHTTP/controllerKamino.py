@@ -129,7 +129,8 @@ class ControllerKamino ( ControllerHTTPBase ):
             endpoint = self.baseUrl + url
             
             list_contacts: list[Contact] = []
-            for dict_ in super().get(endpoint=endpoint, headers=self.headers,type='json'):
+            for dict_ in super().get(endpoint=endpoint, headers=self.headers,type='json'): 
+                emails_list = [email.strip() for email in dict_['Email'].split(',')] if dict_.get('Email') else None
                 contact = Contact(
                     ID = dict_['ID'],
                     Nome = dict_['Nome'],
@@ -157,17 +158,19 @@ class ControllerKamino ( ControllerHTTPBase ):
                     IDCentroCustoPreferencial = dict_['IDCentroCustoPreferencial'],
                     Observacoes = dict_['Observacoes'],
                     ChavePix = dict_['ChavePix'],
-                    TipoChavePix = dict_['TipoChavePix'])
+                    TipoChavePix = dict_['TipoChavePix'],
+                    EmailSecundario = emails_list[1] if (emails_list != None and len(emails_list) > 1) else None)
                 list_contacts.append(contact)
             
             return list_contacts
-        except:
-            logging.error()
+        except Exception as e:
+            status = 'Failed'
+            logging.error(e)
         finally:
             status = 'Complete'
     
     # def getCategory(self, id:str=None, active:bool=False, onlyBank:bool=True) -> list[Category1]:
-    #     try:
+#     try
     #         url = '/api/financeiro/planoconta/lista'
     #         endpoint = self.baseUrl + url
         

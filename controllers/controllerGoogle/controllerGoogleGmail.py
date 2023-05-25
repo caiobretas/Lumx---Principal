@@ -16,7 +16,7 @@ class GoogleGmail(ControllerGoogle):
         except Exception as e:
             logging.error(e)
 
-    def createDraft(self, from_, to, subject, message_body):
+    def createDraft(self, from_: str, to: str, cc_list: list, subject: str, message_body: str):
         '''Create a draft and return the id'''
         try:
             message = EmailMessage()
@@ -24,7 +24,7 @@ class GoogleGmail(ControllerGoogle):
             message['To'] = f'{to}'
             message['From'] = f'{from_}'
             message['Subject'] = f'{subject}'
-            # message['Cc'] = 'caiodbretas@icloud.com'
+            message['Cc'] = cc_list
             encoded_message = base64.urlsafe_b64encode(message.as_bytes()).decode()
             create_message = {
             'message': {

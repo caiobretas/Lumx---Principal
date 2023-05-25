@@ -21,7 +21,7 @@ class RepositoryContacts(RepositoryBase):
                     complemento, bairro, cep, cidade, uf, nomepais, ativo, email,
                     telefone, cliente, fornecedor, sexo, rg, orgaoemissorrg, ufemissorrg,
                     clientedesde, idclassificacaopreferencial, idcentrocustopreferencial, 
-                    observacoes, chavepix, tipochavepix)
+                    observacoes, chavepix, tipochavepix, emailsecundario)
                     VALUES ({placeholders})
                     on conflict (idpessoa)
                     do update
@@ -51,7 +51,8 @@ class RepositoryContacts(RepositoryBase):
                         idcentrocustopreferencial = EXCLUDED.idcentrocustopreferencial,
                         observacoes = EXCLUDED.observacoes,
                         chavepix = EXCLUDED.chavepix,
-                        tipochavepix = EXCLUDED.tipochavepix
+                        tipochavepix = EXCLUDED.tipochavepix,
+                        emailsecundario = EXCLUDED.emailsecundario
                     """
                 cur.executemany(query,values)
                 self.connection.commit()

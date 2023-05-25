@@ -14,7 +14,7 @@ class EvaluateInvoiceRequest:
         try:
             query = """
             SELECT
-                DATE(fm.data) AS data, idkamino,hr.id, hr.nome AS nomepessoa, hr.email AS emailpessoa, valorprevisto * (-1) as valorprevisto, realizado, fm.id as external_id
+                DATE(fm.data) AS data, idkamino,hr.id, hr.nome AS nomepessoa, hr.email AS emailpessoa, valorprevisto * (-1) as valorprevisto, realizado, fm.id as external_id, hr.emailsecundario as emailsecundario
             FROM
                 finance.movements AS fm
                 LEFT JOIN
@@ -47,6 +47,7 @@ class EvaluateInvoiceRequest:
                 contact_id= row[2],
                 contact_name=row[3],
                 to_=row[4],
+                secondaryemail=row[8],
                 )
             invoiceRequest = InvoiceRequest(request, row[5])
             emailRequest = EmailRequest(
@@ -59,7 +60,8 @@ class EvaluateInvoiceRequest:
                 contact_name=invoiceRequest.request.contact_name,
                 from_=invoiceRequest.request.from_,
                 to_=invoiceRequest.request.to_,
-                subject=invoiceRequest.request.subject)
+                subject=invoiceRequest.request.subject
+            )
             self.list_requests.append(emailRequest)
         
         #  writes the requests created in the database
