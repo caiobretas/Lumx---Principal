@@ -3,52 +3,65 @@ from controllers.controllerGoogle.controllerGoogleGmail import GoogleGmail
 from entities.entityEmailRequest import EmailRequest
 class UpdateEmailRequests:
     def __init__(self, connection=None, engine=None):
-        self.repository = RepositoryEmailRequests(connection, engine) if connection != None and engine != None else None
-        self.controller = GoogleGmail()
-        mailUpdates: list = []
+        self.repositoryEmailRequests = RepositoryEmailRequests(connection, engine) if connection != None and engine != None else None
+        self.controllerGmail = GoogleGmail()
+        self.mailUpdates: list = []
+    
+    def updateEmailRequests(self):
+        emailRequests_list = self.repositoryEmailRequests.getEmailRequests(True)
         
-        emailRequests_list = self.repository.getEmailRequests(True)
-        if emailRequests_list:
-            for request in emailRequests_list:
-                attachment_list: list = []
-                mail: dict = self.controller.getMessagebyId(request.email_id)
-                thread: dict = self.controller.getThreadById(mail['threadId'])
-                messages_list: list[dict] = thread['messages']
-                for message in messages_list:
-                    try:
-                        for part in message['payload']['parts']:
-                            try:
-                                attachmentId = part['body']['attachmentId']
-                                attachment: tuple = self.controller.getAttachmentById(message['id'],attachmentId)
-                                attachment_list.append(attachment)
-                            except KeyError:
-                                continue
-                    except KeyError:
-                        attachmentId = None
-                        attachment = None
-                        continue
+        if not emailRequests_list:
+            return None
+        
+        for request in emailRequests_list:
+            attachment_list: list = []
+            mail: dict = self.controllerGmail.getMessagebyId(request.email_id)
+            thread: dict = self.controllerGmail.getThreadById(mail['threadId'])
+            messages_list: list[dict] = thread.get('messages', None)
             
-                request_update = EmailRequest(
-                    id = request.id, 
-                    external_id = request.external_id,
-                    draft_id = request.draft_id,
-                    email_id = request.email_id, 
-                    datetime = request.datetime,
-                    request_type = request.request_type,
-                    contact_id = request.contact_id,
-                    from_ = request.from_,
-                    to_ = request.to_,
-                    subject = request.subject,
-                    answered = True if len(messages_list) > 1 else False,
-                    pending = True,
-                    concluded = False
-                )
+            attachmentId = None
+            attachment = None
+            
+            for message in messages_list:
                 
-                request.attachment = True if attachmentId else False
-                request.attachment_id = attachmentId if attachmentId else None
-                request.pending = False if (request.answered and request.attachment) else True
-                request.concluded = True # write condition to check if the attachment is accepted
-                mailUpdates.append(request_update)
+                payload: dict = message.get('payload', None)
+                if not payload: continue
+                     
+                parts: list[dict] = payload.get('parts', None)
+                if not parts: continue
+                    
+                for part in parts:
+                    
+                    body: dict = part.get('body', None) 
+                    if not body: continue
+                    attachmentId = body.get('attachmentId', None)
+                    if not attachmentId: continue
+                    
+                    attachment: tuple = self.controllerGmail.getAttachmentById(message['id'],attachmentId)
                 
-        self.repository.insertEmailRequests(mailUpdates)
+                attachment_list.append(attachment)
+
+            request_update = EmailRequest(
+                id = request.id, 
+                external_id = request.external_id,
+                draft_id = request.draft_id,
+                email_id = request.email_id, 
+                datetime = request.datetime,
+                request_type = request.request_type,
+                contact_id = request.contact_id,
+                from_ = request.from_,
+                to_ = request.to_,
+                subject = request.subject,
+                answered = True if len(messages_list) > 1 else False,
+                pending = True,
+                concluded = False
+            )
+            
+            request_update.attachment = True if attachmentId else False
+            request_update.attachment_id = attachmentId if attachmentId else None
+            request_update.pending = False if (request_update.answered and request_update.attachment) else True
+            request_update.concluded = True if request_update.attachment_id else False # write condition to check if the attachment is accepted
+            self.mailUpdates.append(request_update)
+                
+        self.repositoryEmailRequests.insertEmailRequests(self.mailUpdates)
         print('\nEmail Requests Updated')

@@ -50,7 +50,7 @@ class Main:
         
     def admin(self):
         from business.updateEmailRequests import UpdateEmailRequests
-        UpdateEmailRequests(self.connection, self.engine)
+        UpdateEmailRequests(self.connection, self.engine).updateEmailRequests()
         
     def finance(self):
         from business.atualizaRepository import UpdateFinanceRepository
