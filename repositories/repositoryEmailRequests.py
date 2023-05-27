@@ -45,6 +45,7 @@ class RepositoryEmailRequests(RepositoryBase):
         
     def getEmailRequests(self, concludedOnly=False):
         try:
+            self.externalIds_list: list = []
             with self.connection.cursor() as cursor:
                 query = f'select * from {self.schema}.{self.tableName}' if not concludedOnly else f'select * from {self.schema}.{self.tableName} where not concluded'
                 cursor.execute(query)
@@ -67,6 +68,7 @@ class RepositoryEmailRequests(RepositoryBase):
                         pending = row[13],
                         concluded = row[14])
                     list_requests.append(email_request)
+                    self.externalIds_list.append(email_request.external_id)
             return list_requests        
         except Exception as e:
             logging.error(e)

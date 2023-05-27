@@ -39,7 +39,7 @@ class Main:
         self.engine = create_engine(
             f'postgresql://{self.user}:{self.password}@{self.host}/{self.dbname}'
         )
-
+    
     def emailrequests(self):
         from business.evaluateInvoiceRequest import EvaluateInvoiceRequest
         EvaluateInvoiceRequest(self.connection, self.engine).createInvoiceRequest() # send the Invoice Request by e-mail
@@ -65,11 +65,10 @@ class Main:
     def routine(self):
         self.hr()
         self.finance()
+        self.admin()
         self.flows()
+        
         print('\nRoutine in {:.2f} seconds\n'.format(time() - self.start_time))
-
+        
 # Main().routine()
-# Main().admin()
-
-Main().hr()
-# Main().emailrequests()
+Main().admin()

@@ -76,6 +76,22 @@ class GoogleGmail(ControllerGoogle):
             thread = None
             logging.error(error)
             return None
+    
+    def getAttachmentById(self,messageId, attachmentId,attachmentType=None):
+        try:
+            attachment = self.service.users().messages().attachments().get(userId='me',messageId=messageId, id=f'{attachmentId}').execute()
+            decodedData = base64.urlsafe_b64decode(attachment['data'])
+            return (attachment, attachmentType) if attachmentType else (attachment)
+        except KeyError:
+            return None
+        except HttpError as error:
+            attachment = None
+            logging.error(error)
+            return None
+        
+        
+        
+    
     # def getEmails(self):        
         # try:
         #     response = self.service.users().messages().list(userId='me').execute()
