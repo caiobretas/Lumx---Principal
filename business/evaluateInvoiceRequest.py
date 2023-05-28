@@ -1,5 +1,6 @@
 import logging
 from repositories.repositoryTransactions import RepositoryTransaction
+from repositories.repositoryEmailRequests import RepositoryEmailRequests
 from entities.entityEmailRequest import EmailRequest
 from senders.InvoiceRequest import InvoiceRequest
 
@@ -8,39 +9,16 @@ class EvaluateInvoiceRequest:
         self.connection = connection
         self.engine = engine
         self.list_requests: list[EmailRequest] = []
-    
-    def getMissingInvoices(self):
-        self.repositoryTransactions = RepositoryTransaction(self.connection, self.engine)
-        try:
-            query = """
-            SELECT
-                DATE(fm.data) AS data, idkamino,hr.id, hr.nome AS nomepessoa, hr.email AS emailpessoa, valorprevisto * (-1) as valorprevisto, realizado, fm.id as external_id, hr.emailsecundario as emailsecundario
-            FROM
-                finance.movements AS fm
-                LEFT JOIN
-                    finance.categories AS c ON c.id = fm.idclassificacao
-                LEFT JOIN
-                    h_resources.contacts AS hr ON hr.idpessoa = fm.idpessoa
-            WHERE
-                subcategoria4 = 'Prestação de Serviços' 
-                AND fm.data > '2023-05-01' AND fm.data < DATE_TRUNC('MONTH', CURRENT_DATE) + INTERVAL '2 month'
-	            AND (fm.numeronotafiscal IS NULL OR fm.numeronotafiscal = '')
-                AND nomepessoa != 'Lumx Studios S/A'
-            ORDER BY
-                data asc
-                ;"""
-            return self.repositoryTransactions.runQuery(query)
+        self.repositoryTransactions: RepositoryTransaction = RepositoryTransaction(connection, engine)
+        self.repositoryEmailRequests: RepositoryEmailRequests = RepositoryEmailRequests(connection, engine)
         
-        except Exception as e:
-            logging.error(e)
-    
     def updateRequestsTable(self,list_requests) -> None: # postgresql
         from repositories.repositoryEmailRequests import RepositoryEmailRequests
         RepositoryEmailRequests(self.connection, self.engine).insertEmailRequests(list_requests)  
         
     def createInvoiceRequest(self) -> list[EmailRequest]:
         '''Return the list of invoice requests created'''
-        for row in self.getMissingInvoices():
+        for row in self.repositoryTransactions.getMissingInvoices():
             request = EmailRequest(
                 external_id = row[7],
                 datetime = row[0],
@@ -48,8 +26,10 @@ class EvaluateInvoiceRequest:
                 contact_name=row[3],
                 to_=row[4],
                 secondaryemail=row[8],
+                value=row[5]
                 )
-            invoiceRequest = InvoiceRequest(request, row[5])
+            invoiceRequest = InvoiceRequest(request)
+            
             emailRequest = EmailRequest(
                 external_id=invoiceRequest.KaminoId_transaction,
                 draft_id=invoiceRequest.request.draft_id,

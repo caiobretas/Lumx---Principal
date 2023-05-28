@@ -32,7 +32,7 @@ class GoogleGmail(ControllerGoogle):
             }
         }
             draft = self.service.users().drafts().create(userId='me', body=create_message).execute()
-            return draft['id']
+            return draft
         except Exception as e:
             logging.error(e)
     
@@ -40,7 +40,7 @@ class GoogleGmail(ControllerGoogle):
         '''Sends a draft and returns the email ID'''
         body = {'id': draft_id}
         email = self.service.users().drafts().send(userId='me', body=body).execute()
-        return email['id']
+        return email
     
     def sendMessage(self, subject, content, to, from_):
         message = EmailMessage()

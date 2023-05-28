@@ -341,3 +341,27 @@ class RepositoryTransaction ( RepositoryBase ):
             
         except Exception as e:
             logging.error(e)
+            
+    def getMissingInvoices(self):
+        try:
+            query = """
+            SELECT
+                DATE(fm.data) AS data, idkamino,hr.id, hr.nome AS nomepessoa, hr.email AS emailpessoa, valorprevisto * (-1) as valorprevisto, realizado, fm.id as external_id, hr.emailsecundario as emailsecundario
+            FROM
+                finance.movements AS fm
+                LEFT JOIN
+                    finance.categories AS c ON c.id = fm.idclassificacao
+                LEFT JOIN
+                    h_resources.contacts AS hr ON hr.idpessoa = fm.idpessoa
+            WHERE
+                subcategoria4 = 'Prestação de Serviços' 
+                AND fm.data > '2023-05-01' AND fm.data < DATE_TRUNC('MONTH', CURRENT_DATE) + INTERVAL '2 month'
+                AND (fm.numeronotafiscal IS NULL OR fm.numeronotafiscal = '')
+                AND nomepessoa != 'Lumx Studios S/A'
+            ORDER BY
+                data asc
+                ;"""
+            return self.runQuery(query)
+        
+        except Exception as e:
+            logging.error(e)
