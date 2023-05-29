@@ -16,28 +16,44 @@ class GoogleGmail(ControllerGoogle):
         except Exception as e:
             logging.error(e)
 
-    def createDraft(self, from_: str, to: str, cc_list: list, subject: str, message_body: str):
-        '''Create a draft and return the id'''
-        try:
-            message = EmailMessage()
-            message.set_content(message_body)
-            message['To'] = f'{to}'
-            message['From'] = f'{from_}'
-            message['Subject'] = f'{subject}'
-            message['Cc'] = cc_list
-            encoded_message = base64.urlsafe_b64encode(message.as_bytes()).decode()
-            create_message = {
-            'message': {
-                'raw': encoded_message
-            }
-        }
-            draft = self.service.users().drafts().create(userId='me', body=create_message).execute()
-            return draft
+    def createDraft(self, from_:str=None, to:str=None, cc_list:list=None, subject:str=None, message_body:str=None, messageId:str=None):
+        '''Cria um rascunho e retorna o rascunho'''
+       
+        message = EmailMessage()
+        message.set_content(message_body)
+        
+        message['To'] = f'{to}'
+        message['From'] = f'{from_}'
+        message['Subject'] = f'{subject}'
+        message['Cc'] = cc_list
+        encoded_message = base64.urlsafe_b64encode(message.as_bytes()).decode()    
+        
+        try:   
+            if not messageId:
+                create_message = {
+                    'message': {
+                        'raw': encoded_message
+                    }
+                }
+            else:
+                message: dict = self.service.users().messages().get(userId='me', id=messageId, format='full').execute()
+                create_message = {
+                    'message': {
+                        'raw': encoded_message,
+                        'threadId': message.get('threadId', None),
+                        'inReplyTo': messageId,
+                        'references': [messageId]
+                    }
+                }
+            
+            draft = self.service.users().drafts().create(userId='me', body=create_message).execute()        
+            return draft      
         except Exception as e:
             logging.error(e)
-    
+
+            
     def sendDraft(self, draft_id):
-        '''Sends a draft and returns the email ID'''
+        '''Sends a draft and returns the email sent'''
         body = {'id': draft_id}
         email = self.service.users().drafts().send(userId='me', body=body).execute()
         return email
@@ -81,29 +97,10 @@ class GoogleGmail(ControllerGoogle):
         try:
             attachment = self.service.users().messages().attachments().get(userId='me',messageId=messageId, id=f'{attachmentId}').execute()
             decodedData = base64.urlsafe_b64decode(attachment['data'])
-            return (attachment, attachmentType) if attachmentType else (attachment)
+            return attachment
         except KeyError:
             return None
         except HttpError as error:
             attachment = None
             logging.error(error)
             return None
-        
-        
-        
-    
-    # def getEmails(self):        
-        # try:
-        #     response = self.service.users().messages().list(userId='me').execute()
-        #     # Obter os IDs dos emails retornados
-        #     messages = response.get('messages', [])
-
-        #     # Iterar sobre os emails
-        #     for message in messages:
-        #         email_id = message['id']
-        #         # Você pode fazer outras chamadas à API do Gmail para obter detalhes específicos do email usando o ID, como o assunto, remetente, etc.
-        #         email = self.service.users().messages().get(userId='me', id=email_id).execute()
-        #         subject = email['payload']['headers'][18]['value']  # Exemplo para obter o assunto do email
-        #         print(subject)
-        # except Exception as e:
-        #     logging.error(e)

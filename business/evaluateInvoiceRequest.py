@@ -1,10 +1,10 @@
-import logging
 from repositories.repositoryTransactions import RepositoryTransaction
 from repositories.repositoryEmailRequests import RepositoryEmailRequests
+
 from entities.entityEmailRequest import EmailRequest
 from senders.InvoiceRequest import InvoiceRequest
-
 class EvaluateInvoiceRequest:
+    '''Determines whether an invoice is going to be created or reminded'''
     def __init__(self, connection, engine):
         self.connection = connection
         self.engine = engine
@@ -12,12 +12,16 @@ class EvaluateInvoiceRequest:
         self.repositoryTransactions: RepositoryTransaction = RepositoryTransaction(connection, engine)
         self.repositoryEmailRequests: RepositoryEmailRequests = RepositoryEmailRequests(connection, engine)
         
-    def updateRequestsTable(self,list_requests) -> None: # postgresql
+    def insertIntoEmailsRequestsTable(self,list_requests=None) -> None: # postgresql
         from repositories.repositoryEmailRequests import RepositoryEmailRequests
-        RepositoryEmailRequests(self.connection, self.engine).insertEmailRequests(list_requests)  
+        if not list_requests: return None
+        else: RepositoryEmailRequests(self.connection, self.engine).insertEmailRequests(list_requests)
         
-    def createInvoiceRequest(self) -> list[EmailRequest]:
-        '''Return the list of invoice requests created'''
+    def sendInvoiceRequest(self) -> list[EmailRequest]:
+        '''Return a list of created requests'''
+        self.repositoryEmailRequests.getEmailRequests(False,False,'Invoice')
+        
+        externalIds_list: list = self.repositoryEmailRequests.externalId_list
         for row in self.repositoryTransactions.getMissingInvoices():
             request = EmailRequest(
                 external_id = row[7],
@@ -27,23 +31,33 @@ class EvaluateInvoiceRequest:
                 to_=row[4],
                 secondaryemail=row[8],
                 value=row[5]
-                )
-            invoiceRequest = InvoiceRequest(request)
-            
-            emailRequest = EmailRequest(
-                external_id=invoiceRequest.KaminoId_transaction,
-                draft_id=invoiceRequest.request.draft_id,
-                email_id=invoiceRequest.request.email_id,
-                datetime=invoiceRequest.request.datetime,
-                request_type=invoiceRequest.request.request_type,
-                contact_id=invoiceRequest.request.contact_id,
-                contact_name=invoiceRequest.request.contact_name,
-                from_=invoiceRequest.request.from_,
-                to_=invoiceRequest.request.to_,
-                subject=invoiceRequest.request.subject
             )
-            self.list_requests.append(emailRequest)
+            invoiceRequest = InvoiceRequest(request)
+            if request.external_id not in externalIds_list: # check if the external id already has a request in the repository
+                draft = invoiceRequest.setDraft()[0]
+                invoiceRequest.sendDraft(draft) # send the invoice request
+
+                emailRequest = EmailRequest(
+                    external_id=invoiceRequest.request.external_id,
+                    draft_id=invoiceRequest.request.draft_id,
+                    email_id=invoiceRequest.request.email_id,
+                    datetime=invoiceRequest.request.datetime,
+                    request_type=invoiceRequest.request.request_type,
+                    contact_id=invoiceRequest.request.contact_id,
+                    contact_name=invoiceRequest.request.contact_name,
+                    from_=invoiceRequest.request.from_,
+                    to_=invoiceRequest.request.to_,
+                    subject=invoiceRequest.request.subject
+                )
+                self.list_requests.append(emailRequest)
         
-        #  writes the requests created in the database
-        self.updateRequestsTable(self.list_requests)
+        self.insertIntoEmailsRequestsTable(self.list_requests) #  writes the requests created in the database
         return self.list_requests
+
+    def sendInvoiceReminder(self) -> list[EmailRequest]:
+        '''Send reminder notification and return a list of reminders sent'''
+        
+        for request in self.repositoryEmailRequests.getEmailRequests(pendingOnly=True):
+            invoiceRequest = InvoiceRequest(request)
+            reminder = invoiceRequest.setReminder(request.email_id)
+            invoiceRequest.sendReminder(reminder)

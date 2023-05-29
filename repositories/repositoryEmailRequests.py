@@ -1,4 +1,5 @@
 from repositories.repositoryBase import RepositoryBase
+from repositories.repositoryContacts import RepositoryContacts
 from entities.entityEmailRequest import EmailRequest
 import logging
 
@@ -8,6 +9,7 @@ class RepositoryEmailRequests(RepositoryBase):
         self.schema = 'admin' # postgresql
         self.tableName = 'email_requests' # postgresql
         super().__init__(connection,engine,self.schema,self.tableName)
+        self.repositoryContacts: RepositoryContacts = RepositoryContacts(connection, engine)
 
     def insertEmailRequests(self, list_requests: list[EmailRequest]| None):
         if list_requests != None:
@@ -22,7 +24,6 @@ class RepositoryEmailRequests(RepositoryBase):
                         ON CONFLICT (email_id) DO UPDATE SET
                         draft_id = EXCLUDED.draft_id,
                         email_id = EXCLUDED.email_id,
-                        datetime = EXCLUDED.datetime,
                         request_type = EXCLUDED.request_type,
                         contact_id = EXCLUDED.contact_id,
                         from_ = EXCLUDED.from_,
@@ -43,11 +44,19 @@ class RepositoryEmailRequests(RepositoryBase):
         else:
             return None
         
-    def getEmailRequests(self, concludedOnly=False):
+    def getEmailRequests(self, concludedOnly=False, pendingOnly=False,request_type='Invoice'):
+        
+        query = f"select e.*, c.nome from {self.schema}.{self.tableName} as e left join {self.repositoryContacts.schema}.{self.repositoryContacts.tableName} as c on c.id = e.contact_id "
+        
+        if request_type: query = query + f"where request_type='{request_type}'"
+        if concludedOnly: query = query + f"and concluded = {concludedOnly}"
+        if pendingOnly: query = query + f"and pending = {pendingOnly}"
+        
+        
+        self.messageId_list: list = []
+        self.externalId_list: list = []
         try:
-            self.externalIds_list: list = []
             with self.connection.cursor() as cursor:
-                query = f'select * from {self.schema}.{self.tableName}' if not concludedOnly else f'select * from {self.schema}.{self.tableName} where not concluded'
                 cursor.execute(query)
                 list_requests: list[EmailRequest] = []
                 for row in cursor.fetchall():
@@ -59,6 +68,7 @@ class RepositoryEmailRequests(RepositoryBase):
                         datetime = row[4],
                         request_type = row[5],
                         contact_id = row[6],
+                        contact_name = row[15],
                         from_ = row[7],
                         to_ = row[8],
                         subject = row[9],
@@ -67,8 +77,10 @@ class RepositoryEmailRequests(RepositoryBase):
                         attachment_id = row[12],
                         pending = row[13],
                         concluded = row[14])
+                    self.messageId_list.append(email_request.email_id)
+                    self.externalId_list.append(email_request.external_id)
                     list_requests.append(email_request)
-                    self.externalIds_list.append(email_request.external_id)
+                    
             return list_requests        
         except Exception as e:
             logging.error(e)

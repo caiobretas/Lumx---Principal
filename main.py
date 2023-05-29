@@ -42,7 +42,8 @@ class Main:
     
     def emailrequests(self):
         from business.evaluateInvoiceRequest import EvaluateInvoiceRequest
-        EvaluateInvoiceRequest(self.connection, self.engine).createInvoiceRequest() # send the Invoice Request by e-mail
+        EvaluateInvoiceRequest(self.connection, self.engine).sendInvoiceRequest() # send the Invoice Request
+        EvaluateInvoiceRequest(self.connection, self.engine).sendInvoiceReminder() # send the Invoice Reminder, if needed.
     
     def flows(self):
         from business.financeControl import Flow
@@ -71,4 +72,5 @@ class Main:
         print('\nRoutine in {:.2f} seconds\n'.format(time() - self.start_time))
         
 # Main().routine()
-Main().emailrequests()
+Main().admin()
+# Main().emailrequests()

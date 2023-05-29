@@ -36,7 +36,7 @@ class EmailRequest:
         self.attachment_id = attachment_id
         self.pending = pending
         self.concluded = concluded
-        self.contact_name = contact_name
+        self.contact_name: str = contact_name
         self.secondaryemail = secondaryemail
         self.value = value
 
