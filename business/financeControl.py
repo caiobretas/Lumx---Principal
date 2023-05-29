@@ -1,3 +1,4 @@
+from time import time
 from datetime import datetime
 from controllers.controllerGoogle.controllerGoogleSheets import GoogleSheets
 from repositories.repositoryTransactions import RepositoryTransaction
@@ -16,6 +17,8 @@ class FinanceControl:
 
 class Flow(FinanceControl):
     def salaryFlow(self):
+        timer = time()
+        print('\nUpdating Salary Flow...')
         worksheetid = '1tIf5U3PG5-Lx8p6YxAL9M8jMo2m5PTZX6BS2p2WTp94'
         
         # get the registers from the repository
@@ -64,10 +67,11 @@ WHERE
             numeronotafiscal = transaction[7]
         
             # ps: the order here influences what's shown in Google Sheets
-            if numeronotafiscal != '':
+            if numeronotafiscal != '' or category != 'Prestação de Serviços':
                 liberados_values_list.append((transactiondate,category,contactName,contactEmail,transationValue,contactPixKey,contactPixKeyType))
             else:
                 aguardandoNFSe_values_list.append((transactiondate,category,contactName,contactEmail,transationValue,contactPixKey,contactPixKeyType))
                 
         GoogleSheets().overwriteWorksheet_byID(worksheetid, liberados_values_list, sheetName='Liberados')
         GoogleSheets().overwriteWorksheet_byID(worksheetid, aguardandoNFSe_values_list, sheetName='Aguardando NFSe')
+        print('\nSalary Flow updated in {:.2f} seconds\n'.format(time() - timer))

@@ -1,3 +1,4 @@
+from time import time
 from repositories.repositoryEmailRequests import RepositoryEmailRequests
 from controllers.controllerGoogle.controllerGoogleGmail import GoogleGmail
 from entities.entityEmailRequest import EmailRequest
@@ -8,6 +9,8 @@ class UpdateEmailRequests:
         self.mailUpdates: list = []
     
     def updateEmailRequests(self):
+        timer = time()
+        print('\nUpdating Email Requests...')
         emailRequests_list = self.repositoryEmailRequests.getEmailRequests(False, False, 'Invoice')
         
         if not emailRequests_list:
@@ -15,8 +18,6 @@ class UpdateEmailRequests:
         
         
         for request in emailRequests_list:
-            if request.contact_name == 'Thamyres Guedes Reis Corrêa':
-                print(1)
             
             mail: dict = self.controllerGmail.getMessagebyId(request.email_id)
             thread: dict = self.controllerGmail.getThreadById(mail['threadId'])
@@ -71,4 +72,4 @@ class UpdateEmailRequests:
             self.mailUpdates.append(request_update)
                 
         self.repositoryEmailRequests.insertEmailRequests(self.mailUpdates)
-        print('\nEmail Requests Updated')
+        print('\nEmail Requests updated in {:.2f} seconds\n'.format(time() - timer))

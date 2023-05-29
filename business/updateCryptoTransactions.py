@@ -31,7 +31,7 @@ class UpdateCryptoTransactions:
                     if wallet.is_lumx:
                         transaction_crypto = LoadTransactions().loadCryptoTransactions(wallet.is_safe,wallet.address, wallet.name, wallet.blockchain)
                         list_transactions.extend(transaction_crypto)
-                        print(f'{" "*5}{wallet.name} transactions imported successfully.')
+                        print(f'{" "*5}{wallet.name} transactions imported.')
                     else:
                         None
                 if self.repositoryCryptoTransactions.getDate() != None:
