@@ -60,7 +60,7 @@ class Main:
         UpdateProjection(self.connection,self.engine)
         
     def hr(self):
-        from business.updateContacts import UpdateContacts
+        from business.UpdateContacts import UpdateContacts
         UpdateContacts(connection=self.connection, engine=self.engine)
     
     def routine(self):
@@ -72,6 +72,6 @@ class Main:
         print('\nRoutine in {:.2f} seconds\n'.format(time() - self.start_time))
         
 Main().routine()
-Main().admin()
+# Main().admin()
 # Main().emailrequests()
 # Main().hr()

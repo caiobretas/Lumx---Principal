@@ -4,7 +4,7 @@ from datetime import timedelta, datetime
 class InvoiceRequest:
     
     def setDraft(self) -> tuple:
-        self.request.subject = f'NFS-e {self.request.contact_name} - {self.date}'
+        self.request.subject = f'NFS-e Lumx - {self.request.contact_name} - {self.date}'
         message = f'Prezado(a) {self.request.contact_name},\n\nFavor responder a este e-mail com a Nota Fiscal de Serviços referente ao mês {self.date}\n\nValor: R${self.request.value}\n\nEm caso de dúvidas, envie um e-mail para financeiro@lumxstudios.com\n\nEsta é uma mensagem automática.'
         draft = GoogleGmail().createDraft(self.request.from_, self.request.to_, self.cc_list, self.request.subject, message)
         return draft, draft['id']
