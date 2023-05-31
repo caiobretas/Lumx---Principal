@@ -56,12 +56,12 @@ class Main:
     def finance(self):
         from business.atualizaRepository import UpdateFinanceRepository
         from business.updateProjection import UpdateProjection
-        UpdateFinanceRepository(self.connection,self.engine)
-        UpdateProjection(self.connection,self.engine)
+        UpdateFinanceRepository(self.connection,self.engine).update()
+        UpdateProjection(self.connection,self.engine).update()
         
     def hr(self):
         from business.updateContacts import UpdateContacts
-        UpdateContacts(connection=self.connection, engine=self.engine)
+        UpdateContacts(connection=self.connection, engine=self.engine).update()
     
     def routine(self):
         self.hr()
@@ -71,7 +71,8 @@ class Main:
         
         print('\nRoutine in {:.2f} seconds\n'.format(time() - self.start_time))
         
-Main().routine()
+# Main().routine()
 # Main().admin()
 # Main().emailrequests()
 # Main().hr()
+Main().finance()

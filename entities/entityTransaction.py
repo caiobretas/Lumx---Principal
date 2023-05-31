@@ -41,8 +41,12 @@ class Transaction:
         self.contaativo = contaativo
 
         if self.tipo == 'Pagamento':
-            self.valorprevisto = (-1) * valorprevisto if valorprevisto != None else None
-            self.valorrealizado = (-1) * valorrealizado if valorrealizado != None else None
+            
+            if self.valorprevisto:
+                if self.valorprevisto > 0: self.valorprevisto = (-1) * valorprevisto
+            if self.valorrealizado:
+                if self.valorrealizado > 0: self.valorrealizado = (-1) * valorrealizado
+            
             self.nomecontadestino = nomepessoa
             self.nomecontaorigem = contaativo
             self.idclassificacao = idcontadestino

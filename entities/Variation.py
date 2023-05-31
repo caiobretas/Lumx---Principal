@@ -1,36 +1,43 @@
 from datetime import datetime
 class Variation:
     def __init__(self,
-    id=None,
+    idTransacao=None,
+    idExterno=None,
     tipovariacao=None,
     tipo=None,
     realizado=None,
-    datavariacao=None,
+    datavencimentoantiga=None,
     datavencimento=None,
-    dataliquidacao=None,
+    datapagamentoantiga=None,
+    datapagamento=None,
+    valorprevistoantigo=None,
+    valorrealizadoantigo=None,
     valorprevisto=None,
-    valorantigo=None,
-    valornovo=None,
+    valorrealizado=None,
     diferencaprojecao=None,
     idclassificacao=None,
     descricao=None,
     projeto=None,
     nomecentrocusto=None):
         
-        self.id = id
+        self.idTransacao = idTransacao
+        self.idExterno = idExterno
         self.tipovariacao = tipovariacao
         self.tipo = tipo
         self.realizado = realizado
-        if datavariacao: self.datavariacao = datetime.now()
+        self.datavencimentoantiga = datavencimentoantiga
         self.datavencimento = datavencimento
-        self.dataliquidacao = dataliquidacao
+        self.datapagamentoantiga = datapagamentoantiga
+        self.datapagamento = datapagamento
+        self.valorprevistoantigo = valorprevistoantigo
+        self.valorrealizadoantigo = valorrealizadoantigo
         self.valorprevisto = valorprevisto
-        self.valorantigo = valorantigo
-        self.valornovo = valornovo
+        self.valorrealizado = valorrealizado
         self.diferencaprojecao = diferencaprojecao
         self.idclassificacao = idclassificacao
         self.descricao = descricao
+        self.projeto = projeto
         self.nomecentrocusto = nomecentrocusto
 
     def __repr__(self):
-        return f"Tipo: {self.tipo} - Diferença: {self.diferencaprojecao}"
+        return f"ID: {self.idTransacao} - tipovariacao: {self.tipovariacao}"

@@ -14,11 +14,11 @@ class UpdateFinanceRepository:
         
     def update(self):
         timer = time()
-        UpdateBook(self.connection,self.engine) # update book repository from 'interface.xlsx'
-        UpdateCategories(self.connection, self.engine)
-        UpdateCryptoTransactions(self.connection, self.engine)
-        UpdateCryptoPrices(self.connection,self.engine)
-        UpdateTransactions(self.connection,self.engine)
-        UpdateFutures(self.connection,self.engine)
+        # UpdateBook(self.connection,self.engine) # update book repository from 'interface.xlsx'
+        # UpdateCategories(self.connection, self.engine)
+        # UpdateCryptoTransactions(self.connection, self.engine)
+        # UpdateCryptoPrices(self.connection,self.engine)
+        # UpdateTransactions(self.connection,self.engine)
+        UpdateFutures(self.connection,self.engine).update()
 
         print('\nDatabase updated in {:.2f} seconds\n'.format(time() - timer))
