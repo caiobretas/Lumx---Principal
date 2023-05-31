@@ -2,8 +2,8 @@ from datetime import datetime
 class Variation:
     def __init__(self,
     id=None,
-    tipo=None,
     tipovariacao=None,
+    tipo=None,
     realizado=None,
     datavariacao=None,
     datavencimento=None,
@@ -18,8 +18,8 @@ class Variation:
     nomecentrocusto=None):
         
         self.id = id
-        self.tipo = tipo
         self.tipovariacao = tipovariacao
+        self.tipo = tipo
         self.realizado = realizado
         if datavariacao: self.datavariacao = datetime.now()
         self.datavencimento = datavencimento

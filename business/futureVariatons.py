@@ -1,4 +1,6 @@
 """
+    Recebe lista de transações novas e lista de transações atuais
+
     Encontra as diferenças nas contas futuras vindas da Kamino e as que estão no banco*
     Instancia a entidade "Variation"
     
@@ -17,18 +19,16 @@ from repositories.repositoryTransactions import RepositoryTransaction
 from controllers.controllerHTTP.controllerKamino import ControllerKamino
 from entities.Variation import Variation
 from entities.entityCategory import Category
-from entities.entityProjection import Projection
+from entities.entityTransaction import Transaction
 
 class TransactionsVariations:
     
-    def __init__(self, newTransactions: list, connection, engine) -> None:
+    def __init__(self, newTransactions: list, oldTransactions) -> None:
         self.newTransactions: list = newTransactions
-        self.repositoryTransactions: RepositoryTransaction = RepositoryTransaction(connection, engine)
         
-        self.oldTransactions: list[Projection] = self.repositoryTransactions.getProjection() # traz a projeção do repositório
-        self.newTransactions: list[Projection] = newTransactions
+        self.oldTransactions: list[Transaction] = oldTransactions
+        self.newTransactions: list[Transaction] = newTransactions
         
-    
     def identifyType(self):
         
         self.inserts: list[Variation] = []
@@ -37,13 +37,14 @@ class TransactionsVariations:
         
         for obj in self.oldTransactions:
             
-            transaction = Variation(
-                
-                
-            )
+            transaction = Variation()
+            
             
             # se o id da lista atual não estiver na lista de ids nova, foi deletada. Se estiver é atualização
-            if obj.idKamino not in [transaction.idKamino for transaction in self.newTransactions]:            
+            if obj.idKamino not in [transaction.idKamino for transaction in self.newTransactions]:   
+                if obj.valorprevisto < 0: transaction.tipo = 'Pagamento'
+                else: transaction.tipo = 'Recebimento'
+                transaction.tipovariacao = 'Saída'
                 self.deletes.append(obj)
                 
             else: self.changes.append(obj)
@@ -55,7 +56,7 @@ class TransactionsVariations:
     def insert
     
     def calculateVariation(self):
-        await self.identifyType(self)
+        self.identifyType(self)
         # itera sobre a lista de alterações para fazer as classificações
         for transaction in self.changes:
             transaction.
