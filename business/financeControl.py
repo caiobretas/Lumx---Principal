@@ -45,7 +45,7 @@ WHERE
         subcategoria4 in ('Prestação de Serviços','Pró-Labore','Bolsa Auxílio Estágio')
     AND (
         DATE_TRUNC('MONTH', fm.data) = DATE_TRUNC('MONTH', CURRENT_DATE)
-        OR DATE_TRUNC('MONTH', fm.data) = DATE_TRUNC('MONTH', CURRENT_DATE) + INTERVAL '1 MONTH'
+        OR DATE_TRUNC('MONTH', fm.data) = DATE_TRUNC('MONTH', CURRENT_DATE)'
     )
     AND
         nomepessoa != 'Lumx Studios S/A'
