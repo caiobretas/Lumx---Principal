@@ -1,1 +1,1 @@
-worker: python3 minute_autorun.py
+worker: python3 autorun_minute.py
