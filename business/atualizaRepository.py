@@ -15,6 +15,6 @@ class UpdateFinanceRepository:
         UpdateCryptoTransactions(connection, engine).update()
         UpdateCryptoPrices(connection,engine).update()
         UpdateTransactions(connection,engine)
-        UpdateFutures(connection,engine)
+        UpdateFutures(connection,engine).update()
 
         print('\nDatabase updated in {:.2f} seconds\n'.format(time() - timer))
