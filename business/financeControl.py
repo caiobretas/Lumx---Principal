@@ -45,11 +45,11 @@ WHERE
         subcategoria4 in ('Prestação de Serviços','Pró-Labore','Bolsa Auxílio Estágio')
     AND (
         DATE_TRUNC('MONTH', fm.data) = DATE_TRUNC('MONTH', CURRENT_DATE)
-        OR DATE_TRUNC('MONTH', fm.data) = DATE_TRUNC('MONTH', CURRENT_DATE)'
+        OR DATE_TRUNC('MONTH', fm.data) = DATE_TRUNC('MONTH', CURRENT_DATE)
     )
     AND
         nomepessoa != 'Lumx Studios S/A'
-    ORDER BY nomepessoa asc,valorprevisto desc
+    ORDER BY subcategoria4 desc, nomepessoa asc, valorprevisto desc
 '''
         transactions_list = self.repositoryTransaction.runQuery(query)
 
