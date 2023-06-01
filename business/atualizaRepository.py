@@ -12,7 +12,7 @@ class UpdateFinanceRepository:
         
         UpdateBook(connection,engine).update() # update book repository from 'interface.xlsx'
         UpdateCategories(connection, engine).update()
-        UpdateCryptoTransactions(connection, engine)
+        UpdateCryptoTransactions(connection, engine).update()
         UpdateCryptoPrices(connection,engine).update()
         UpdateTransactions(connection,engine)
         UpdateFutures(connection,engine)

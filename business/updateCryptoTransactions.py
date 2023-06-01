@@ -13,19 +13,22 @@ from repositories.repositoryPrices import RepositoryPrices
 class UpdateCryptoTransactions:
     
     def __init__(self, connection: str, engine: str):
-            start_time = time()
             
+            self.connection = connection
+            self.engine = engine
             self.repositoryBook = RepositoryBook(connection,engine)
-            list_coins: list[Coin] = RepositoryPrices(connection,engine).getTokens()
+            self.list_coins: list[Coin] = RepositoryPrices(connection,engine).getTokens()
             self.list_addresses: list[Book] = self.repositoryBook.getBook()
             self.list_wallets: list = self.repositoryBook.list_wallets
             self.list_conversion: list = self.repositoryBook.list_conversion
             self.list_primarysale: list = self.repositoryBook.list_primarysale
             self.list_secondarysale: list = self.repositoryBook.list_secondarysale
-            
+    
+    def update(self):      
             print('\nUpdating Crypto Transactions...')
+            start_time = time()
             try:
-                self.repositoryCryptoTransactions = RepositoryCryptoTransaction(connection,engine)
+                self.repositoryCryptoTransactions = RepositoryCryptoTransaction(self.connection,self.engine)
                 list_transactions: list[TransactionCrypto] = []
                 for wallet in self.list_addresses:
                     if wallet.is_lumx:
@@ -62,5 +65,5 @@ class UpdateCryptoTransactions:
             finally:
                 try_time = time()
                 print('{} Status: {} - Time: {:.2f}s'.format(' ' * 3,status, try_time - start_time))
-                self.repositoryCryptoTransactions.delete_unknown_tokens(list_known_tokens=list_coins)
-                ConciliateCryptoTransactions(connection, engine)
+                self.repositoryCryptoTransactions.delete_unknown_tokens(list_known_tokens=self.list_coins)
+                ConciliateCryptoTransactions(self.connection, self.engine)
