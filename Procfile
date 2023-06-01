@@ -1,1 +1,1 @@
-worker: python3 automatedApp.py
+worker: python3 autoupdates.py
