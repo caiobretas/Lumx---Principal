@@ -70,8 +70,3 @@ class Main:
         self.flows()
         
         print('\nRoutine in {:.2f} seconds\n'.format(time() - self.start_time))
-        
-Main().routine()
-# Main().admin()
-# Main().emailrequests()
-# Main().hr()
