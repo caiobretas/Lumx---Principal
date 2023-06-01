@@ -1,0 +1,16 @@
+psycopg2-binary
+google-auth-oauthlib
+autopep8
+gcloud
+google-api-python-client
+google-auth
+google-auth-httplib2
+google-auth-oauthlib
+gspread
+httplib2
+mysql-connector-python
+sqlalchemy
+oauth2client
+oauthlib
+openpyxl
+pandas
