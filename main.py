@@ -61,7 +61,7 @@ class Main:
         
     def hr(self):
         from business.UpdateContacts import UpdateContacts
-        UpdateContacts(connection=self.connection, engine=self.engine)
+        UpdateContacts(connection=self.connection, engine=self.engine).update()
     
     def routine(self):
         self.hr()

@@ -4,12 +4,18 @@ from repositories.repositoryBook import RepositoryBook
 
 class UpdateBook:
     def __init__(self,connection,engine):
-        start_time = time()
+        self.connection = connection
+        self.engine = engine
+        
+        
+    
+    def update(self):
         print('\nUpdating Book...')
+        start_time = time()
         try:
-            self.list_books = RepositoryBook(connection,engine).getBook_fromExcel()
+            self.list_books = RepositoryBook(self.connection,self.engine).getBook_fromExcel()
             # insert the list in database
-            RepositoryBook(connection,engine).insert(lst=self.list_books)
+            RepositoryBook(self.connection,self.engine).insert(lst=self.list_books)
             try_time = time()
             status = 'Complete'
             

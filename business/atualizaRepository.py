@@ -10,10 +10,10 @@ class UpdateFinanceRepository:
     def __init__(self,connection,engine) -> None:
         timer = time()
         
-        UpdateBook(connection,engine) # update book repository from 'interface.xlsx'
-        UpdateCategories(connection, engine)
+        UpdateBook(connection,engine).update() # update book repository from 'interface.xlsx'
+        UpdateCategories(connection, engine).update()
         UpdateCryptoTransactions(connection, engine)
-        UpdateCryptoPrices(connection,engine)
+        UpdateCryptoPrices(connection,engine).update()
         UpdateTransactions(connection,engine)
         UpdateFutures(connection,engine)
 

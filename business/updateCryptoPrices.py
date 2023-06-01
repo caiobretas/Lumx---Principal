@@ -8,9 +8,10 @@ class UpdateCryptoPrices:
     def __init__(self, connection, engine):
         self.repositoryPrices = RepositoryPrices(connection, engine)
         
-        start_time = time()
-
+        
+    def update(self):
         print('\nUpdating Crypto Prices...')
+        start_time = time()
         try:
             self.repositoryPrices.getDate()
             date = self.repositoryPrices.maxDate

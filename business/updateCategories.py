@@ -4,11 +4,15 @@ from repositories.repositoryCategories import RepositoryCategories
 
 class UpdateCategories:
     def __init__(self, connection, engine):
-        start_time = time()
+        
+        self.connection = connection
+        self.engine = engine
         
         print('\nUpdating Categories...')
+    def update(self):
+        start_time = time()
         try:
-            repositoryCategories = RepositoryCategories(connection, engine)
+            repositoryCategories = RepositoryCategories(self.connection, self.engine)
             repositoryCategories.insertCategories(repositoryCategories.getCategories_fromExcel())
             status = 'Complete'
             
