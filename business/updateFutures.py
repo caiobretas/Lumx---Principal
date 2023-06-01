@@ -11,21 +11,23 @@ from repositories.repositoryTransactions import RepositoryTransaction
 class UpdateFutures:
     
     def __init__(self, connection, engine):
+        
+        
+        self.repositoryTransaction = RepositoryTransaction(connection, engine)
+        self.controllerKamino = ControllerKamino()
+        
+        
+    
+    def update(self):
+        print('\nUpdating futures...')
         start_time = time()
-        
-        repositoryTransaction = RepositoryTransaction(connection, engine)
-        controllerKamino = ControllerKamino()
-        
-        minFutureDateinRepo = repositoryTransaction.getDate(realizado=0)
-        
+        minFutureDateinRepo = self.repositoryTransaction.getDate(realizado=0)
         param_periodoDe = minFutureDateinRepo.strftime("%m-%d-%Y") if minFutureDateinRepo != None else None # the max date in the repository when realizado = 0
         param_periodoAte = datetime(year=2024, month=12, day=31).strftime('%m-%d-%Y') # determined max date that will be inserted
-        
-        print('\nUpdating futures...')
         try:
             
-            list_transactionsRepository = repositoryTransaction.getTransactions(realizado=0) # get the futures in the repository
-            list_transactionsKamino = [obj for obj in controllerKamino.getTransactions(param_periodoDe, param_periodoAte, apenasRealizados=False) if obj.realizado == 0 ] # get the futures in Kamino
+            list_transactionsRepository = self.repositoryTransaction.getTransactions(realizado=0) # get the futures in the repository
+            list_transactionsKamino = [obj for obj in self.controllerKamino.getTransactions(param_periodoDe, param_periodoAte, apenasRealizados=False) if obj.realizado == 0 ] # get the futures in Kamino
             
             idKamino_list = [obj.idKamino for obj in list_transactionsKamino if obj.realizado == 0]
             idRepository_list = [obj.idKamino for obj in list_transactionsRepository  if obj.realizado == 0]
@@ -46,9 +48,9 @@ class UpdateFutures:
                 if transaction.idKamino in idRepository_list:
                     update_list.append(transaction)
                     
-            repositoryTransaction.delete(delete_idList) if len(delete_idList) > 0 else None
-            repositoryTransaction.upsert(update_list) if len(update_list) > 0 else None
-            repositoryTransaction.upsert(insert_list) if len(insert_list) > 0 else None
+            self.repositoryTransaction.delete(delete_idList) if len(delete_idList) > 0 else None
+            self.repositoryTransaction.upsert(update_list) if len(update_list) > 0 else None
+            self.repositoryTransaction.upsert(insert_list) if len(insert_list) > 0 else None
             # repositoryTransaction.insert(insert_list, 'bulk') if len(insert_list) > 0 else None
             
             
