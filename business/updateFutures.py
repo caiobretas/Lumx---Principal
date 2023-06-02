@@ -11,15 +11,11 @@ from repositories.repositoryTransactions import RepositoryTransaction
                 
 class UpdateFutures:
     
-    def __init__(self, connection, engine):
-        
+    def __init__(self, connection, engine): 
         
         self.repositoryTransaction = RepositoryTransaction(connection, engine)
-        self.controllerKamino = ControllerKamino()
-        
-        minFutureDateinRepo = self.repositoryTransaction.getDate(realizado=0)
-        
-        self.param_periodoDe = minFutureDateinRepo.strftime("%m-%d-%Y") if minFutureDateinRepo != None else None # the max date in the repository when realizado = 0
+        self.controllerKamino = ControllerKamino()    
+
         self.param_periodoAte = datetime(year=2024, month=12, day=31).strftime('%m-%d-%Y') # determined max date that will be inserted
         
         print('\nUpdating futures...')
@@ -30,7 +26,7 @@ class UpdateFutures:
         try:
             
             oldTransactions = self.repositoryTransaction.getTransactions(realizado=0) # get the futures in the repository
-            newTransactions = [obj for obj in self.controllerKamino.getTransactions(self.param_periodoDe, self.param_periodoAte, apenasRealizados=False) if obj.realizado == 0 ] # get the futures in Kamino
+            newTransactions = [obj for obj in self.controllerKamino.getTransactions(periodoAte=self.param_periodoAte, apenasRealizados=False) if obj.realizado == 0 ] # get the futures in Kamino
             
             pixel = TransactionsVariations(newTransactions,oldTransactions)
             

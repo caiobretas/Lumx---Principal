@@ -13,7 +13,6 @@
     
 """
 
-
 from repositories.repositoryTransactions import RepositoryTransaction
 from controllers.controllerHTTP.controllerKamino import ControllerKamino
 from entities.Variation import Variation
@@ -28,6 +27,7 @@ class TransactionsVariations:
         self.oldTransactions: list[Transaction] = oldTransactions
         self.newTransactions: list[Transaction] = newTransactions
         
+        self.static: list[Transaction] = []
         self.inserts: list[Variation] = []
         self.deletes: list[Variation] = []
         self.changes: list[Variation] = []
@@ -37,18 +37,16 @@ class TransactionsVariations:
     def identifyType(self):
         if not self.oldTransactions or not self.newTransactions: return None
         
-        oldIds = [oldTransaction.idKamino for oldTransaction in self.oldTransactions]
+        oldIds = sorted([oldTransaction.idKamino for oldTransaction in self.oldTransactions], reverse=True)
         newIds = [newTransaction.idKamino for newTransaction in self.newTransactions]
         
         for oldTransaction in self.oldTransactions:
+            
             transaction = Variation(
-                oldTransaction.id,
-                oldTransaction.idKamino,
                 datavencimentoantiga=oldTransaction.datavencimento,
                 datapagamentoantiga=oldTransaction.datapagamento,
                 valorprevistoantigo=oldTransaction.valorprevisto,
-                valorrealizadoantigo=oldTransaction.valorrealizado,
-                descricao=oldTransaction.descricao
+                valorrealizadoantigo=oldTransaction.valorrealizado
             )
             
             if oldTransaction.valorprevisto < 0: transaction.tipo = 'Pagamento'
@@ -65,42 +63,58 @@ class TransactionsVariations:
                 checks = []
                 
                 for newTransaction in self.newTransactions:
-                
+                    
                     check1 = True
                     check2 = True
                     check3 = True
                     check4 = True
                     
-                    if not oldTransaction.idKamino == newTransaction.idKamino: continue
-                    
                     # checa se o idnovo está na lista de id (se não estiver, deve ser inserido. Não é alteração)
-                    if newTransaction.idKamino not in oldIds:
-                        transaction.tipovariacao = 'Entrada'
-                    
-                    # checa alteração de valor realizado
-                    if newTransaction.valorrealizado: check1 = (False if newTransaction.valorrealizado == transaction.valorrealizadoantigo else True)
-                    else: check1 = False
-                    checks.append(check1)
-                    
-                    # checa alteração de valorprevisto
-                    if newTransaction.valorprevisto == transaction.valorprevistoantigo: check2 = False
-                    else: check2 =  True
-                    checks.append(check2)
-                    
-                    # checa alteração de data de vencimento
-                    if newTransaction.datavencimento == transaction.datavencimentoantiga.date(): check3 = False
-                    else: check3 = True
-                    checks.append(check3)
-                    
-                    # checa alteração de data de liquidação 
-                    if newTransaction.datapagamento: check4: bool = (False if newTransaction.datapagamento != transaction.datapagamentoantiga else True)
-                    else: check4 = False
-                    checks.append(check4)
-                    
-                    if any(checks): 
-                        check1: transaction.valorrealizado = newTransaction.valorrealizado
-                        check2: transaction.valorprevisto = newTransaction.valorprevisto
-                        check3: transaction.datavencimento = newTransaction.datavencimento
-                        check4: transaction.datapagamento = newTransaction.datapagamento
+                    if newTransaction.idKamino != oldTransaction.idKamino and newTransaction.idKamino not in oldIds:
+                        transaction.idTransacao = newTransaction.id
+                        transaction.idclassificacao = newTransaction.idclassificacao
+                        transaction.idExterno = newTransaction.idKamino
+                        transaction.datapagamento = newTransaction.datapagamento
+                        transaction.datavencimento = newTransaction.datavencimento
+                        transaction.realizado = newTransaction.realizado
+                        transaction.valorprevisto = newTransaction.valorprevisto
+                        transaction.valorrealizado = newTransaction.valorrealizado
+                        transaction.descricao = newTransaction.descricao
                         
-                        self.changes.append(transaction) 
+                        transaction.tipovariacao = 'Entrada'
+                        
+                        self.inserts.append(transaction)
+                        
+                    
+                    if oldTransaction.idKamino == newTransaction.idKamino:
+    
+                        # checa alteração de valor realizado
+                        if newTransaction.valorrealizado: check1 = (False if newTransaction.valorrealizado == transaction.valorrealizadoantigo else True)
+                        else: check1 = False
+                        checks.append(check1)
+                        
+                        # checa alteração de valorprevisto
+                        if newTransaction.valorprevisto == transaction.valorprevistoantigo: check2 = False
+                        else: check2 =  True
+                        checks.append(check2)
+                        
+                        # checa alteração de data de vencimento
+                        if newTransaction.datavencimento == transaction.datavencimentoantiga.date(): check3 = False
+                        else: check3 = True
+                        checks.append(check3)
+                        
+                        # checa alteração de data de liquidação 
+                        if newTransaction.datapagamento: check4: bool = (False if newTransaction.datapagamento != transaction.datapagamentoantiga else True)
+                        else: check4 = False
+                        checks.append(check4)
+                        
+                        if any(checks): 
+                            if check1: transaction.valorrealizado = newTransaction.valorrealizado
+                            if check2: transaction.valorprevisto = newTransaction.valorprevisto
+                            if check3: transaction.datavencimento = newTransaction.datavencimento
+                            if check4: transaction.datapagamento = newTransaction.datapagamento
+                            
+                            self.changes.append(transaction)
+                            
+                        else: self.static.append(oldTransaction)
+        print (1)

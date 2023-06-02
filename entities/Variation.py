@@ -14,11 +14,8 @@ class Variation:
     valorrealizadoantigo=None,
     valorprevisto=None,
     valorrealizado=None,
-    diferencaprojecao=None,
     idclassificacao=None,
-    descricao=None,
-    projeto=None,
-    nomecentrocusto=None):
+    descricao=None):
         
         self.idTransacao = idTransacao
         self.idExterno = idExterno
@@ -33,11 +30,10 @@ class Variation:
         self.valorrealizadoantigo = valorrealizadoantigo
         self.valorprevisto = valorprevisto
         self.valorrealizado = valorrealizado
-        self.diferencaprojecao = diferencaprojecao
+        # self.diferencaprojecao = (valorprevisto - valorprevistoantigo)
         self.idclassificacao = idclassificacao
         self.descricao = descricao
-        self.projeto = projeto
-        self.nomecentrocusto = nomecentrocusto
+        
 
     def __repr__(self):
         return f"ID: {self.idTransacao} - tipovariacao: {self.tipovariacao}"

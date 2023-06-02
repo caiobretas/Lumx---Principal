@@ -76,7 +76,7 @@ class ControllerKamino ( ControllerHTTPBase ):
             endpoint = self.baseUrl + url + filtros
             
             self.futures: list[Transaction] = []
-            list_aux: list[Transaction] = [] 
+            list_aux: list[Transaction] = []
             for row in super().get(type='CSV', endpoint=endpoint, headers=self.headers):
                 obj: Transaction = Transaction(
                 idKamino = row['ID'],
