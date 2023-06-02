@@ -10,8 +10,4 @@ engine = main.engine
 UpdateFutures(connection, engine).update()
 UpdateCryptoTransactions(connection, engine).update()
 UpdateProjection(connection, engine).update()
-main.admin()
 main.flows()
-
-
-

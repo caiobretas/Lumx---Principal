@@ -15,5 +15,4 @@ UpdateCategories(connection, engine).update()
 UpdateCryptoPrices(connection, engine).update()
 
 main.admin()
-main.flows()
 
