@@ -17,4 +17,3 @@ UpdateCryptoPrices(connection, engine).update()
 
 
 main.admin()
-
