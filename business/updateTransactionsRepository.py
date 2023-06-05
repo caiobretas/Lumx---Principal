@@ -28,7 +28,7 @@ class UpdateTransactions:
             transactionsKamino = self.repositoryKamino.transactions
             transactionsCrypto = self.repositoryCrypto.transactions
             
-            # self.repositoryTransaction.insert(transactionsCrypto, 'bulk')
+            self.repositoryTransaction.insert(transactionsCrypto, 'bulk')
             self.repositoryTransaction.insert(transactionsKamino, 'bulk')
             
             status = 'Complete'
