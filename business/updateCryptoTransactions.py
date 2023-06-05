@@ -37,6 +37,7 @@ class UpdateCryptoTransactions:
                         print(f'{" "*5}{wallet.name} transactions imported.')
                     else:
                         None
+                        
                 if self.repositoryCryptoTransactions.getDate() != None:
                     # get the higher date registered
                     date = self.repositoryCryptoTransactions.getDate()

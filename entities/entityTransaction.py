@@ -1,7 +1,7 @@
 from uuid import uuid4
 from datetime import datetime, timedelta
 
-class Transaction:
+class KaminoTransaction:
     def __init__(self,id=None,idKamino=None, tipo=None, data=None, datapagamento=None, datavencimento=None, datacompetencia=None, valorprevisto=None, valorrealizado=None, percentualrateio=None, realizado=None, idcontaorigem=None, nomecontaorigem=None, codigoreduzidoorigem=None, idcontadestino =None, nomecontadestino=None, codigoreduzidodestino=None, idcentrocusto =None, nomecentrocusto=None, idpessoa =None, nomepessoa=None, observacao=None, cpfcnpjpessoa=None, descricao=None, idunidadenegocio=None, nomeunidadenegocio=None, numeronotafiscal=None, conciliadoorigem=None, conciliadodestino=None, saldoiniciodiacontaativo=None, saldofimdiaccontaativo=None, idprojeto=None, nomeprojeto=None, nomeclassificacao=None, idclassificacao=None, contaativo=None):
         self.id = str(uuid4()) if id == None else id
         self.idKamino = idKamino
@@ -61,16 +61,50 @@ class Transaction:
     def __repr__(self) -> str:
         return f'ID = {self.id}\n'
     
+class Transaction:
+    def __init__(self,id=None,idexterno=None,idcontaativo=None,idclassificacao=None,idcentrocusto=None,tipo=None,realizado: bool=None,datapagamento: datetime=None,datavencimento: datetime=None,valorprevisto: float=None,valorrealizado: float=None,valorrealizado_brl: float = None,valorprevisto_brl: float = None,moeda=None,descricao=None,percentualrateio: float=100):
+        self.id: str = uuid4() if not id else id
+        self.idexterno: str = idexterno
+        self.idcontaativo: str = idcontaativo
+        self.idclassificacao: str = idclassificacao
+        self.realizado: str = realizado
+        self.idcentrocusto: str = idcentrocusto
+        self.tipo: str = tipo if tipo else ('Pagamento' if valorprevisto < 0 else 'Recebimento')
+        self.datapagamento: datetime = datapagamento
+        self.datavencimento: datetime = datavencimento
+        self.valorprevisto: float = valorprevisto
+        self.valorrealizado: float = valorrealizado
+        self.valorprevisto_brl: float = valorprevisto_brl
+        self.valorrealizado_brl: float = valorrealizado_brl
+        self.moeda: str = moeda
+        self.descricao: str = descricao
+        self.percentualrateio: str = percentualrateio
+        
+        if self.realizado == 0: self.realizado = False
+        else: self.realizado = True
+        
+    def to_tuple(self) -> tuple:
+        return (
+            self.id,self.idexterno,self.idcontaativo,self.idclassificacao,self.realizado,self.idcentrocusto,self.tipo,self.datapagamento,self.datavencimento,self.valorprevisto,self.valorrealizado,self.valorprevisto_brl,self.valorrealizado_brl,self.moeda,self.descricao,self.percentualrateio
+        )
+    
+    def __repr__(self) -> str:
+        return f'Moeda {self.moeda} - ID: {self.id}'
+    
+    def __str__(self) -> str:
+        return f'Moeda {self.moeda} - ID: {self.id}'
+        
 class TransactionCrypto:
     def __init__(self,
+    id = None,
     blockNumber = None,
     blockHash = None,
     timeStamp = None,
     hash = None,
     nonce = None,
-    from_: str = None,
+    from_ = None,
     contractAddress = None,
-    to: str = None,
+    to = None,
     gas = 0,
     gasPrice = 0,
     gasUsed = 0,
@@ -86,14 +120,14 @@ class TransactionCrypto:
     methodId = None,
     functionName = None,
     txnType = None,
-    address: str=None,
-    blockchain=None,
-    name: str=None,
-    scan: str=None,
-    description: str=None
+    address = None,
+    blockchain = None,
+    name = None,
+    scan = None,
+    description = None
     ):
         
-        self.id = str(uuid4())
+        self.id = str(uuid4()) if not id else id
         self.blockNumber = blockNumber
         self.blockHash = blockHash
         self.datetime = datetime.fromtimestamp(timeStamp) + timedelta(hours=3)

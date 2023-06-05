@@ -1,7 +1,7 @@
 from time import time
 from datetime import datetime
 from controllers.controllerGoogle.controllerGoogleSheets import GoogleSheets
-from repositories.repositoryTransactions import RepositoryTransaction
+from repositories.repositoryTransactionsKamino import RepositoryKamino
 from repositories.repositoryCategories import RepositoryCategories
 from repositories.repositoryContacts import RepositoryContacts
 
@@ -11,7 +11,7 @@ from entities.entityTransaction import Transaction
 
 class FinanceControl:
     def __init__(self, connection, engine):
-        self.repositoryTransaction = RepositoryTransaction(connection, engine)
+        self.RepositoryKamino = RepositoryKamino(connection, engine)
         self.repositoryContacts = RepositoryContacts(connection, engine)
         self.repositoryCategories = RepositoryCategories(connection, engine)
 
@@ -34,9 +34,9 @@ class Flow(FinanceControl):
     fm.numeronotafiscal,
     fm.idkamino
 FROM
-    {self.repositoryTransaction.schema}.{self.repositoryTransaction.tableName} AS fm
+    {self.RepositoryKamino.schema}.{self.RepositoryKamino.tableName} AS fm
 LEFT JOIN
-    {self.repositoryTransaction.schema}.{self.repositoryCategories.tableName} AS c ON c.id = fm.idclassificacao
+    {self.RepositoryKamino.schema}.{self.repositoryCategories.tableName} AS c ON c.id = fm.idclassificacao
 LEFT JOIN
     {self.repositoryContacts.schema}.{self.repositoryContacts.tableName} AS hr ON hr.idpessoa = fm.idpessoa
 WHERE
@@ -51,7 +51,7 @@ WHERE
         nomepessoa != 'Lumx Studios S/A'
     ORDER BY subcategoria4 desc, nomepessoa asc, valorprevisto desc
 '''
-        transactions_list = self.repositoryTransaction.runQuery(query)
+        transactions_list = self.RepositoryKamino.runQuery(query)
 
         # create lists of the values that are going to be written in Google Sheets
         liberados_values_list = []

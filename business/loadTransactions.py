@@ -2,7 +2,6 @@ from time import sleep
 from controllers.controllerHTTP.controllerKamino import ControllerKamino
 from controllers.controllerHTTP.controllerEtherscan import ControllerEtherscan
 from controllers.controllerHTTP.controllerPolygonscan import ControllerPolygonscan
-from repositories.repositoryBook import RepositoryBook
 from entities.entityTransaction import Transaction, TransactionCrypto
 
 class LoadTransactions:
@@ -11,11 +10,11 @@ class LoadTransactions:
         self.periodoDe = periodoDe
         self.periodoAte = periodoAte
         self.apenasRealizados = apenasRealizados
-
-    def loadTransactions(self) -> list[Transaction]:
+    
+    def loadKaminoTransactions(self) -> list[Transaction]:
         try:
             return ControllerKamino().getTransactions(periodoDe=self.periodoDe, periodoAte=self.periodoAte, apenasRealizados=self.apenasRealizados)
-       
+      
         except Exception as e:
             print(f'Error: {e}.\n\nperiodoDe e periodoAte não podem ser None\nperiodoDe = {self.periodoDe}\nperiodoAte = {self.periodoAte}')
             raise e

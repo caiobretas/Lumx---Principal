@@ -1,6 +1,4 @@
 from time import time
-from viewers.viewerPrices import ViewerPrices
-from business.writePrices import WritePrices
 from business.writeProjection import WriteProjection
 
 class UpdateProjection(object):

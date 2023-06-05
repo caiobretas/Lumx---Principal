@@ -1,4 +1,4 @@
-from repositories.repositoryTransactions import RepositoryTransaction
+from repositories.repositoryTransactionsKamino import RepositoryKamino
 from repositories.repositoryEmailRequests import RepositoryEmailRequests
 
 from entities.entityEmailRequest import EmailRequest
@@ -9,7 +9,7 @@ class EvaluateInvoiceRequest:
         self.connection = connection
         self.engine = engine
         self.list_requests: list[EmailRequest] = []
-        self.repositoryTransactions: RepositoryTransaction = RepositoryTransaction(connection, engine)
+        self.RepositoryKamino: RepositoryKamino = RepositoryKamino(connection, engine)
         self.repositoryEmailRequests: RepositoryEmailRequests = RepositoryEmailRequests(connection, engine)
         
     def insertIntoEmailsRequestsTable(self,list_requests=None) -> None: # postgresql
@@ -22,7 +22,7 @@ class EvaluateInvoiceRequest:
         self.repositoryEmailRequests.getEmailRequests(False,False,'Invoice')
         
         externalIds_list: list = self.repositoryEmailRequests.externalId_list
-        for row in self.repositoryTransactions.getMissingInvoices():
+        for row in self.RepositoryKamino.getMissingInvoices():
             request = EmailRequest(
                 external_id = row[7],
                 datetime = row[0],

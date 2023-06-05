@@ -2,20 +2,24 @@ import logging
 import csv
 from io import StringIO
 from datetime import datetime
-from entities.entityTransaction import TransactionCrypto
+from entities.entityTransaction import TransactionCrypto, Transaction
 from entities.entityCoin import Coin
 from entities.entityProjection import Projection
 from repositories.repositoryBase import RepositoryBase
+from repositories.repositoryPrices import RepositoryPrices
 import psycopg2
 
 class RepositoryCryptoTransaction ( RepositoryBase ):
     def __init__(self, connection: str, engine: str):
         self.connection: psycopg2.connection = connection
+        self.engine = engine
         
         self.schema = 'finance'
         self.tableName = 'movements_crypto'
+        self.repositoryPrices = RepositoryPrices(connection,engine)
         super().__init__(connection, engine, self.schema, self.tableName)
-
+        self.transactions: list[Transaction] = []
+        
     def getDate(self) -> datetime:
         with self.connection.cursor() as cur:
             try:
@@ -58,6 +62,58 @@ class RepositoryCryptoTransaction ( RepositoryBase ):
             except:
                 raise Exception
     
+    def getCryptoTransactions(self) -> list[TransactionCrypto] :
+    
+        query = f"""
+        
+        CREATE TEMPORARY TABLE IF NOT EXISTS prices AS
+                SELECT
+                    subqueryB.time, POWER(c.close, -1) * subqueryB.close AS close, subqueryB.conversionSymbol, subqueryB.date
+                FROM
+                    {self.repositoryPrices.schema}.{self.repositoryPrices.tableName} AS c
+                RIGHT JOIN (
+                    SELECT
+                        time, close, conversionSymbol, date
+                    FROM
+                        {self.schema}.{self.repositoryPrices.tableName}
+                    ) AS subqueryB ON c.time = subqueryB.time
+                WHERE
+                    c.conversionsymbol = 'BRL';
+            SELECT
+                m.id, m.bank, c.id, m.datetime,
+                m.value, (m.value * pc.close) as valuebrl, m.tokensymbol
+            FROM
+                {self.schema}.{self.tableName} as m
+	            LEFT JOIN {self.schema}.categories as c on m.methodid = c.method_id
+            	LEFT JOIN prices as pc on pc.conversionsymbol = m.tokensymbol and date(pc.date) = date(m.datetime)
+            ORDER BY
+                date desc, tokensymbol asc;"""
+        
+        
+        try:
+            with self.connection.cursor() as cur:
+                
+                cur.execute(query)
+                
+                for row in cur.fetchall():
+                    transaction = Transaction(
+                    id = row[0],
+                    idcontaativo = row[1],
+                    idclassificacao = row[2],
+                    realizado = True,
+                    datapagamento = row[3],
+                    datavencimento = row[3],
+                    valorprevisto = row[4],
+                    valorrealizado = row[4],
+                    valorprevisto_brl = row[5],
+                    valorrealizado_brl = row[5],
+                    moeda = row[6]
+                    )
+                    self.transactions.append(transaction)
+                    
+        except Exception as e:
+            logging.error(e)
+                
     def delete_unknown_tokens(self, list_known_tokens: list[Coin]):
         lista_valores = ','.join("'" + str(item) + "'" for item in list_known_tokens)
         with self.connection.cursor() as cur:
@@ -67,8 +123,8 @@ class RepositoryCryptoTransaction ( RepositoryBase ):
                 """
                 cur.execute(query=query)
                 self.connection.commit()
-            except:
-                raise Exception
+            except Exception as e:
+                logging.error(e)
             
     def getProjection(self) -> list[Projection]:
         with self.connection.cursor() as cur:
@@ -145,7 +201,7 @@ class RepositoryCryptoTransaction ( RepositoryBase ):
                 self.connection.commit()
                 return list_projection
             except Exception as e:
-                logging.error(f"{''*3}{e}")
+                logging.error(e)
 
     def updatebyHash(self, hash, methodid, description) -> None:
         with self.connection.cursor() as cur:
@@ -161,5 +217,5 @@ class RepositoryCryptoTransaction ( RepositoryBase ):
                 """
                 cur.execute(query=query)
                 self.connection.commit()
-            except:
-                raise Exception
+            except Exception as e:
+                logging.error(e)

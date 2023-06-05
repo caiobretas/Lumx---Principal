@@ -42,7 +42,7 @@ class Main:
     
     def emailrequests(self):
         from business.evaluateInvoiceRequest import EvaluateInvoiceRequest
-        EvaluateInvoiceRequest(self.connection, self.engine).sendInvoiceRequest() # send the Invoice Request
+        # EvaluateInvoiceRequest(self.connection, self.engine).sendInvoiceRequest() # send the Invoice Request
         EvaluateInvoiceRequest(self.connection, self.engine).sendInvoiceReminder() # send the Invoice Reminder, if needed.
     
     def flows(self):
@@ -54,13 +54,13 @@ class Main:
         UpdateEmailRequests(self.connection, self.engine).updateEmailRequests()
         
     def finance(self):
-        from business.atualizaRepository import UpdateFinanceRepository
+        from business.atualizaRepository import FinanceRepository
         from business.updateProjection import UpdateProjection
-        UpdateFinanceRepository(self.connection,self.engine)
+        FinanceRepository(self.connection,self.engine).update()
         UpdateProjection(self.connection,self.engine).update()
         
     def hr(self):
-        from business.UpdateContacts import UpdateContacts
+        from business.updateContacts import UpdateContacts
         UpdateContacts(connection=self.connection, engine=self.engine).update()
     
     def routine(self):
@@ -71,4 +71,6 @@ class Main:
         
         print('\nRoutine in {:.2f} seconds\n'.format(time() - self.start_time))
 
-Main().flows()
+# Main().flows()
+# Main().emailrequests()
+Main().finance()

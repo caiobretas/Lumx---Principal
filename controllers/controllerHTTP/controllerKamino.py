@@ -4,7 +4,7 @@ import logging
 
 from controllers.controllerHTTP.controllerHTTPBase import ControllerHTTPBase
 from entities.entityTransfers import Transfer
-from entities.entityTransaction import Transaction
+from entities.entityTransaction import KaminoTransaction, Transaction
 from entities.entityContact import Contact
 
 class ControllerKamino ( ControllerHTTPBase ):
@@ -18,12 +18,14 @@ class ControllerKamino ( ControllerHTTPBase ):
         hash='RUCCQkFHQUc6QkqAPjpEQUqFOn6EQkk6PkGCgUI+RklCSUGFgEZ+PkSCPoI6RYI+STpEgX5KOoA+gkk6fkRCRkI+gUZAhD5GjZmOnJaXmYKJkZZJREdCRg=='
         usr='b6a04d0d-5d08-4ca9-b0d8-a43630c61e06'
     
-        self.headers = {'Accept': accept,
-                        'App': app,
-                        'CN': cn,
-                        'IDUsr': idUsr,
-                        'Hash': hash,
-                        'Usr': usr}
+        self.headers = {
+            'Accept': accept,
+            'App': app,
+            'CN': cn,
+            'IDUsr': idUsr,
+            'Hash': hash,
+            'Usr': usr
+        }
 
     def postTransfer(self, dict_: Transfer):
         url = '/api/financeiro/transferencia'
@@ -75,10 +77,10 @@ class ControllerKamino ( ControllerHTTPBase ):
             filtros = f'?periodoDe={periodoDe}&periodoAte={periodoAte}&competenciaDe={competenciaDe}&competenciaAte={competenciaAte}&apenasRealizados={apenasRealizados}&incluirRateio={incluirRateio}&guidFormato={guidFormato}&idBanco={idBanco}&separador={separador}&tipoArquivo={tipoArquivo}&removerCabecalho={removerCabecalho}'
             endpoint = self.baseUrl + url + filtros
             
-            self.futures: list[Transaction] = []
-            list_aux: list[Transaction] = [] 
+            self.futures: list[KaminoTransaction] = []
+            list_aux: list[KaminoTransaction] = [] 
             for row in super().get(type='CSV', endpoint=endpoint, headers=self.headers):
-                obj: Transaction = Transaction(
+                kaminoTransaction: KaminoTransaction = KaminoTransaction(
                 idKamino = row['ID'],
                 tipo = row['Tipo'],
                 data = datetime.datetime.strptime(row['Data'],'%d/%m/%Y').date(),
@@ -113,10 +115,11 @@ class ControllerKamino ( ControllerHTTPBase ):
                 nomeprojeto = row['NomeProjeto'],
                 nomeclassificacao = row['NomeClassificacao'],
                 contaativo = row['ContaAtivo'])
-                list_aux.append(obj)
-                
-                if obj.realizado == 0:
-                    self.futures.append(obj)
+                                
+                list_aux.append(kaminoTransaction)
+
+                if kaminoTransaction.realizado == 0:
+                    self.futures.append(kaminoTransaction)
                 
             return list_aux
             
@@ -168,42 +171,3 @@ class ControllerKamino ( ControllerHTTPBase ):
             logging.error(e)
         finally:
             status = 'Complete'
-    
-    # def getCategory(self, id:str=None, active:bool=False, onlyBank:bool=True) -> list[Category1]:
-#     try
-    #         url = '/api/financeiro/planoconta/lista'
-    #         endpoint = self.baseUrl + url
-        
-    #         list_categories = list[Category1]
-    #         for dict_category in super().get(endpoint=endpoint,headers=self.headers):
-    #             dict_category = Category1(
-    #                 id = dict_category['NumeroID'],
-    #                 idplanoconta = dict_category['IDPlanoConta'],
-    #                 idpai = dict_category['IDPai'],
-    #                 nome = dict_category['Nome'],
-    #                 ativo = dict_category['Ativo'],
-    #                 controlasaldo = dict_category['ControlaSaldo'],
-    #                 tipo = dict_category['Tipo'],
-    #                 descricaotipo = dict_category['DescricaoTipo'],
-    #                 cartaocredito = dict_category['CartaoCredito'],
-    #                 tipocontagerencial = dict_category['TipoContaGerencial'],
-    #                 idtipoimposto = dict_category['IDTipoImposto'],
-    #                 nivel = dict_category['Nivel'],
-    #                 grupocontacorrente = dict_category['GrupoContaCorrente'],
-    #                 valoratual = dict_category['ValorAtual'],
-    #                 saldobloqueado = dict_category['SaldoBloqueado'],
-    #                 idcontabanco = dict_category['IDContaBanco'],
-    #                 usarextratobanco = dict_category['UsarExtratoBanco'],
-    #                 kamino = dict_category['Kamino'],
-    #                 excluifluxocaixa = dict_category['ExcluiFluxoCaixa'],
-    #                 codigoexterno = dict_category['CodigoExterno'],
-    #                 dataultimoextratoconciliado = dict_category['DataUltimoExtratoConciliado'],
-    #                 dataultimoextratopendente = dict_category['DataUltimoExtratoPendente'])
-    #             list_categories.append(dict_category)
-    #         status = 'Success'
-    #         return list_categories
-    #     except Exception as e:
-    #         logging.error(f'{" "* 3} Erro: {e}')
-    #         status = 'Failed'
-    #     finally:
-    #         print(f"Status: {status}")

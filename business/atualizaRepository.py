@@ -1,20 +1,26 @@
 from time import time
 from business.updateCryptoPrices import UpdateCryptoPrices
 from business.updateCategories import UpdateCategories
-from business.updateTransactions import UpdateTransactions
+from business.updateKaminoTransactions import UpdateKaminoTransactions
 from business.updateCryptoTransactions import UpdateCryptoTransactions
+from business.updateTransactionsRepository import UpdateTransactions
 from business.updateFutures import UpdateFutures
 from business.updateBook import UpdateBook
 
-class UpdateFinanceRepository:
+class FinanceRepository:
     def __init__(self,connection,engine) -> None:
-        timer = time()
+        self.connection = connection
+        self.engine = engine
         
-        UpdateBook(connection,engine).update() # update book repository from 'interface.xlsx'
-        UpdateCategories(connection, engine).update()
-        UpdateCryptoTransactions(connection, engine).update()
-        UpdateCryptoPrices(connection,engine).update()
-        UpdateTransactions(connection,engine)
-        UpdateFutures(connection,engine).update()
+    def update(self): 
+        timer = time()
+          
+        # UpdateBook(self.connection,self.engine).update() # update book repository from 'interface.xlsx'
+        # UpdateCategories(self.connection, self.engine).update()
+        # UpdateCryptoTransactions(self.connection, self.engine).update()
+        # UpdateCryptoPrices(self.connection,self.engine).update()
+        # UpdateKaminoTransactions(self.connection,self.engine).update()
+        # UpdateFutures(self.connection,self.engine).update()
+        UpdateTransactions(self.connection, self.engine).update()
 
-        print('\nDatabase updated in {:.2f} seconds\n'.format(time() - timer))
+        print('\nRepositories updated in {:.2f} seconds\n'.format(time() - timer))
