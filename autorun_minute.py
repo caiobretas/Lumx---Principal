@@ -17,6 +17,4 @@ UpdateContacts(connection, engine).update()
 UpdateCategories(connection, engine).update()
 UpdateCryptoPrices(connection, engine).update()
 UpdateTransactions(connection, engine).update()
-
-
 main.admin()
