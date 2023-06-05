@@ -56,7 +56,7 @@ class Main:
     def finance(self):
         from business.atualizaRepository import FinanceRepository
         from business.updateProjection import UpdateProjection
-        # FinanceRepository(self.connection,self.engine).update()
+        FinanceRepository(self.connection,self.engine).update()
         UpdateProjection(self.connection,self.engine).update()
         
     def hr(self):
