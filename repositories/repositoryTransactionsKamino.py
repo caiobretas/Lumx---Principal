@@ -251,6 +251,8 @@ class RepositoryKamino ( RepositoryBase ):
                     idexterno=transactionKamino.idKamino,
                     idclassificacao=transactionKamino.idclassificacao,
                     idcentrocusto=transactionKamino.idcentrocusto,
+                    idcontaativo=transactionKamino.contaativo,
+                    tipo=transactionKamino.tipo,
                     tipo=transactionKamino.tipo,
                     realizado=transactionKamino.realizado,
                     datapagamento=transactionKamino.datapagamento,

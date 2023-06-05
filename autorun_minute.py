@@ -11,10 +11,11 @@ main = Main()
 connection = main.connection
 engine = main.engine
 
+UpdateTransactions(connection, engine).update()
 UpdateFutures(connection, engine).update()
 UpdateBook(connection, engine).update()
 UpdateContacts(connection, engine).update()
 UpdateCategories(connection, engine).update()
 UpdateCryptoPrices(connection, engine).update()
-UpdateTransactions(connection, engine).update()
+
 main.admin()
