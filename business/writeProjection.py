@@ -24,10 +24,12 @@ class WriteProjection:
         start_time = time()
         print('\nWriting database...')
         
+        headers = ['id', 'data_liquidação','data_vencimento','valorprevisto','valorrealizado','moeda','cotação','valorprevisto_BRL','valorrealizado_BRL','realizado','recorrencia','de','para','percentualrateio','nomecentrocusto','nomepessoa','observacao','descricao','numeronotafiscal','contaativo','projeto','subcategoria4','subcategoria3','subcategoria2','subcategoria','categoria','categoriaprojecao','categoriacusto_receita','hash','check_conciliadoorigem','check_conciliadodestino','produto']
+        
         try:
             list_objMovements: list[Projection] = AssembleProjection(self.connection, self.engine).getRegisters()
             list_valuesMovements = TransformObj().objects_to_values(list_objMovements)
-            GoogleSheets().overwriteWorksheet_byID(self.worksheetId, list_valuesMovements, self.sheetMovementsProjection, range='A2')
+            GoogleSheets().overwriteWorksheet_byID(self.worksheetId, list_valuesMovements, self.sheetMovementsProjection, headers=headers, range='A2')
             GoogleSheets().appendRow(values=[self.sheetMovementsProjection,datetime.now().strftime("%d/%m/%Y %H:%M:%S")], sheetName=self.sheetUpdates, worksheetId=self.worksheetId)
             status = 'Complete'
         except Exception as e:
@@ -41,10 +43,13 @@ class WriteProjection:
         repositoryPrices = RepositoryPrices(self.connection, self.engine)
         start_time = time()
         print('\nWriting prices...')
+        
+        headers =['id', 'date', 'token', 'price']
+        
         try:
             list_prices: list[Projection_Price] = repositoryPrices.getProjection()
             list_valuesPrices = TransformObj().objects_to_values(list_prices)
-            GoogleSheets().overwriteWorksheet_byID(worksheetId=self.worksheetId, list_values=list_valuesPrices, sheetName=self.sheetPricesProjection, range='A2')
+            GoogleSheets().overwriteWorksheet_byID(worksheetId=self.worksheetId, list_values=list_valuesPrices, headers=headers,sheetName=self.sheetPricesProjection, range='A2')
             GoogleSheets().appendRow(values=[self.sheetPricesProjection,datetime.now().strftime("%d/%m/%Y %H:%M:%S")], sheetName=self.sheetUpdates, worksheetId=self.worksheetId)
             status = 'Complete'
         except Exception as e:
