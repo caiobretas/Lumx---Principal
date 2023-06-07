@@ -19,7 +19,6 @@ class UpdateKaminoTransactions:
         try:
             date: str = self.repositoryKamino.getDate(realizado=1)
             self.periodoDe = datetime.strftime(date, "%m-%d-%y")
-            self.repositoryKamino.deleteByDate(date)
                 
         except:
             status = 'Reset'
@@ -28,9 +27,10 @@ class UpdateKaminoTransactions:
         finally:
             start_time = time()
             try:
-                self.repositoryKamino.insert(LoadTransactions(self.periodoDe,apenasRealizados=True).loadKaminoTransactions())
+                self.repositoryKamino.insert(LoadTransactions(periodoDe='05-01-2023',apenasRealizados=True).loadKaminoTransactions())
                 
                 status = 'Complete'
+                
             except:
                 # put on a limit date 
                 self.periodoAte = datetime.now().strftime("%m-%d-%y")

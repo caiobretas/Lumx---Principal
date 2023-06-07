@@ -65,7 +65,42 @@ class RepositoryKamino ( RepositoryBase ):
                 query = f"""INSERT INTO {self.schema}.{self.tableName}
                 (id, tipo, data, datapagamento, datavencimento, datacompetencia, valorprevisto, valorrealizado, percentualrateio, realizado, idcontaorigem, nomecontaorigem, codigoreduzidoorigem, idcontadestino, nomecontadestino, codigoreduzidodestino,  idcentrocusto, nomecentrocusto, idpessoa, nomepessoa, observacao, cpfcnpjpessoa, descricao, idunidadenegocio, nomeunidadenegocio, numeronotafiscal, conciliadoorigem, conciliadodestino, saldoiniciodiacontaativo, saldofimdiaccontaativo, idprojeto, nomeprojeto, idclassificacao, contaativo, idkamino)
                 VALUES ({placeholders})
-                on conflict (idKamino) do nothing;"""
+                on conflict (idKamino) do update set
+                tipo = EXCLUDED.tipo,
+                data = EXCLUDED.data,
+                datapagamento = EXCLUDED.datapagamento,
+                datavencimento = EXCLUDED.datavencimento,
+                datacompetencia = EXCLUDED.datacompetencia,
+                valorprevisto = EXCLUDED.valorprevisto,
+                valorrealizado = EXCLUDED.valorrealizado,
+                percentualrateio = EXCLUDED.percentualrateio,
+                realizado = EXCLUDED.realizado,
+                idcontaorigem = EXCLUDED.idcontaorigem,
+                nomecontaorigem = EXCLUDED.nomecontaorigem,
+                codigoreduzidoorigem = EXCLUDED.codigoreduzidoorigem,
+                idcontadestino = EXCLUDED.idcontadestino,
+                nomecontadestino = EXCLUDED.nomecontadestino,
+                codigoreduzidodestino = EXCLUDED.codigoreduzidodestino,
+                idcentrocusto = EXCLUDED.idcentrocusto,
+                nomecentrocusto = EXCLUDED.nomecentrocusto,
+                idpessoa = EXCLUDED.idpessoa,
+                nomepessoa = EXCLUDED.nomepessoa,
+                observacao = EXCLUDED.observacao,
+                cpfcnpjpessoa = EXCLUDED.cpfcnpjpessoa,
+                descricao = EXCLUDED.descricao,
+                idunidadenegocio = EXCLUDED.idunidadenegocio,
+                nomeunidadenegocio = EXCLUDED.nomeunidadenegocio,
+                numeronotafiscal = EXCLUDED.numeronotafiscal,
+                conciliadoorigem = EXCLUDED.conciliadoorigem,
+                conciliadodestino = EXCLUDED.conciliadodestino,
+                saldoiniciodiacontaativo = EXCLUDED.saldoiniciodiacontaativo,
+                saldofimdiaccontaativo = EXCLUDED.saldofimdiaccontaativo,
+                idprojeto = EXCLUDED.idprojeto,
+                nomeprojeto = EXCLUDED.nomeprojeto,
+                idclassificacao = EXCLUDED.idclassificacao,
+                contaativo = EXCLUDED.contaativo,
+                idkamino = EXCLUDED.idkamino
+                ;"""
                     
                 cur.executemany(query, values) if method == 'bulk' else cur.execute(query, values)
                 self.connection.commit()
