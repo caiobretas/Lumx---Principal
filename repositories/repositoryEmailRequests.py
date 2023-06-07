@@ -21,7 +21,7 @@ class RepositoryEmailRequests(RepositoryBase):
                         INSERT INTO {self.schema}.{self.tableName}
                         (id, external_id, draft_id, email_id,datetime,request_type,contact_id,from_,to_,subject,answered,attachment, attachment_id,pending,concluded)
                         VALUES ({placeholders})
-                        ON CONFLICT (email_id) DO UPDATE SET
+                        ON CONFLICT DO UPDATE SET
                         draft_id = EXCLUDED.draft_id,
                         email_id = EXCLUDED.email_id,
                         request_type = EXCLUDED.request_type,
@@ -31,7 +31,7 @@ class RepositoryEmailRequests(RepositoryBase):
                         subject = EXCLUDED.subject,
                         answered = EXCLUDED.answered,
                         attachment = EXCLUDED.attachment,
-                        attachment_id = EXCLUDED.attachment,
+                        attachment_id = EXCLUDED.attachment_id,
                         pending = EXCLUDED.pending,
                         concluded = EXCLUDED.concluded
                         """

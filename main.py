@@ -73,4 +73,4 @@ class Main:
 
 # Main().flows()
 # Main().emailrequests()
-Main().finance()
+Main().routine()

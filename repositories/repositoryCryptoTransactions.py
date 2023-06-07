@@ -47,11 +47,11 @@ class RepositoryCryptoTransaction ( RepositoryBase ):
                     
                 cur.executemany(query, values)
                 self.connection.commit()
-            
             except Exception as e:
                 print(e)
                 print(f'\nProblem inserting crypto transactions')
-                raise e
+                logging.error(e)
+                return None
 
     def deleteByDate(self, date)-> None:
         with self.connection.cursor() as cur:

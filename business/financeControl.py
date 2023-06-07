@@ -45,7 +45,6 @@ WHERE
         subcategoria4 in ('Prestação de Serviços','Pró-Labore','Bolsa Auxílio Estágio')
     AND (
         DATE_TRUNC('MONTH', fm.data) = DATE_TRUNC('MONTH', CURRENT_DATE)
-        OR DATE_TRUNC('MONTH', fm.data) = DATE_TRUNC('MONTH', CURRENT_DATE)
     )
     AND
         nomepessoa != 'Lumx Studios S/A'
@@ -56,6 +55,7 @@ WHERE
         # create lists of the values that are going to be written in Google Sheets
         liberados_values_list = []
         aguardandoNFSe_values_list = []
+        if not transactions_list: return None
         for transaction in transactions_list:
             transactiondate: datetime = transaction[0].strftime('%m-%Y')
             category = transaction[1]
