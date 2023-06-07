@@ -28,7 +28,6 @@ class UpdateKaminoTransactions:
             start_time = time()
             try:
                 self.repositoryKamino.insert(LoadTransactions(periodoDe=periodoDe,apenasRealizados=True).loadKaminoTransactions())
-                
                 status = 'Complete'
                 
             except:
