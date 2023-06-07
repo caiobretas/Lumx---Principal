@@ -1,5 +1,5 @@
 from time import time
-from datetime import datetime
+from datetime import datetime, timedelta
 from business.loadTransactions import LoadTransactions
 from repositories.repositoryTransactionsKamino import RepositoryKamino
 from repositories.repositoryTransactions import RepositoryTransactions
@@ -18,7 +18,7 @@ class UpdateKaminoTransactions:
     def update(self):
         try:
             date: str = self.repositoryKamino.getDate(realizado=1)
-            self.periodoDe = datetime.strftime(date, "%m-%d-%y")
+            periodoDe = datetime.strftime(date - timedelta(days=5), "%m-%d-%y")
                 
         except:
             status = 'Reset'
@@ -27,7 +27,7 @@ class UpdateKaminoTransactions:
         finally:
             start_time = time()
             try:
-                self.repositoryKamino.insert(LoadTransactions(periodoDe='05-01-2023',apenasRealizados=True).loadKaminoTransactions())
+                self.repositoryKamino.insert(LoadTransactions(periodoDe=periodoDe,apenasRealizados=True).loadKaminoTransactions())
                 
                 status = 'Complete'
                 
