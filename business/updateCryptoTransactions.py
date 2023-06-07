@@ -32,6 +32,7 @@ class UpdateCryptoTransactions:
                 list_transactions: list[TransactionCrypto] = []
                 for wallet in self.list_addresses:
                     if wallet.is_lumx:
+                        sleep(1)
                         transaction_crypto = LoadTransactions().loadCryptoTransactions(wallet.is_safe,wallet.address, wallet.name, wallet.blockchain)
                         list_transactions.extend(transaction_crypto)
                         print(f'{" "*5}{wallet.name} transactions imported.')

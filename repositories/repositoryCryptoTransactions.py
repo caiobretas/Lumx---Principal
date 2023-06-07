@@ -32,6 +32,7 @@ class RepositoryCryptoTransaction ( RepositoryBase ):
                 raise e
                        
     def insert(self, lst: list[TransactionCrypto]) -> None:
+        
         with self.connection.cursor() as cur:
             values = [t.to_tuple() for t in lst]
             try:
@@ -47,6 +48,7 @@ class RepositoryCryptoTransaction ( RepositoryBase ):
                     
                 cur.executemany(query, values)
                 self.connection.commit()
+            
             except Exception as e:
                 print(e)
                 print(f'\nProblem inserting crypto transactions')
