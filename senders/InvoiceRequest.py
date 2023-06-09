@@ -10,7 +10,7 @@ class InvoiceRequest:
         return draft, draft['id']
     
     def setMessage(self) -> tuple:
-        self.request.subject = f'NFS-e {self.request.contact_name} - {self.date}'
+        self.request.subject = f'NFS-e Lumx - {self.request.contact_name} - {self.date}'
         message = f'Prezado(a) {self.request.contact_name},\n\nFavor responder a este e-mail com a Nota Fiscal de Serviços referente ao mês {self.date}\n\nValor: R${self.request.value}\n\nEm caso de dúvidas, envie um e-mail para financeiro@lumxstudios.com\n\nEsta é uma mensagem automática.'
         return self.request.subject, message
     
@@ -44,5 +44,5 @@ class InvoiceRequest:
         self.date = (request.datetime - timedelta(days=30)).strftime('%m/%Y')
     
         self.request.request_type = 'Invoice'
-        self.request.from_ = 'caio.bretas@lumxstudios.com'
+        self.request.from_ = 'financeiro@lumxstudios.com'
         self.request.datetime = datetime.now()

@@ -42,7 +42,7 @@ class Main:
     
     def emailrequests(self):
         from business.evaluateInvoiceRequest import EvaluateInvoiceRequest
-        # EvaluateInvoiceRequest(self.connection, self.engine).sendInvoiceRequest() # send the Invoice Request
+        EvaluateInvoiceRequest(self.connection, self.engine).sendInvoiceRequest() # send the Invoice Request
         EvaluateInvoiceRequest(self.connection, self.engine).sendInvoiceReminder() # send the Invoice Reminder, if needed.
     
     def flows(self):
@@ -72,5 +72,6 @@ class Main:
         print('\nRoutine in {:.2f} seconds\n'.format(time() - self.start_time))
 
 # Main().flows()
-# Main().emailrequests()
+Main().emailrequests()
 Main().routine()
+# Main().admin()

@@ -3,6 +3,7 @@ from repositories.repositoryEmailRequests import RepositoryEmailRequests
 from controllers.controllerGoogle.controllerGoogleGmail import GoogleGmail
 from entities.entityEmailRequest import EmailRequest
 class UpdateEmailRequests:
+    
     def __init__(self, connection=None, engine=None):
         self.repositoryEmailRequests = RepositoryEmailRequests(connection, engine) if connection != None and engine != None else None
         self.controllerGmail = GoogleGmail()
@@ -11,7 +12,8 @@ class UpdateEmailRequests:
     def updateEmailRequests(self):
         timer = time()
         print('\nUpdating Email Requests...')
-        emailRequests_list = self.repositoryEmailRequests.getEmailRequests(False, False, 'Invoice')
+        
+        emailRequests_list: list[EmailRequest] = self.repositoryEmailRequests.getEmailRequests(False, False, 'Invoice')
         
         if not emailRequests_list:
             return None

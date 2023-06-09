@@ -19,9 +19,9 @@ class RepositoryEmailRequests(RepositoryBase):
                     placeholders = ','.join(['%s'] * len(values[0]))
                     query = f"""
                         INSERT INTO {self.schema}.{self.tableName}
-                        (id, external_id, draft_id, email_id,datetime,request_type,contact_id,from_,to_,subject,answered,attachment, attachment_id,pending,concluded)
+                        (id, external_id,draft_id,email_id,datetime,request_type,contact_id,from_,to_,subject,answered,attachment, attachment_id,pending,concluded)
                         VALUES ({placeholders})
-                        ON CONFLICT DO UPDATE SET
+                        ON CONFLICT (email_id) DO UPDATE SET
                         draft_id = EXCLUDED.draft_id,
                         email_id = EXCLUDED.email_id,
                         request_type = EXCLUDED.request_type,
@@ -46,11 +46,11 @@ class RepositoryEmailRequests(RepositoryBase):
         
     def getEmailRequests(self, concludedOnly=False, pendingOnly=False,request_type='Invoice'):
         
-        query = f"select e.*, c.nome from {self.schema}.{self.tableName} as e left join {self.repositoryContacts.schema}.{self.repositoryContacts.tableName} as c on c.id = e.contact_id "
+        query = f"select e.*, c.nome from {self.schema}.{self.tableName} as e left join {self.repositoryContacts.schema}.{self.repositoryContacts.tableName} as c on c.id = e.contact_id"
         
-        if request_type: query = query + f"where request_type='{request_type}'"
-        if concludedOnly: query = query + f"and concluded = {concludedOnly}"
-        if pendingOnly: query = query + f"and pending = {pendingOnly}"
+        if request_type: query = query + f" where request_type='{request_type}'"
+        if concludedOnly: query = query + f" and concluded = {concludedOnly}"
+        if pendingOnly: query = query + f" and pending = {pendingOnly}"
         
         
         self.messageId_list: list = []
