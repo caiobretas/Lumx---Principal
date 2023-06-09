@@ -13,7 +13,6 @@ engine = main.engine
 
 UpdateCryptoPrices(connection, engine).update()
 UpdateKaminoTransactions(connection, engine).update()
-UpdateTransactions(connection, engine).update()
 UpdateFutures(connection, engine).update()
 UpdateContacts(connection, engine).update()
 
