@@ -4,6 +4,7 @@ from sqlalchemy import create_engine
 from datetime import datetime
 
 class Main:
+    
     def __init__(self):
         print('\nProgram starting')
         self.start_time = time()
@@ -64,6 +65,7 @@ class Main:
         UpdateContacts(connection=self.connection, engine=self.engine).update()
     
     def routine(self):
+        
         self.hr()
         self.finance()
         self.admin()

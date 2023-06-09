@@ -32,8 +32,8 @@ class EvaluateInvoiceRequest:
                 secondaryemail=row[8],
                 value=row[5]
             )
-            invoiceRequest = InvoiceRequest(request)
             if request.external_id in externalIds_list: continue # check if the external id already has a request in the repository
+            invoiceRequest = InvoiceRequest(request)
             draft = invoiceRequest.setDraft()[0]
             invoiceRequest.sendDraft(draft) # send the invoice request
 

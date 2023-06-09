@@ -93,7 +93,7 @@ class GoogleGmail(ControllerGoogle):
             logging.error(error)
             return None
     
-    def getAttachmentById(self,messageId, attachmentId,attachmentType=None):
+    def getAttachmentById(self, messageId, attachmentId,attachmentType=None):
         try:
             attachment = self.service.users().messages().attachments().get(userId='me',messageId=messageId, id=f'{attachmentId}').execute()
             decodedData = base64.urlsafe_b64decode(attachment['data'])
