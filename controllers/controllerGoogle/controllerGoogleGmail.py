@@ -25,7 +25,7 @@ class GoogleGmail(ControllerGoogle):
         message['To'] = f'{to}'
         message['From'] = f'{from_}'
         message['Subject'] = f'{subject}'
-        message['Cc'] = cc_list
+        if cc_list: message['Cc'] = cc_list
         encoded_message = base64.urlsafe_b64encode(message.as_bytes()).decode()    
         
         try:   

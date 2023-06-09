@@ -14,42 +14,63 @@ main = Main()
 connection = main.connection
 engine = main.engine
 
-sender = GoogleGmail
+sender = GoogleGmail()
 from_ = 'caio.bretas@lumxstudios.com'
-to_ = 'caiodbretas@icloud.com'
-subject = 'Error running script!'
+to = 'caiodbretas@icloud.com'
+errorsubject = 'Error running script!'
 class AutorunMinute: 
-        
+    
+    list_errors: list[Exception] = []
+    
     @staticmethod
-    def run():
+    def run():    
         try:
             main.admin()
         except Exception as e:
-            sender.createDraft(from_=from_,to_=to_,subject=subject,message_body=f'Error: {e}')
+            draft: dict = sender.createDraft(from_=from_,to=to,subject=errorsubject,message_body=f'Error: {e}')
+            sender.sendDraft(draft.get('id', None))
+            AutorunMinute.list_errors.append(e)
             None
         try:
             UpdateCryptoPrices(connection, engine).update()
         except Exception as e:
-            sender.createDraft(from_=from_,to_=to_,subject=subject,message_body=f'Error: {e}')
+            draft: dict = sender.createDraft(from_=from_,to=to,subject=errorsubject,message_body=f'Error: {e}')
+            sender.sendDraft(draft.get('id', None))
+            AutorunMinute.list_errors.append(e)
             None
         try:
             UpdateKaminoTransactions(connection, engine).update()
         except Exception as e:
-            sender.createDraft(from_=from_,to_=to_,subject=subject,message_body=f'Error: {e}')
+            draft: dict = sender.createDraft(from_=from_,to=to,subject=errorsubject,message_body=f'Error: {e}')
+            sender.sendDraft(draft.get('id', None))
+            AutorunMinute.list_errors.append(e)
             None
         try:
             UpdateFutures(connection, engine).update()
         except Exception as e:
-            sender.createDraft(from_=from_,to_=to_,subject=subject,message_body=f'Error: {e}')
+            draft: dict = sender.createDraft(from_=from_,to=to,subject=errorsubject,message_body=f'Error: {e}')
+            sender.sendDraft(draft.get('id', None))
+            AutorunMinute.list_errors.append(e)
             None
         try:
             UpdateContacts(connection, engine).update()
         except Exception as e:
-            sender.createDraft(from_=from_,to_=to_,subject=subject,message_body=f'Error: {e}')
+            draft: dict = sender.createDraft(from_=from_,to=to,subject=errorsubject,message_body=f'Error: {e}')
+            sender.sendDraft(draft.get('id', None))
+            AutorunMinute.list_errors.append(e)
             None
         try:
             UpdateTransactions(connection, engine).update()
         except Exception as e:
-            sender.createDraft(from_=from_,to_=to_,subject=subject,message_body=f'Error: {e}')
+            draft: dict = sender.createDraft(from_=from_,to=to,subject=errorsubject,message_body=f'Error: {e}')
+            AutorunMinute.list_errors.append(e)
             None
+        return None
+
+    def sender():
+        subject = 'Successfully completed 10 minute routine'
+        message = '\n\nThe following tasks were executed:\nUpdateEmailRequest_Table\nUpdateKaminoTransactions_Table\nUpdateContacts_Table\n'
+        sender.createDraft(from_=from_,to=to,subject=subject, message_body=message)
+        
 AutorunMinute.run()
+AutorunMinute.sender()
