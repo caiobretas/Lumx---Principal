@@ -5,19 +5,16 @@ from business.updateCategories import UpdateCategories
 from business.updateCryptoPrices import UpdateCryptoPrices
 from business.updateFutures import UpdateFutures
 from business.updateKaminoTransactions import UpdateKaminoTransactions
-
 from business.updateTransactionsRepository import UpdateTransactions
 
 main = Main()
 connection = main.connection
 engine = main.engine
 
+UpdateCryptoPrices(connection, engine).update()
 UpdateKaminoTransactions(connection, engine).update()
 UpdateTransactions(connection, engine).update()
 UpdateFutures(connection, engine).update()
-UpdateBook(connection, engine).update()
 UpdateContacts(connection, engine).update()
-UpdateCategories(connection, engine).update()
-UpdateCryptoPrices(connection, engine).update()
 
 main.admin()

@@ -9,7 +9,7 @@ class UpdateEmailRequests:
         self.controllerGmail = GoogleGmail()
         self.mailUpdates: list = []
     
-    def updateEmailRequests(self):
+    def update(self):
         timer = time()
         print('\nUpdating Email Requests...')
         

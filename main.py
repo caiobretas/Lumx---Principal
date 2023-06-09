@@ -51,7 +51,7 @@ class Main:
         
     def admin(self):
         from business.updateEmailRequests import UpdateEmailRequests
-        UpdateEmailRequests(self.connection, self.engine).updateEmailRequests()
+        UpdateEmailRequests(self.connection, self.engine).update()
         
     def finance(self):
         from business.atualizaRepository import FinanceRepository
@@ -71,7 +71,8 @@ class Main:
         
         print('\nRoutine in {:.2f} seconds\n'.format(time() - self.start_time))
 
+Main().finance()
 # Main().flows()
-Main().emailrequests()
-Main().routine()
+# Main().emailrequests()
+# Main().routine()
 # Main().admin()

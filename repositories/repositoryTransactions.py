@@ -35,7 +35,7 @@ class RepositoryTransactions ( RepositoryBase ):
                 query = f"""INSERT INTO {self.schema}.{self.tableName}
                 (id,idexterno,idcontaativo,idclassificacao,realizado,idcentrocusto,tipo,datapagamento,datavencimento,valorprevisto,valorrealizado,valorprevisto_brl,valorrealizado_brl,moeda,descricao,percentualrateio)
                 VALUES ({placeholders})
-                on conflict (id) do update set
+                on conflict (idexterno) do update set
                 idexterno = EXCLUDED.idexterno,
                 idcontaativo = EXCLUDED.idcontaativo,
                 idclassificacao = EXCLUDED.idclassificacao,
