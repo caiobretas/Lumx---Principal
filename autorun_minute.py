@@ -59,13 +59,7 @@ class AutorunMinute:
             sender.sendDraft(draft.get('id', None))
             AutorunMinute.list_errors.append(e)
             None
-        # try:
-        #     UpdateTransactions(connection, engine).update()
-        # except Exception as e:
-        #     draft: dict = sender.createDraft(from_=from_,to=to,subject=errorsubject,message_body=f'Error: {e}')
-        #     AutorunMinute.list_errors.append(e)
-        #     None
-
+            
     def sender():
         subject = 'Successfully completed 10 minute routine'
         message = '\n\nThe following tasks were executed:\nUpdateEmailRequest_Table\nUpdateKaminoTransactions_Table\nUpdateContacts_Table\n'
