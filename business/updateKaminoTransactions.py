@@ -39,6 +39,5 @@ class UpdateKaminoTransactions:
                     periodoAte=self.periodoAte,
                     apenasRealizados=True).loadKaminoTransactions())
                 
-                
             try_time = time()
             print('{} Status: {} - Time: {:.2f}s'.format(' ' * 3,status, try_time - start_time))
