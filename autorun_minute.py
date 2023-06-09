@@ -9,44 +9,47 @@ from business.updateTransactionsRepository import UpdateTransactions
 
 from controllers.controllerGoogle.controllerGoogleGmail import GoogleGmail
 
-sender = GoogleGmail
+
 main = Main()
 connection = main.connection
 engine = main.engine
 
+sender = GoogleGmail
 from_ = 'caio.bretas@lumxstudios.com'
 to_ = 'caiodbretas@icloud.com'
 subject = 'Error running script!'
-
-
-try:
-    main.admin()
-except Exception as e:
-    sender.createDraft(from_=from_,to_=to_,subject=subject,message_body=f'Error: {e}')
-    None
-try:
-    UpdateCryptoPrices(connection, engine).update()
-except Exception as e:
-    sender.createDraft(from_=from_,to_=to_,subject=subject,message_body=f'Error: {e}')
-    None
-try:
-    UpdateKaminoTransactions(connection, engine).update()
-except Exception as e:
-    sender.createDraft(from_=from_,to_=to_,subject=subject,message_body=f'Error: {e}')
-    None
-try:
-    UpdateFutures(connection, engine).update()
-except Exception as e:
-    sender.createDraft(from_=from_,to_=to_,subject=subject,message_body=f'Error: {e}')
-    None
-try:
-    UpdateContacts(connection, engine).update()
-except Exception as e:
-    sender.createDraft(from_=from_,to_=to_,subject=subject,message_body=f'Error: {e}')
-    None
-try:
-    UpdateTransactions(connection, engine).update()
-except Exception as e:
-    sender.createDraft(from_=from_,to_=to_,subject=subject,message_body=f'Error: {e}')
-    None
-    
+class AutorunMinute: 
+        
+    @staticmethod
+    def run():
+        try:
+            main.admin()
+        except Exception as e:
+            sender.createDraft(from_=from_,to_=to_,subject=subject,message_body=f'Error: {e}')
+            None
+        try:
+            UpdateCryptoPrices(connection, engine).update()
+        except Exception as e:
+            sender.createDraft(from_=from_,to_=to_,subject=subject,message_body=f'Error: {e}')
+            None
+        try:
+            UpdateKaminoTransactions(connection, engine).update()
+        except Exception as e:
+            sender.createDraft(from_=from_,to_=to_,subject=subject,message_body=f'Error: {e}')
+            None
+        try:
+            UpdateFutures(connection, engine).update()
+        except Exception as e:
+            sender.createDraft(from_=from_,to_=to_,subject=subject,message_body=f'Error: {e}')
+            None
+        try:
+            UpdateContacts(connection, engine).update()
+        except Exception as e:
+            sender.createDraft(from_=from_,to_=to_,subject=subject,message_body=f'Error: {e}')
+            None
+        try:
+            UpdateTransactions(connection, engine).update()
+        except Exception as e:
+            sender.createDraft(from_=from_,to_=to_,subject=subject,message_body=f'Error: {e}')
+            None
+AutorunMinute.run()
