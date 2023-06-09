@@ -21,6 +21,6 @@ class FinanceRepository:
         UpdateCryptoPrices(self.connection,self.engine).update()
         UpdateKaminoTransactions(self.connection,self.engine).update()
         UpdateFutures(self.connection,self.engine).update()
-        # UpdateTransactions(self.connection, self.engine).update()
+        UpdateTransactions(self.connection, self.engine).update()
 
         print('\nRepositories updated in {:.2f} seconds\n'.format(time() - timer))

@@ -18,7 +18,7 @@ class UpdateKaminoTransactions:
     def update(self):
         try:
             date: str = self.repositoryKamino.getDate(realizado=1)
-            periodoDe = datetime.strftime(date - timedelta(days=5), "%m-%d-%y")
+            periodoDe = datetime.strftime(date - timedelta(days=10), "%m-%d-%y")
                 
         except:
             status = 'Reset'
