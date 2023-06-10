@@ -49,8 +49,7 @@ class GoogleDrive (ControllerGoogle):
         media = MediaIoBaseUpload(BytesIO(file_bytes), mimetype='application/octet-stream')
         
         try:
-            file = self.service.files().create(body=file_metadata, media_body=media, supportsAllDrives=True).execute()
-            return file
+            return self.service.files().create(body=file_metadata, media_body=media, supportsAllDrives=True).execute()
         except HttpError as e:
             logging.error(e)
             return None

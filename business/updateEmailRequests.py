@@ -1,12 +1,16 @@
+import logging
 from time import time
+from googleapiclient.errors import HttpError
 from repositories.repositoryEmailRequests import RepositoryEmailRequests
 from controllers.controllerGoogle.controllerGoogleGmail import GoogleGmail
+from controllers.controllerGoogle.controllerGoogleDrive import GoogleDrive
 from entities.entityEmailRequest import EmailRequest
 class UpdateEmailRequests:
     
     def __init__(self, connection=None, engine=None):
         self.repositoryEmailRequests = RepositoryEmailRequests(connection, engine) if connection != None and engine != None else None
         self.controllerGmail = GoogleGmail()
+        self.controllerDrive = GoogleDrive()
         self.mailUpdates: list = []
     
     def update(self):
@@ -66,11 +70,24 @@ class UpdateEmailRequests:
                     concluded = False
                 )
                 
-                request_update.attachment = True if attachmentId else False
-                request_update.attachment_id = attachmentId if attachmentId else None
                 request_update.pending = False if (request_update.answered and request_update.attachment) else True
                 request_update.concluded = True if request_update.attachment_id else False # write condition to check if the attachment is accepted
             
+                if attachmentId:
+                    request_update.attachment_id = attachmentId
+                    request_update.attachment = True
+                    try:
+                        binary = self.controllerGmail.getAttachmentById(request.email_id, attachmentId)[1]
+                        self.controllerDrive.uploadFile(binary, request.subject, '1lPF_AJywPuJ2bxJ2ppDl7hX9MZ2HUKRw')
+                        request_update.concluded = True
+                    except HttpError as err:
+                        logging.error(err)
+                        request_update.concluded = False   
+            # se attachment Id;
+            # renomeia o attachment com o subject
+            # joga o attachment na pasta
+            # marca como concluded
+                        
             self.mailUpdates.append(request_update)
                 
         self.repositoryEmailRequests.insertEmailRequests(self.mailUpdates)

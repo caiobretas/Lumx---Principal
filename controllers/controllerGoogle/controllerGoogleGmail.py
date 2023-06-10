@@ -93,10 +93,13 @@ class GoogleGmail(ControllerGoogle):
             logging.error(error)
             return None
     
-    def getAttachmentById(self, messageId, attachmentId):
+    def getAttachmentById(self, messageId, attachmentId) -> tuple:
+        'return a tuple: (attachment, binary)'
         try:
-            attachment = self.service.users().messages().attachments().get(userId='me',messageId=messageId, id=f'{attachmentId}').execute()
-            return attachment
+            attachment: dict = self.service.users().messages().attachments().get(userId='me',messageId=messageId, id=f'{attachmentId}').execute()
+            data_encoded = attachment.get('data', None)
+            binary = base64.urlsafe_b64decode(data_encoded)
+            return (attachment, binary)
         
         except KeyError:
             return None

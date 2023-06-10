@@ -46,10 +46,9 @@ class RepositoryEmailRequests(RepositoryBase):
         
     def getEmailRequests(self, concludedOnly=False, pendingOnly=False,request_type='Invoice'):
         
-        query = f"select e.*, c.nome from {self.schema}.{self.tableName} as e left join {self.repositoryContacts.schema}.{self.repositoryContacts.tableName} as c on c.id = e.contact_id"
+        query = f"select e.*, c.nome from {self.schema}.{self.tableName} as e left join {self.repositoryContacts.schema}.{self.repositoryContacts.tableName} as c on c.id = e.contact_id where request_type='{request_type}'"
+        query = query + f" and concluded = {concludedOnly}" if concludedOnly else query + " and not concluded"
         
-        if request_type: query = query + f" where request_type='{request_type}'"
-        if concludedOnly: query = query + f" and concluded = {concludedOnly}"
         if pendingOnly: query = query + f" and pending = {pendingOnly}"
         
         
