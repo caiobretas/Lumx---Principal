@@ -22,43 +22,52 @@ class AutorunMinute:
     list_errors: list[Exception] = []
     
     @staticmethod
-    def run():    
+    def run(): 
+
+        try:
+            UpdateTransactions().update()
+        except Exception as e:
+            draft: dict = sender.createDraft(from_=from_,to=to,subject=errorsubject,message_body=f'Error: {e}')
+            sender.sendDraft(draft.get('id', None))
+            AutorunMinute.list_errors.append(e)
+            
         try:
             main.admin()
         except Exception as e:
             draft: dict = sender.createDraft(from_=from_,to=to,subject=errorsubject,message_body=f'Error: {e}')
             sender.sendDraft(draft.get('id', None))
             AutorunMinute.list_errors.append(e)
-            
+
         try:
             UpdateCryptoPrices(connection, engine).update()
         except Exception as e:
             draft: dict = sender.createDraft(from_=from_,to=to,subject=errorsubject,message_body=f'Error: {e}')
             sender.sendDraft(draft.get('id', None))
             AutorunMinute.list_errors.append(e)
-            
+
         try:
             UpdateKaminoTransactions(connection, engine).update()
         except Exception as e:
             draft: dict = sender.createDraft(from_=from_,to=to,subject=errorsubject,message_body=f'Error: {e}')
             sender.sendDraft(draft.get('id', None))
             AutorunMinute.list_errors.append(e)
-            
+
         try:
             UpdateFutures(connection, engine).update()
         except Exception as e:
             draft: dict = sender.createDraft(from_=from_,to=to,subject=errorsubject,message_body=f'Error: {e}')
             sender.sendDraft(draft.get('id', None))
             AutorunMinute.list_errors.append(e)
-            
+
         try:
             UpdateContacts(connection, engine).update()
         except Exception as e:
             draft: dict = sender.createDraft(from_=from_,to=to,subject=errorsubject,message_body=f'Error: {e}')
             sender.sendDraft(draft.get('id', None))
             AutorunMinute.list_errors.append(e)
+
             
-    @staticmethod       
+    @staticmethod
     def sender():
         subject = 'Successfully completed 10 minute routine'
         message = 'The following tasks were executed:\n\nUpdateEmailRequest_Table\nUpdateKaminoTransactions_Table\nUpdateContacts_Table'

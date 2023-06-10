@@ -1,7 +1,5 @@
 import logging
 from time import time
-from datetime import datetime
-from business.loadTransactions import LoadTransactions
 from repositories.repositoryTransactionsKamino import RepositoryKamino
 from repositories.repositoryTransactions import RepositoryTransactions
 from repositories.repositoryCryptoTransactions import RepositoryCryptoTransaction
@@ -30,7 +28,6 @@ class UpdateTransactions:
             
             self.repositoryTransaction.insert(transactionsCrypto, 'bulk')
             self.repositoryTransaction.insert(transactionsKamino, 'bulk')
-            
             status = 'Complete'
         
         except Exception as e:
@@ -38,6 +35,6 @@ class UpdateTransactions:
             logging.error(e)
             return None
 
-        finally:    
+        finally:
             try_time = time()
             print('{} Status: {} - Time: {:.2f}s'.format(' ' * 3,status, try_time - start_time))

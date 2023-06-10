@@ -3,7 +3,7 @@ from datetime import datetime, timedelta
 
 class KaminoTransaction:
     def __init__(self,id=None,idKamino=None, tipo=None, data=None, datapagamento=None, datavencimento=None, datacompetencia=None, valorprevisto=None, valorrealizado=None, percentualrateio=None, realizado=None, idcontaorigem=None, nomecontaorigem=None, codigoreduzidoorigem=None, idcontadestino =None, nomecontadestino=None, codigoreduzidodestino=None, idcentrocusto =None, nomecentrocusto=None, idpessoa =None, nomepessoa=None, observacao=None, cpfcnpjpessoa=None, descricao=None, idunidadenegocio=None, nomeunidadenegocio=None, numeronotafiscal=None, conciliadoorigem=None, conciliadodestino=None, saldoiniciodiacontaativo=None, saldofimdiaccontaativo=None, idprojeto=None, nomeprojeto=None, nomeclassificacao=None, idclassificacao=None, contaativo=None):
-        self.id = str(uuid4()) if id == None else id
+        self.id = id
         self.idKamino = idKamino
         self.tipo = tipo
         self.data = data
