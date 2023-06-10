@@ -25,7 +25,7 @@ class AutorunMinute:
     def run(): 
 
         try:
-            UpdateTransactions().update()
+            UpdateTransactions(connection, engine).update()
         except Exception as e:
             draft: dict = sender.createDraft(from_=from_,to=to,subject=errorsubject,message_body=f'Error: {e}')
             sender.sendDraft(draft.get('id', None))
