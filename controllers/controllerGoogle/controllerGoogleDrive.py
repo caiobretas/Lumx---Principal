@@ -45,7 +45,6 @@ class GoogleDrive (ControllerGoogle):
         'name': file_name,
         'parents': [folder_id]
     }
-    
         media = MediaIoBaseUpload(BytesIO(file_bytes), mimetype='application/octet-stream')
         
         try:

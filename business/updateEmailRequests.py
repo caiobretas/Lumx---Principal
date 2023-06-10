@@ -22,7 +22,6 @@ class UpdateEmailRequests:
         if not emailRequests_list:
             return None
         
-        
         for request in emailRequests_list:
             
             mail: dict = self.controllerGmail.getMessagebyId(request.email_id)
