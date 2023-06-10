@@ -9,8 +9,3 @@ attachment: dict = GoogleGmail().getAttachmentById(messageId,attachmentId)
 data_encoded = attachment.get('data', None)
 data_binary = base64.urlsafe_b64decode(data_encoded)
 
-from controllers.controllerGoogle.controllerGoogleDrive import GoogleDrive
-
-# GoogleDrive().createFolder('teste', parentId='1jWV8_GnkrvS9aMmWRCLbt9pOqj6ei8ui ')
-GoogleDrive().getSharedDrives()
-# GoogleDrive().deleteSharedDrives('0APWHM2MD0pXDUk9PVA')

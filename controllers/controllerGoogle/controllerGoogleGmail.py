@@ -46,8 +46,7 @@ class GoogleGmail(ControllerGoogle):
                     }
                 }
             
-            draft = self.service.users().drafts().create(userId='me', body=create_message).execute()        
-            return draft      
+            return self.service.users().drafts().create(userId='me', body=create_message).execute()      
         except Exception as e:
             logging.error(e)
 
@@ -88,18 +87,20 @@ class GoogleGmail(ControllerGoogle):
         try:
             thread = self.service.users().threads().get(userId='me',id=f'{threadId}').execute()
             return thread
+        
         except HttpError as error:
             thread = None
             logging.error(error)
             return None
     
-    def getAttachmentById(self, messageId, attachmentId,attachmentType=None):
+    def getAttachmentById(self, messageId, attachmentId):
         try:
             attachment = self.service.users().messages().attachments().get(userId='me',messageId=messageId, id=f'{attachmentId}').execute()
-            decodedData = base64.urlsafe_b64decode(attachment['data'])
             return attachment
+        
         except KeyError:
             return None
+        
         except HttpError as error:
             attachment = None
             logging.error(error)

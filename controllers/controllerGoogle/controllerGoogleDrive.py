@@ -1,3 +1,6 @@
+from io import BytesIO
+from googleapiclient.http import MediaIoBaseUpload
+from googleapiclient.errors import HttpError
 import logging
 from controllers.controllerGoogle.controllerGoogle import ControllerGoogle
 from googleapiclient.discovery import build, Resource
@@ -10,9 +13,9 @@ class GoogleDrive (ControllerGoogle):
         except Exception as e:
             logging.error(e)
             
-    def getSharedDrives(self):
-        drives = self.service.drives().list().execute()
-        print(drives)
+    def getSharedDrives(self) -> list[dict]:
+        'return a list of shared drives'
+        return self.service.drives().list().execute()
     
     def deleteSharedDrives(self,driveId):    
         try:
@@ -20,17 +23,34 @@ class GoogleDrive (ControllerGoogle):
         except Exception as e:
             logging.error(e)
             
-    def createFolder(self, name, parentId=None, sharedDriveId=None):
+    def createFolder(self, name, parentId=None):
+        """Create and return a folder.
+
+        Param: parentId is used for sharedDrives as well.
+        """ 
         folder_metadata = {
             'name': name,
             'mimeType': 'application/vnd.google-apps.folder',
-            'parents': [parentId]
+            'parents': [parentId] if parentId else []
         }
-        # if parentId:
-        #     folder_metadata['parents'] = [parentId]
-        #     if sharedDriveId: folder_metadata['parents'].append(sharedDriveId)
-        # if not parentId:
-        #     if sharedDriveId: folder_metadata['parents'] = [sharedDriveId]
+        try:
+            folder = self.service.files().create(body=folder_metadata,supportsAllDrives=True).execute()
+            return folder
+        except HttpError as err:
+            logging.error(err)
+    
+    def uploadFile(self,file_bytes,file_name,folder_id):
         
-        folder = self.service.files().create(body=folder_metadata).execute()
-        return folder
+        file_metadata = {
+        'name': file_name,
+        'parents': [folder_id]
+    }
+    
+        media = MediaIoBaseUpload(BytesIO(file_bytes), mimetype='application/octet-stream')
+        
+        try:
+            file = self.service.files().create(body=file_metadata, media_body=media, supportsAllDrives=True).execute()
+            return file
+        except HttpError as e:
+            logging.error(e)
+            return None
