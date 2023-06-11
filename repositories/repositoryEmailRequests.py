@@ -44,13 +44,27 @@ class RepositoryEmailRequests(RepositoryBase):
         else:
             return None
         
-    def getEmailRequests(self, concludedOnly=False, pendingOnly=False,request_type='Invoice'):
+    def getExternalIds(self,request_type='Invoice'):
+        
+        query = f"select e.*, c.nome from {self.schema}.{self.tableName} as e left join {self.repositoryContacts.schema}.{self.repositoryContacts.tableName} as c on c.id = e.contact_id where request_type='{request_type}'"
+
+        self.externalId_list: list = []
+        try:
+            with self.connection.cursor() as cursor:
+                cursor.execute(query)
+                for row in cursor.fetchall():            
+                    self.externalId_list.append(row[1])
+            return self.externalId_list
+        except Exception as e:
+            logging.error(e)
+            return None
+        
+    def getEmailRequests(self,concludedOnly=False,pendingOnly=False,request_type='Invoice'):
         
         query = f"select e.*, c.nome from {self.schema}.{self.tableName} as e left join {self.repositoryContacts.schema}.{self.repositoryContacts.tableName} as c on c.id = e.contact_id where request_type='{request_type}'"
         query = query + f" and concluded = {concludedOnly}" if concludedOnly else query + " and not concluded"
         
         if pendingOnly: query = query + f" and pending = {pendingOnly}"
-        
         
         self.messageId_list: list = []
         self.externalId_list: list = []

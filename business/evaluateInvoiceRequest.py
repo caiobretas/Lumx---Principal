@@ -21,7 +21,7 @@ class EvaluateInvoiceRequest:
         '''Return a list of created requests'''
         self.repositoryEmailRequests.getEmailRequests(False,False,'Invoice')
         
-        externalIds_list: list = self.repositoryEmailRequests.externalId_list
+        externalIds_list: list = self.repositoryEmailRequests.getExternalIds(request_type='Invoice')
         for row in self.RepositoryKamino.getMissingInvoices():
             request = EmailRequest(
                 external_id = row[7],
