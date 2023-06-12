@@ -1,6 +1,9 @@
+import string
 import logging
+from time import sleep
 from pandas import DataFrame
-
+from gspread import Worksheet, worksheet
+from controllers.controllerGoogle.controllerGoogleSheets import GoogleSheets
 from repositories.repositoryBase import RepositoryBase
 from entities.entityCategory import Category
 
@@ -8,9 +11,29 @@ class RepositoryCategories( RepositoryBase ):
     def __init__(self, connection, engine: str):
         self.schema = 'finance' # postgresql
         self.tableName = 'categories' # postgresql
-        self.worksheetName = 'categories' # excel
         super().__init__(connection,engine,self.schema,self.tableName)
-
+        
+        self.controllerGoogleSheets = GoogleSheets()
+        self.worksheetName = 'categories' # excel
+        
+        self.workSheetId = '1oXBOgSVcx3zWYpb0-i16Ykxce5E2ZFoZe-5NEONmZ4k'
+        self.workSheetHeaders = [
+            'categoriacustoreceita',
+            'categoriaprojecao',
+            'categoria',
+            'subcategoria',
+            'subcategoria2',
+            'subcategoria3',
+            'subcategoria4',
+            'projeto',
+            'produto',
+            'recorrência',
+            'method_id',
+            'id'
+        ]
+        self.categoriesSheetId = 1088169641
+        self.lastUpdateSheetId = 1239069114
+        
     def insertCategories(self, list_category: list[Category]| None):
         if list_category != None:
             values = [t.to_tuple() for t in list_category]
@@ -71,3 +94,43 @@ class RepositoryCategories( RepositoryBase ):
             except Exception as e:
                 logging.error(f'Erro: {e}')
                 return None
+            
+    def getCategories_fromSheets(self) -> list[Category] | None:
+        
+        sheet: Worksheet = self.controllerGoogleSheets.openSheet(self.workSheetId, self.categoriesSheetId)
+        
+        maxColumn = len(self.workSheetHeaders)
+        alphabet = string.ascii_uppercase
+        index = (maxColumn - 1) % 26
+        letter = alphabet[index]
+        self.workSheetrange = f"A:{letter}"
+        
+        row_list: list[worksheet.ValueRange] = sheet.get(self.workSheetrange)
+        row_numbers = len(row_list) - 1
+        if row_numbers == 0:
+            return
+        if row_list: row_list.pop(0)
+        
+        self.controllerGoogleSheets.eraseSheet(self.workSheetId,self.lastUpdateSheetId, self.workSheetHeaders)
+        self.controllerGoogleSheets.eraseSheet(self.workSheetId,self.categoriesSheetId, self.workSheetHeaders)
+        
+        categories: list[Category] = []
+        filteredRows = []
+        for row in row_list:
+            _index = row_list.index(row)
+            if not row or row[11] == '':
+                continue
+            
+            table_range = f'A{row_numbers}:{letter}{row_numbers}'
+            
+            if row != self.workSheetHeaders:
+                
+                category = Category(id = row[11],method_id = row[10],recorrencia = row[9],produto = row[8],projeto = row[7],subcategoria4 = row[6],subcategoria3 = row[5],subcategoria2 = row[4],subcategoria = row[3],categoria = row[2],categoriaprojecao = row[1],categoriacustoreceita = row[0])
+                if category.id:
+                    categories.append(category)
+                    if row not in filteredRows: filteredRows.append(row)
+        
+        self.controllerGoogleSheets.openSheet(self.workSheetId,self.lastUpdateSheetId)
+        self.controllerGoogleSheets.writemanyRows(filteredRows)
+        return categories if row_list else None
+    

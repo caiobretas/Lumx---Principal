@@ -9,11 +9,13 @@ class UpdateCategories:
         self.engine = engine
         
         print('\nUpdating Categories...')
+    
     def update(self):
         start_time = time()
         try:
             repositoryCategories = RepositoryCategories(self.connection, self.engine)
-            repositoryCategories.insertCategories(repositoryCategories.getCategories_fromExcel())
+            categoriesfromSheet = repositoryCategories.getCategories_fromSheets()
+            repositoryCategories.insertCategories(categoriesfromSheet)
             status = 'Complete'
             
         except Exception as e:

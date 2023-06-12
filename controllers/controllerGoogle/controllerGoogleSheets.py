@@ -1,15 +1,57 @@
 from controllers.controllerGoogle.controllerGoogle import ControllerGoogle
+from googleapiclient.errors import HttpError
 import logging
-import gspread   
+import gspread
 
 class GoogleSheets(ControllerGoogle):
     def __init__(self):
         super().__init__()
         try:
             self.client = gspread.authorize(credentials=self.credential)
+            self.worksheetId = None
+            self.sheetId = None
+        
         except Exception as e:
             logging.error(e)
-            
+    
+    def openSheet(self, worksheetId:not None,SheetId=None) -> gspread.Worksheet | gspread.Spreadsheet:
+        try:
+            if SheetId:
+                worksheet: gspread.Spreadsheet = self.client.open_by_key(worksheetId)
+                sheet: gspread.worksheet.Worksheet = worksheet.get_worksheet_by_id(SheetId)
+                
+                self.worksheetId = worksheetId
+                self.sheetId = SheetId
+                
+                return sheet
+            else:
+                worksheet: gspread.Spreadsheet = self.client.open_by_key(worksheetId)
+                return worksheet
+        except HttpError as err:
+            logging.error(err)
+    
+    def writemanyRows(self, listofRow: not None):
+        if not listofRow: return
+        sheet = self.openSheet(self.worksheetId, self.sheetId)
+        sheet.append_rows(listofRow)
+    
+    def writeRow(self, values: list,worksheetId:not None,SheetId=None, table_range=None) -> None:
+        sheet = self.openSheet(worksheetId,SheetId)
+        if table_range:
+            sheet.append_row(values, table_range=table_range)
+            return
+        sheet.append_row(values)
+        
+    def eraseSheet(self,worksheetId,SheetId, headers=None):
+        if headers:
+            sheet = self.openSheet(worksheetId,SheetId)
+            sheet.clear()
+            self.writeRow(headers, worksheetId, SheetId)
+        
+        else:
+            sheet = self.openSheet(worksheetId,SheetId) 
+            sheet.clear()
+        
     def getRow(self, rowNumber, sheetName, worksheetId: str):
         try:
             worksheet: gspread.Spreadsheet = self.client.open_by_key(worksheetId)
