@@ -1,1 +1,1 @@
-worker: python3 autorun_day.py
+worker: python3 autorun_minute.py
