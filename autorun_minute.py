@@ -75,9 +75,6 @@ class AutorunMinute:
             draft: dict = sender.createDraft(from_=from_,to=to,subject=errorsubject,message_body=f'Error: {e}')
             sender.sendDraft(draft.get('id', None))
             AutorunMinute.list_errors.append(e)
-        
-        
-        
     @staticmethod
     def sender():
         subject = 'Successfully completed 10 minute routine'
