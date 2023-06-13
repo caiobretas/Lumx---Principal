@@ -1,13 +1,20 @@
+
 import requests
 import json
 import logging
 from controllers.controllerHTTP.controllerHTTPBase import ControllerHTTPBase
 from entities.comercial.entityPipedriveDeal import PipedriveDeal
+from entities.comercial.entityPipedriveActivity import PipedriveActivity
+from business.geral.verificar_e_substituir_atritubo_por_none import verificar_e_substituir_atributo_por_none
 class ControllerPipeDrive ( ControllerHTTPBase ):
     def __init__(self):
         self.apikey = '106c62e486639ed0a7f04fe67f55f3dcad4392ad'
         self.baseUrl = 'https://lumxstudios.pipedrive.com/api'
         self.version = 'v1'
+        
+        self.headers = {
+            'Accept': 'application/json',
+        }
     
     def getDeals(self) -> list[PipedriveDeal]:
         try:
@@ -85,6 +92,60 @@ class ControllerPipeDrive ( ControllerHTTPBase ):
         except Exception as e:
             logging.error(e)
     
+    def getActivities(self) -> list[PipedriveActivity]:
+        try:
+            action = 'activities'
+            url = f'{self.baseUrl}/{self.version}/{action}?api_token={self.apikey}'
+            jsonResponse = self.get(url,self.headers,'json')
+            listActivities: list[PipedriveActivity] = []
+            result: list[dict] = jsonResponse['data']
+            for obj in result:
+                activity = PipedriveActivity(
+                id = obj.get('id',None),
+                done = obj.get('done',None),
+                type = obj.get('type',None),
+                duration = obj.get('duration',None),
+                subject = obj.get('subject',None),
+                company_id = obj.get('company_id',None),
+                user_id = obj.get('user_id',None),
+                conference_meeting_client = obj.get('conference_meeting_client',None),
+                conference_meeting_url = obj.get('conference_meeting_url',None),
+                conference_meeting_id = obj.get('conference_meeting_id',None),
+                due_date = obj.get('due_date',None),
+                due_time = obj.get('due_time',None),
+                busy_flag = obj.get('busy_flag',None),
+                add_time = obj.get('add_time',None),
+                marked_as_done_time = obj.get('marked_as_done_time',None),
+                public_description = obj.get('public_description',None),
+                location = obj.get('location',None),
+                org_id = obj.get('org_id',None),
+                person_id = obj.get('person_id',None),
+                deal_id = obj.get('deal_id',None),
+                active_flag = obj.get('active_flag',None),
+                update_time = obj.get('update_time',None),
+                update_user_id = obj.get('update_user_id',None),
+                source_timezone = obj.get('source_timezone',None),
+                lead_id = obj.get('lead_id',None),
+                location_subpremise = obj.get('location_subpremise',None),
+                location_street_number = obj.get('location_street_number',None),
+                location_route = obj.get('location_route',None),
+                location_sublocality = obj.get('location_sublocality',None),
+                location_locality = obj.get('location_locality',None),
+                location_admin_area_level_1 = obj.get('location_admin_area_level_1',None),
+                location_admin_area_level_2 = obj.get('location_admin_area_level_2',None),
+                location_country = obj.get('location_country',None),
+                location_postal_code = obj.get('location_postal_code',None),
+                location_formatted_address = obj.get('location_formatted_address',None),
+                project_id = obj.get('project_id',None),
+                )
+                verificar_e_substituir_atributo_por_none(activity)
+                listActivities.append(activity)
+            
+            return listActivities
+        
+        except Exception as e:
+            logging.error(e)
+            
     def getDealsFields(self) -> list[PipedriveDeal]:
         try:
             action = 'dealFields'
