@@ -5,6 +5,7 @@ import logging
 from controllers.controllerHTTP.controllerHTTPBase import ControllerHTTPBase
 from entities.comercial.entityPipedriveDeal import PipedriveDeal
 from entities.comercial.entityPipedriveActivity import PipedriveActivity
+from entities.comercial.entityPipedriveDealFields import PipedriveDealFields, PipedriveDealFieldOptions
 from business.geral.verificar_e_substituir_atritubo_por_none import verificar_e_substituir_atributo_por_none
 class ControllerPipeDrive ( ControllerHTTPBase ):
     def __init__(self):
@@ -146,12 +147,45 @@ class ControllerPipeDrive ( ControllerHTTPBase ):
         except Exception as e:
             logging.error(e)
             
-    def getDealsFields(self) -> list[PipedriveDeal]:
+    def getDealsFields(self) -> list[PipedriveDealFields]:
         try:
             action = 'dealFields'
             url = f'{self.baseUrl}/{self.version}/{action}?api_token={self.apikey}'
-            jsonResponse = self.get(url,type='json')
-            return jsonResponse
+            jsonResponse: list[dict] = self.get(url,type='json')['data']
+            list_dealsFields: list[PipedriveDealFields] = []
+            list_dealsFieldsOptions: list[PipedriveDealFieldOptions] = []
+            for obj in jsonResponse:
+                dealField = PipedriveDealFields(
+                id = obj.get('id',None),
+                key = obj.get('key',None),
+                name = obj.get('name',None),
+                order_nr = obj.get('order_nr',None),
+                field_type = obj.get('field_type',None),
+                json_column_flag = obj.get('json_column_flag',None),
+                add_time = obj.get('add_time',None),
+                update_time = obj.get('update_time',None),
+                last_updated_by_user_id = obj.get('last_updated_by_user_id',None),
+                edit_flag = obj.get('edit_flag',None),
+                details_visible_flag = obj.get('details_visible_flag',None),
+                add_visible_flag = obj.get('add_visible_flag',None),
+                important_flag = obj.get('important_flag',None),
+                bulk_edit_allowed = obj.get('bulk_edit_allowed',None),
+                filtering_allowed = obj.get('filtering_allowed',None),
+                sortable_flag = obj.get('sortable_flag',None),
+                searchable_flag = obj.get('searchable_flag',None),
+                active_flag = obj.get('active_flag',None),
+                projects_detail_visible_flag = obj.get('projects_detail_visible_flag',None)
+            )
+                if dealField.field_type == 'enum':
+                    for option in obj.get('options',[]):
+                        dealFieldOption = PipedriveDealFieldOptions(option.get('id',None))
+                        list_dealsFieldsOptions.append(dealFieldOption)
+                
+                list_dealsFields.append(dealField)
+                
+                
+            return list_dealsFields, list_dealsFieldsOptions
+        
         except Exception as e:
             logging.error(e)
             

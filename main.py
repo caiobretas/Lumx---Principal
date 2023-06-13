@@ -52,7 +52,7 @@ class Main:
     
     def comercial(self):
         from business.comercial import PipedriveDeals, PipedriveActivities
-        # PipedriveDeals.PipedriveDeals(self.connection,self.engine).update()
+        PipedriveDeals.PipedriveDeals(self.connection,self.engine).update()
         # PipedriveDeals.PipedriveDeals(self.connection,self.engine).getFlow()
         PipedriveActivities.PipedriveActivities(self.connection,self.engine).update()
     

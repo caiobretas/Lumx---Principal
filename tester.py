@@ -14,5 +14,5 @@ controllerPipe = ControllerPipeDrive()
 # attachment: dict = controllerGmail.getAttachmentById(messageId,attachmentId)
 
 # controllerDrive.uploadFile(attachment, 'Teste', '1JS8MCpBsNR-jp1APrxq7wR9Be2X7o1bd')
-controllerPipe.getFlowbyDealId(dealId=6)
-print(1)
+
+controllerPipe.getDealsFields()
