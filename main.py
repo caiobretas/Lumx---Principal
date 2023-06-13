@@ -49,7 +49,12 @@ class Main:
     def flows(self):
         from business.financeControl import Flow
         Flow(self.connection, self.engine).salaryFlow()
-        
+    
+    def comercial(self):
+        from business.comercial.PipedriveDeals import PipedriveDeals
+        PipedriveDeals(self.connection,self.engine).update()
+        PipedriveDeals(self.connection,self.engine).getFlow()
+    
     def admin(self):
         from business.updateEmailRequests import UpdateEmailRequests
         UpdateEmailRequests(self.connection, self.engine).update()
