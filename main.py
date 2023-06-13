@@ -51,9 +51,10 @@ class Main:
         Flow(self.connection, self.engine).salaryFlow()
     
     def comercial(self):
-        from business.comercial.PipedriveDeals import PipedriveDeals
-        PipedriveDeals(self.connection,self.engine).update()
-        PipedriveDeals(self.connection,self.engine).getFlow()
+        from business.comercial import PipedriveDeals, PipedriveActivities
+        # PipedriveDeals.PipedriveDeals(self.connection,self.engine).update()
+        # PipedriveDeals.PipedriveDeals(self.connection,self.engine).getFlow()
+        PipedriveActivities.PipedriveActivities(self.connection,self.engine).update()
     
     def admin(self):
         from business.updateEmailRequests import UpdateEmailRequests
