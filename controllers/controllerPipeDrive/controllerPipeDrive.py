@@ -147,7 +147,7 @@ class ControllerPipeDrive ( ControllerHTTPBase ):
         except Exception as e:
             logging.error(e)
             
-    def getDealsFields(self) -> list[PipedriveDealFields]:
+    def getDealsFields(self) -> tuple:
         try:
             action = 'dealFields'
             url = f'{self.baseUrl}/{self.version}/{action}?api_token={self.apikey}'
@@ -178,7 +178,10 @@ class ControllerPipeDrive ( ControllerHTTPBase ):
             )
                 if dealField.field_type == 'enum':
                     for option in obj.get('options',[]):
-                        dealFieldOption = PipedriveDealFieldOptions(option.get('id',None))
+                        id = option.get('id', None)
+                        label = option.get('label',None)
+                        dealField_id = dealField.id
+                        dealFieldOption = PipedriveDealFieldOptions(dealField_id,id,label)
                         list_dealsFieldsOptions.append(dealFieldOption)
                 
                 list_dealsFields.append(dealField)

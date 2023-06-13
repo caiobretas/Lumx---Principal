@@ -6,7 +6,7 @@ from business.updateCryptoPrices import UpdateCryptoPrices
 from business.updateFutures import UpdateFutures
 from business.updateKaminoTransactions import UpdateKaminoTransactions
 from business.updateTransactionsRepository import UpdateTransactions
-from business.comercial import PipedriveActivities, PipedriveDeals
+from business.comercial import PipedriveActivities, PipedriveDeals, PipedriveDealFields
 
 from controllers.controllerGoogle.controllerGoogleGmail import GoogleGmail
 
@@ -70,6 +70,7 @@ class AutorunMinute:
         try:
             PipedriveActivities.PipedriveActivities(connection,engine).update()
             PipedriveDeals.PipedriveDeals(connection,engine).update()
+            PipedriveDealFields.PipedriveDealField(connection,engine).update()
         except Exception as e:
             draft: dict = sender.createDraft(from_=from_,to=to,subject=errorsubject,message_body=f'Error: {e}')
             sender.sendDraft(draft.get('id', None))
