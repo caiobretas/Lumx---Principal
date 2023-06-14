@@ -54,9 +54,9 @@ class Main:
     
     def comercial(self):
         from business.comercial import PipedriveDeals, PipedriveActivities,PipedriveDealFields
-        # PipedriveDeals.PipedriveDeals(self.connection,self.engine).update()
+        PipedriveDeals.PipedriveDeals(self.connection,self.engine).update()
         # PipedriveDeals.PipedriveDeals(self.connection,self.engine).getFlow()
-        # PipedriveActivities.PipedriveActivities(self.connection,self.engine).update()
+        PipedriveActivities.PipedriveActivities(self.connection,self.engine).update()
         PipedriveDealFields.PipedriveDealField(self.connection,self.engine).update()
     
     def admin(self):
@@ -80,4 +80,4 @@ class Main:
         self.admin()
         self.flows()
         
-        print('\nRoutine in {:.2f} seconds\n'.format(time() - self.start_time))        
+        print('\nRoutine in {:.2f} seconds\n'.format(time() - self.start_time))
