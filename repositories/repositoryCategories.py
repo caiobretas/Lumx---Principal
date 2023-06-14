@@ -2,7 +2,7 @@ import string
 import logging
 from time import sleep
 from pandas import DataFrame
-from gspread import Worksheet, worksheet
+from gspread import Worksheet
 from controllers.controllerGoogle.controllerGoogleSheets import GoogleSheets
 from repositories.repositoryBase import RepositoryBase
 from entities.entityCategory import Category
@@ -105,7 +105,7 @@ class RepositoryCategories( RepositoryBase ):
         letter = alphabet[index]
         self.workSheetrange = f"A:{letter}"
         
-        row_list: list[worksheet.ValueRange] = sheet.get(self.workSheetrange)
+        row_list: list = sheet.get(self.workSheetrange)
         row_numbers = len(row_list) - 1
         if row_numbers == 0:
             return
