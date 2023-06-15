@@ -1,6 +1,7 @@
 from main import Main
 from business.updateProjection import UpdateProjection
 from controllers.controllerGoogle.controllerGoogleGmail import GoogleGmail
+from business.finance.ExchangeVariationRate import ExchangeVariationRate
 
 main = Main()
 connection = main.connection
@@ -18,6 +19,7 @@ class AutorunHour:
     def run():    
         try:
             UpdateProjection(connection, engine).update()
+            ExchangeVariationRate(connection, engine).updateSheet()
         except Exception as e:
             draft: dict = sender.createDraft(from_=from_,to=to,subject=errorsubject,message_body=f'Error: {e}')
             sender.sendDraft(draft.get('id', None))
