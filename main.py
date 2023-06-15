@@ -84,5 +84,3 @@ class Main:
         
 
         print('\nRoutine in {:.2f} seconds\n'.format(time() - self.start_time))
-
-Main().finance()
