@@ -18,7 +18,7 @@ class GoogleSheets(ControllerGoogle):
         try:
             if SheetId:
                 worksheet: gspread.Spreadsheet = self.client.open_by_key(worksheetId)
-                sheet: gspread.worksheet.Worksheet = worksheet.get_worksheet_by_id(SheetId)
+                sheet: gspread.models.Worksheet = worksheet.get_worksheet_by_id(SheetId)
                 
                 self.worksheetId = worksheetId
                 self.sheetId = SheetId
@@ -27,8 +27,11 @@ class GoogleSheets(ControllerGoogle):
             else:
                 worksheet: gspread.Spreadsheet = self.client.open_by_key(worksheetId)
                 return worksheet
+            
         except HttpError as err:
             logging.error(err)
+        except Exception as e:
+            logging.error(e)
     
     def writemanyRows(self, listofRow: not None):
         if not listofRow: return
@@ -42,12 +45,13 @@ class GoogleSheets(ControllerGoogle):
             return
         sheet.append_row(values)
         
-    def eraseSheet(self,worksheetId,SheetId, headers=None):
+    def eraseSheet(self,worksheetId=None,SheetId=None, headers=None):
+        if self.worksheetId: worksheetId = self.worksheetId
+        if self.sheetId: SheetId = self.sheetId
         if headers:
             sheet = self.openSheet(worksheetId,SheetId)
             sheet.clear()
             self.writeRow(headers, worksheetId, SheetId)
-        
         else:
             sheet = self.openSheet(worksheetId,SheetId) 
             sheet.clear()
@@ -63,7 +67,7 @@ class GoogleSheets(ControllerGoogle):
     def appendRow(self, values: list, sheetName, worksheetId: str):
         try:
             worksheet: gspread.Spreadsheet = self.client.open_by_key(worksheetId)
-            sheet: gspread.worksheet.Worksheet = worksheet.worksheet(sheetName)
+            sheet: gspread.models.Worksheet = worksheet.worksheet(sheetName)
             sheet.append_row(values)
         except Exception as e:
             logging.error(f'{" "* 3} Erro: {e}')

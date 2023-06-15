@@ -22,15 +22,7 @@ class AutorunMinute:
     list_errors: list[Exception] = []
     
     @staticmethod
-    def run(): 
-
-        try:
-            UpdateTransactions(connection, engine).update()
-        except Exception as e:
-            draft: dict = sender.createDraft(from_=from_,to=to,subject=errorsubject,message_body=f'Error: {e}')
-            sender.sendDraft(draft.get('id', None))
-            AutorunMinute.list_errors.append(e)
-
+    def run():
         try:
             main.admin()
         except Exception as e:

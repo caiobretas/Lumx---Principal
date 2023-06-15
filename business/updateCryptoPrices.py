@@ -1,3 +1,4 @@
+import logging
 from time import time
 from datetime import datetime
 from entities.entityCoin import Coin
@@ -7,8 +8,7 @@ from business.loadPrices import LoadPrices
 class UpdateCryptoPrices:
     def __init__(self, connection, engine):
         self.repositoryPrices = RepositoryPrices(connection, engine)
-        
-        
+       
     def update(self):
         print('\nUpdating Crypto Prices...')
         start_time = time()
@@ -46,4 +46,4 @@ class UpdateCryptoPrices:
                 
             finally:
                 try_time = time()
-                print('{} Status: {} - Time: {:.2f}s'.format(' ' * 3,status, try_time - start_time))
+                print('{} Status: {} - Time: {:.2f}s'.format(' ' * 3,status, try_time - start_time))                
