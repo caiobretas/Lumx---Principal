@@ -82,15 +82,7 @@ class Main:
         self.admin()
         self.flows()
         
-<<<<<<< HEAD
+
         print('\nRoutine in {:.2f} seconds\n'.format(time() - self.start_time))
-<<<<<<< HEAD
 
 Main().finance()
-=======
-        
-        
->>>>>>> 270cdcb (13/06/2023 - 11:25)
-=======
-        print('\nRoutine in {:.2f} seconds\n'.format(time() - self.start_time))
->>>>>>> d9ae3fb (make it better)
