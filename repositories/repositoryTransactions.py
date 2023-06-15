@@ -62,3 +62,18 @@ class RepositoryTransactions ( RepositoryBase ):
             except Exception as e:
                 logging.error(e)
                 print(f'\nNo new transactions found')
+                
+                
+    def getTransactions(self) -> list:
+        with self.connection.cursor() as cur:
+            query = f"""select 
+            fm.id,idexterno,idcontaativo,idclassificacao,idcentrocusto,tipo,realizado,datapagamento,datavencimento,valorprevisto,valorrealizado,valorprevisto_brl,valorrealizado_brl,moeda,descricao,percentualrateio,subcategoria4
+            from {self.schema}.{self.tableName} as fm
+            left join {self.repositoryCategories.schema}.{self.repositoryCategories.tableName} as c on c.id = fm.idclassificacao
+            order by fm.datapagamento desc;"""
+            
+            cur.execute(query)
+            result = cur.fetchall()
+            self.connection.commit()
+            
+        return result

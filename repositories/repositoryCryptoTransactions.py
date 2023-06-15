@@ -82,7 +82,7 @@ class RepositoryCryptoTransaction ( RepositoryBase ):
                 WHERE
                     c.conversionsymbol = 'BRL';
             SELECT
-                m.id, m.bank, c.id, m.datetime,
+                m.id, m.bank, m.methodid, m.datetime,
                 m.value, (m.value * pc.close) as valuebrl, m.tokensymbol
             FROM
                 {self.schema}.{self.tableName} as m
@@ -90,8 +90,7 @@ class RepositoryCryptoTransaction ( RepositoryBase ):
             	LEFT JOIN prices as pc on pc.conversionsymbol = m.tokensymbol and date(pc.date) = date(m.datetime)
             ORDER BY
                 date desc, tokensymbol asc;"""
-        
-        
+    
         try:
             with self.connection.cursor() as cur:
                 
@@ -112,7 +111,7 @@ class RepositoryCryptoTransaction ( RepositoryBase ):
                     moeda = row[6]
                     )
                     self.transactions.append(transaction)
-                    
+            return  self.transactions
         except Exception as e:
             logging.error(e)
                 

@@ -66,7 +66,9 @@ class Main:
     def finance(self):
         from business.atualizaRepository import FinanceRepository
         from business.updateProjection import UpdateProjection
+        from business.finance.ExchangeVariationRate import ExchangeVariationRate
         FinanceRepository(self.connection,self.engine).update()
+        ExchangeVariationRate(self.connection,self.engine).updateSheet()
         UpdateProjection(self.connection,self.engine).update()
         
     def hr(self):
@@ -81,3 +83,5 @@ class Main:
         self.flows()
         
         print('\nRoutine in {:.2f} seconds\n'.format(time() - self.start_time))
+
+Main().finance()

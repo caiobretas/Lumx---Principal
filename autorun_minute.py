@@ -23,6 +23,7 @@ class AutorunMinute:
     list_errors: list[Exception] = []
     
     @staticmethod
+<<<<<<< HEAD
     def run(): 
 
         try:
@@ -32,6 +33,9 @@ class AutorunMinute:
             sender.sendDraft(draft.get('id', None))
             AutorunMinute.list_errors.append(e)
 
+=======
+    def run():
+>>>>>>> fd8af8a (exchange rate variation)
         try:
             main.admin()
         except Exception as e:

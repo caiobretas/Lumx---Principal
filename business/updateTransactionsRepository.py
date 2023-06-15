@@ -23,11 +23,12 @@ class UpdateTransactions:
             self.repositoryKamino.getTransactions()
             self.repositoryCrypto.getCryptoTransactions()
             
-            transactionsKamino = self.repositoryKamino.transactions
             transactionsCrypto = self.repositoryCrypto.transactions
+            transactionsKamino = self.repositoryKamino.transactions
             
-            self.repositoryTransaction.insert(transactionsCrypto, 'bulk')
             self.repositoryTransaction.insert(transactionsKamino, 'bulk')
+            self.repositoryTransaction.insert(transactionsCrypto, 'bulk')
+            
             status = 'Complete'
         
         except Exception as e:

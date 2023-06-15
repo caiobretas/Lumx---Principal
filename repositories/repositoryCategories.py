@@ -116,6 +116,7 @@ class RepositoryCategories( RepositoryBase ):
         
         categories: list[Category] = []
         filteredRows = []
+        
         for row in row_list:
             _index = row_list.index(row)
             if not row or row[11] == '':
