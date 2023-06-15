@@ -14,12 +14,7 @@ class FinanceRepository:
         
     def update(self): 
         timer = time()
-<<<<<<< HEAD
-          
-=======
-        
         UpdateTransactions(self.connection, self.engine).update()
->>>>>>> fd8af8a (exchange rate variation)
         UpdateBook(self.connection,self.engine).update() # update book repository from 'interface.xlsx'
         UpdateCategories(self.connection, self.engine).update()
         UpdateCryptoTransactions(self.connection, self.engine).update()
