@@ -148,8 +148,7 @@ SELECT
     date(date) AS date,
     conversionSymbol,
     (close - LAG(close) OVER (PARTITION BY conversionSymbol ORDER BY date, conversionSymbol)) AS variacaoCambial
-FROM prices
-ORDER BY date ASC;
+FROM prices;
 
 select * from variacaocambial
 where date >= '2022-01-01'
