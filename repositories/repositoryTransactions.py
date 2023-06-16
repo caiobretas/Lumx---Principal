@@ -39,7 +39,7 @@ class RepositoryTransactions ( RepositoryBase ):
                 
                 on conflict (id) do update set
                 idexterno = EXCLUDED.idexterno,
-                idcontaativo = EXCLUDED.idcontaativo,
+                idcontaativo = EXCLUDED.idcontaa*tivo,
                 idclassificacao = EXCLUDED.idclassificacao,
                 realizado = EXCLUDED.realizado,
                 idcentrocusto = EXCLUDED.idcentrocusto,
