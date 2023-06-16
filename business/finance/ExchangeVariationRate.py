@@ -130,7 +130,7 @@ class ExchangeVariationRate:
             self.controllerGoogleSheets.eraseSheet(headers=headers)
             # write new values
             self.controllerGoogleSheets.writemanyRows(filteredPricesVariations)
-        
+            status = 'Sucess'
         except Exception as e:
             logging.error(e)
             status = 'Failed'

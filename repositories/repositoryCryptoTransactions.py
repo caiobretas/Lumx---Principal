@@ -83,7 +83,7 @@ class RepositoryCryptoTransaction ( RepositoryBase ):
                     c.conversionsymbol = 'BRL';
             SELECT
                 m.id, m.bank, m.methodid, m.datetime,
-                m.value, (m.value * pc.close) as valuebrl, m.tokensymbol
+                m.total, (m.total * pc.close) as totalbrl, m.tokensymbol
             FROM
                 {self.schema}.{self.tableName} as m
 	            LEFT JOIN {self.schema}.categories as c on m.methodid = c.method_id

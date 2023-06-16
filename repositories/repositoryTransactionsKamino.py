@@ -299,7 +299,7 @@ class RepositoryKamino ( RepositoryBase ):
                     descricao=transactionKamino.descricao,
                     percentualrateio=transactionKamino.percentualrateio
                     )
-                    
+    
                     list_transactionsKamino.append(transactionKamino)
                     self.transactions.append(transaction)
                     
