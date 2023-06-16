@@ -185,7 +185,7 @@ class ExchangeVariationRate:
             print('{} Status: {} - Time: {:.2f}s'.format(' ' * 3,status, try_time - start_time))
                  
     def updateSheet(self):
-        # self.writeBalance()
-        # self.writeTransactions()
-        # self.writePrices()
+        self.writeBalance()
+        self.writeTransactions()
+        self.writePrices()
         self.writeExchangeRate()
