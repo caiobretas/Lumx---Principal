@@ -119,9 +119,10 @@ class ExchangeVariationRate:
             for price in prices:
                 aux_list = []
                 if price.close and price.token != 'BRL':
-                    id = f'{price.date.strftime("%d-%m-%Y")}{price.token}'
+                    formatted_date = price.date.strftime('"%d-%m-%Y"')
+                    id = f'{formatted_date}{price.token}'
                     aux_list.append(id)
-                    aux_list.append(price.date.strftime('%d-%m-%Y'))
+                    aux_list.append(formatted_date)
                     aux_list.append(price.token)
                     aux_list.append(price.close)
                     filteredPrices.append(aux_list)
@@ -155,9 +156,9 @@ class ExchangeVariationRate:
             for priceVariation in pricesVariatons:
                 aux_list = []
                 if priceVariation[2] != 'BRL':
-                    id = f'{priceVariation[1].strftime("%d-%m-%Y")}{priceVariation[2]}'
+                    id = f"{priceVariation[1].strftime('%Y-%m-%d')}{priceVariation[2]}"
                     aux_list.append(id)
-                    aux_list.append(priceVariation[1].strftime('%d-%m-%Y'))
+                    aux_list.append(priceVariation[1].strftime('%Y-%m-%d'))
                     aux_list.append(priceVariation[2])
                     aux_list.append(priceVariation[3])
                     filteredPricesVariations.append(aux_list)
