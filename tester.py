@@ -14,3 +14,5 @@ controllerPipe = ControllerPipeDrive()
 # attachment: dict = controllerGmail.getAttachmentById(messageId,attachmentId)
 
 # controllerDrive.uploadFile(attachment, 'Teste', '1JS8MCpBsNR-jp1APrxq7wR9Be2X7o1bd')
+
+from autorun_minute_transactionsDB import 

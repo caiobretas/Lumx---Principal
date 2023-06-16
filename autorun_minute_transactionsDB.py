@@ -27,7 +27,7 @@ class AutorunMinute:
             
     @staticmethod
     def sender():
-        subject = 'Successfully completed 10 minute routine'
+        subject = 'Successfully completed transactions update routine'
         message = 'The following tasks were executed:\n\nUpdateTransactions_Table'
         draft: dict = sender.createDraft(from_=from_,to=to,subject=subject, message_body=message)
         sender.sendDraft(draft.get('id', None))
