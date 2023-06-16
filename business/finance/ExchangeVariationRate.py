@@ -99,6 +99,7 @@ class ExchangeVariationRate:
         
         except Exception as e:
             logging.error(e)
+            status = 'Failed'
             
         finally:
             try_time = time()
@@ -124,8 +125,6 @@ class ExchangeVariationRate:
                     aux_list.append(price.token)
                     aux_list.append(price.close)
                     filteredPrices.append(aux_list)
-            
-            filteredPrices.sort(reverse=True)
             
             # open sheet
             self.controllerGoogleSheets.openSheet(self.worksheetId,sheetId)
