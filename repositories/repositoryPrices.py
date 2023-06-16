@@ -138,7 +138,8 @@ order by date desc;
         query = f"""CREATE TEMPORARY TABLE IF NOT EXISTS prices AS SELECT subqueryB.time, POWER(c.close, -1) * subqueryB.close AS close, subqueryB.conversionSymbol, subqueryB.date FROM {self.schema}.{self.tableName} AS c RIGHT JOIN (SELECT time, close, conversionSymbol, date FROM {self.schema}.{self.tableName}) AS subqueryB ON c.time = subqueryB.time WHERE c.conversionsymbol = 'BRL';
 
 create temporary table if not exists exchange_variation as SELECT concat(cast(time as varchar),conversionsymbol) as id, date(date), conversionSymbol,  close - LAG(close) OVER (PARTITION BY conversionSymbol ORDER BY date, conversionSymbol) AS variacaoCambial FROM prices ORDER BY date asc;
-select * from exchange_variation where date(date) >= '2022-01-01'
+select * from exchange_variation where date(date) >= '2022-01-01
+order by date desc'
 """
         try:
             with self.connection.cursor() as cur:

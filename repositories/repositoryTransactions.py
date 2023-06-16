@@ -61,8 +61,7 @@ class RepositoryTransactions ( RepositoryBase ):
             
             except Exception as e:
                 logging.error(e)
-                print(f'\nNo new transactions found')
-                
+                print(f'\nNo new transactions found')             
                 
     def getTransactions(self) -> list:
         with self.connection.cursor() as cur:
@@ -114,6 +113,7 @@ class RepositoryTransactions ( RepositoryBase ):
             ) AS subquery
             WHERE rn = 1
             );
+            
             SELECT DISTINCT * FROM balance
             ORDER BY date DESC;
     ;"""

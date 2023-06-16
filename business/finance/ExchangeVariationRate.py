@@ -48,9 +48,6 @@ class ExchangeVariationRate:
                     
                 filteredList.append(aux_list)
             
-            filteredList.sort(key=lambda x: x[0], reverse=True)
-
-            
             self.controllerGoogleSheets.openSheet(self.worksheetId,sheetId)
             # erase old values
             self.controllerGoogleSheets.eraseSheet(headers=headers)
@@ -89,8 +86,6 @@ class ExchangeVariationRate:
                     aux_list.append(transaction[1])
                     
                     filteredTransactions.append(aux_list)
-            
-            filteredTransactions.sort(reverse=True)
             
             # open sheet
             self.controllerGoogleSheets.openSheet(self.worksheetId,sheetId)
