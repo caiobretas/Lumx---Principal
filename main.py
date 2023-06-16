@@ -68,7 +68,7 @@ class Main:
         from business.updateProjection import UpdateProjection
         from business.finance.ExchangeVariationRate import ExchangeVariationRate
         
-        FinanceRepository(self.connection,self.engine).update()
+        # FinanceRepository(self.connection,self.engine).update()
         ExchangeVariationRate(self.connection,self.engine).updateSheet()
         UpdateProjection(self.connection,self.engine).update()
         
