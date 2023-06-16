@@ -104,18 +104,21 @@ class RepositoryTransactions ( RepositoryBase ):
         with self.connection.cursor() as cur:
             query = f"""
             CREATE TEMPORARY TABLE IF NOT EXISTS balance AS (
-            SELECT moeda, date(datapagamento), saldo_local, saldo_brl
-            FROM (
-            SELECT moeda, datapagamento, SUM(valorrealizado) OVER (PARTITION BY moeda ORDER BY datapagamento) AS saldo_local, SUM(valorrealizado_brl) OVER (PARTITION BY moeda ORDER BY datapagamento) AS saldo_brl,
-            ROW_NUMBER() OVER (PARTITION BY moeda, datapagamento ORDER BY datapagamento DESC) AS rn
-            FROM {self.schema}.{self.tableName}
-            WHERE realizado
-            ) AS subquery
-            WHERE rn = 1
-            );
-            
-            SELECT DISTINCT * FROM balance
-            ORDER BY date DESC;
+    SELECT moeda, datapagamento, saldo_local, saldo_brl
+    FROM (
+        SELECT moeda, datapagamento, SUM(valorrealizado) OVER (PARTITION BY moeda ORDER BY datapagamento) AS saldo_local, SUM(valorrealizado_brl) OVER (PARTITION BY moeda ORDER BY datapagamento) AS saldo_brl,
+        ROW_NUMBER() OVER (PARTITION BY moeda, date(datapagamento) ORDER BY datapagamento DESC) AS rn
+        FROM {self.schema}.{self.tableName}
+        WHERE realizado
+    ) AS subquery
+    WHERE rn = 1
+);
+
+SELECT moeda, MAX(datapagamento) AS close_datetime, saldo_local, saldo_brl
+FROM balance
+WHERE moeda != 'BRL'
+GROUP BY moeda, date(datapagamento), saldo_local, saldo_brl
+ORDER BY close_datetime DESC;
     ;"""
             
             cur.execute(query)
