@@ -119,7 +119,7 @@ class ExchangeVariationRate:
             for price in prices:
                 aux_list = []
                 if price.close and price.token != 'BRL':
-                    formatted_date = price.date.strftime('"%d-%m-%Y"')
+                    formatted_date = price.date.toordinal()
                     id = f'{formatted_date}{price.token}'
                     aux_list.append(id)
                     aux_list.append(formatted_date)
