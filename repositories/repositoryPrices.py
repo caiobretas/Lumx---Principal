@@ -151,7 +151,8 @@ SELECT
 FROM prices
 ORDER BY date ASC;
 
-WHERE date >= '2022-01-01'
+select * from variacaocambial
+where date >= '2022-01-01'
 order by date desc;
 """
         try:
