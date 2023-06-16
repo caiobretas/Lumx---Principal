@@ -152,7 +152,8 @@ FROM prices
 ORDER BY date ASC;
 
 SELECT * FROM variacaocambial
-WHERE date >= '2022-01-01';
+WHERE date >= '2022-01-01'
+order by date desc;
 """
         try:
             with self.connection.cursor() as cur:
