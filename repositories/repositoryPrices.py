@@ -138,20 +138,19 @@ order by date desc;
         query = f"""CREATE TEMPORARY TABLE IF NOT EXISTS prices AS
 SELECT subqueryB.time, POWER(c.close, -1) * subqueryB.close AS close, subqueryB.conversionSymbol, subqueryB.date
 FROM {self.schema}.{self.tableName} AS c
-RIGHT JOIN (SELECT time, close, conversionSymbol, date FROM {self.schema}.{self.tableName}) AS subqueryB
+RIGHT JOIN (SELECT time, close, conversionSymbol, date FROM finance.prices_crypto) AS subqueryB
 ON c.time = subqueryB.time
 WHERE c.conversionsymbol = 'BRL';
 
 CREATE TEMPORARY TABLE IF NOT EXISTS variacaocambial AS
 SELECT
     concat(cast(time AS varchar), conversionsymbol) AS id,
-    date(date),
+    date(date) AS date,
     conversionSymbol,
-    ((close - LAG(close) OVER (PARTITION BY conversionSymbol ORDER BY date, conversionSymbol)) / NULLIF(LAG(close) OVER (PARTITION BY conversionSymbol ORDER BY date, conversionSymbol), 0)) * 100 AS variacaoCambial
+    (close - LAG(close) OVER (PARTITION BY conversionSymbol ORDER BY date, conversionSymbol)) AS variacaoCambial
 FROM prices
 ORDER BY date ASC;
 
-SELECT * FROM variacaocambial
 WHERE date >= '2022-01-01'
 order by date desc;
 """
