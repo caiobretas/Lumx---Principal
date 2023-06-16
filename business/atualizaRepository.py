@@ -14,6 +14,7 @@ class FinanceRepository:
         
     def update(self): 
         timer = time()
+        
         UpdateTransactions(self.connection, self.engine).update()
         UpdateBook(self.connection,self.engine).update() # update book repository from 'interface.xlsx'
         UpdateCategories(self.connection, self.engine).update()

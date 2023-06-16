@@ -75,5 +75,28 @@ class RepositoryTransactions ( RepositoryBase ):
             cur.execute(query)
             result = cur.fetchall()
             self.connection.commit()
+            transactions: tuple = []
+            for row in result:
+                transaction = Transaction(
+                    id=row[0],
+                    idexterno=row[1],
+                    idcontaativo=row[2],
+                    idclassificacao=row[3],
+                    idcentrocusto=row[4],
+                    tipo=row[5],
+                    realizado=row[6],
+                    datapagamento=row[7],
+                    datavencimento=row[8],
+                    valorprevisto=row[9],
+                    valorrealizado=row[10],
+                    valorprevisto_brl=row[11],
+                    valorrealizado_brl=row[12],
+                    moeda=row[13],
+                    descricao=row[14],
+                    percentualrateio=row[15],
+                )
+                subcategoria4 = row[16]
+                transactions.append((transaction,subcategoria4))
             
-        return result
+            
+        return transactions

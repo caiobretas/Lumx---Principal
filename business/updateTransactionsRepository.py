@@ -20,7 +20,7 @@ class UpdateTransactions:
     def update(self):
         start_time = time()
         try:
-            self.repositoryKamino.getTransactions()
+            self.repositoryKamino.getTransactions(realizado=1)
             self.repositoryCrypto.getCryptoTransactions()
             
             transactionsCrypto = self.repositoryCrypto.transactions

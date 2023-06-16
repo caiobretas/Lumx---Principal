@@ -1,6 +1,7 @@
 from controllers.controllerGoogle.controllerGoogleSheets import GoogleSheets
 from repositories.repositoryPrices import RepositoryPrices
 from repositories.repositoryTransactions import RepositoryTransactions
+from entities.entityTransaction import Transaction
 
 class ExchangeVariationRate:
     def __init__(self,connection,engine):
@@ -18,52 +19,58 @@ class ExchangeVariationRate:
         sheetId = 391759750
         headers = ['id','data','moeda','valorrealizado','valorrealizado_brl','subcategoria4']
         
-        transactions = self.repositoryTransactions.getTransactions()
-        
+        transactions: list[Transaction] = self.repositoryTransactions.getTransactions()
         
         # filters the rows that are going to be written (by default, all rows with no ExchangeRate are ignored)
         filteredTransactions = []
         for transaction in transactions:
             aux_list = []
-            if transaction[6]:
-                aux_list.append(transaction[0])
-                aux_list.append(transaction[7].strftime('%Y-%m-%d'))
-                aux_list.append(transaction[13])
-                aux_list.append(transaction[10])
-                aux_list.append(transaction[12])
-                aux_list.append(transaction[16])
+            obj: Transaction  = transaction[0]
+            
+            if not transaction[1]:
+                a = 2
+            
+            if obj.realizado:
+                
+                aux_list.append(obj.id)
+                aux_list.append(obj.datavencimento.strftime('%Y-%m-%d'))
+                aux_list.append(obj.moeda)
+                aux_list.append(obj.valorrealizado)
+                aux_list.append(obj.valorrealizado_brl)
+                aux_list.append(transaction[1])
+                
                 filteredTransactions.append(aux_list)
         
         filteredTransactions.sort(reverse=True)
         
-        # open sheet 
+        # open sheet
         self.controllerGoogleSheets.openSheet(self.worksheetId,sheetId)
         # erase old values
         self.controllerGoogleSheets.eraseSheet(headers=headers)
         # write new values
         self.controllerGoogleSheets.writemanyRows(filteredTransactions)
         return None
-            
     
     def writePrices(self):
         sheetId = 56497729
-        headers = ['id', 'data', 'token']
+        headers = ['id', 'date', 'token', 'price']
         
-        prices: list = self.repositoryPrices.getPrices()
+        prices: list = self.repositoryPrices.getProjection()
         
         # filters the rows that are going to be written (by default, all rows with no ExchangeRate are ignored)
         filteredPrices = []
         for price in prices:
             aux_list = []
-            if price.close and price.conversionsymbol != 'BRL':
+            if price.close and price.token != 'BRL':
                 aux_list.append(price.id)
                 aux_list.append(price.date.strftime('%Y-%m-%d'))
+                aux_list.append(price.token)
                 aux_list.append(price.close)
                 filteredPrices.append(aux_list)
         
         filteredPrices.sort(reverse=True)
         
-        # open sheet 
+        # open sheet
         self.controllerGoogleSheets.openSheet(self.worksheetId,sheetId)
         # erase old values
         self.controllerGoogleSheets.eraseSheet(headers=headers)
