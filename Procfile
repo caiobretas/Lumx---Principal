@@ -1,1 +1,1 @@
-worker: autorun_minute_transactionsDB.py
+worker: python3 autorun_minute_transactionsDB.py
