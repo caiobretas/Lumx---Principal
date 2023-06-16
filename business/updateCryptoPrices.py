@@ -13,8 +13,7 @@ class UpdateCryptoPrices:
         print('\nUpdating Crypto Prices...')
         start_time = time()
         try:
-            self.repositoryPrices.getDate()
-            date = self.repositoryPrices.maxDate
+            date = self.repositoryPrices.getDate()
             
             if date == None:
                 status = 'Empty'
