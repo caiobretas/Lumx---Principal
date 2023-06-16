@@ -40,11 +40,12 @@ class ExchangeVariationRate:
             filteredList = []
             for balance in balance_list:
                 aux_list = []
-                
-                id = f'{balance[1].strftime("%d-%m-%Y")}{balance[0]}'
+                date: datetime = balance[1]
+                formatted_date = (date - datetime.date(1899, 12, 30)).days
+                id = f'{formatted_date}{balance[0]}'
                 aux_list.append(id)
                 aux_list.append(balance[0])
-                aux_list.append(balance[1].strftime('%d-%m-%Y'))
+                aux_list.append(formatted_date)
                 aux_list.append(balance[2])
                 aux_list.append(balance[3])
                     
@@ -159,9 +160,11 @@ class ExchangeVariationRate:
             for priceVariation in pricesVariatons:
                 aux_list = []
                 if priceVariation[2] != 'BRL':
-                    id = f"{priceVariation[1].strftime('%Y-%m-%d')}{priceVariation[2]}"
+                    date: datetime = priceVariation[1]
+                    formatted_date = (date - datetime.date(1899, 12, 30)).days
+                    id = f"{formatted_date}{priceVariation[2]}"
                     aux_list.append(id)
-                    aux_list.append(priceVariation[1].strftime('%Y-%m-%d'))
+                    aux_list.append(formatted_date)
                     aux_list.append(priceVariation[2])
                     aux_list.append(priceVariation[3])
                     filteredPricesVariations.append(aux_list)
