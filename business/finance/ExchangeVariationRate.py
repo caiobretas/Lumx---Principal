@@ -39,7 +39,7 @@ class ExchangeVariationRate:
             for balance in balance_list:
                 aux_list = []
                 
-                id = f'{balance[1].day}{balance[1].month}{balance[1].year}{balance[0]}'
+                id = f'{balance[1].strftime("%Y-%m-%d")}{balance[0]}'
                 aux_list.append(id)
                 aux_list.append(balance[0])
                 aux_list.append(balance[1].strftime('%Y-%m-%d'))
@@ -119,7 +119,7 @@ class ExchangeVariationRate:
             for price in prices:
                 aux_list = []
                 if price.close and price.token != 'BRL':
-                    id = f'{price.date.day}{price.date.month}{price.date.year}{price.token}'
+                    id = f'{price.date.strftime("%Y-%m-%d")}{price.token}'
                     aux_list.append(id)
                     aux_list.append(price.date.strftime('%Y-%m-%d'))
                     aux_list.append(price.token)
@@ -155,7 +155,7 @@ class ExchangeVariationRate:
             for priceVariation in pricesVariatons:
                 aux_list = []
                 if priceVariation[2] != 'BRL':
-                    id = f'{priceVariation[1].day}{priceVariation[1].month}{priceVariation[1].year}{priceVariation[2]}'
+                    id = f'{priceVariation[1].strftime("%Y-%m-%d")}{priceVariation[2]}'
                     aux_list.append(id)
                     aux_list.append(priceVariation[1].strftime('%Y-%m-%d'))
                     aux_list.append(priceVariation[2])
