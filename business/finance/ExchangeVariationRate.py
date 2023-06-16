@@ -167,8 +167,6 @@ class ExchangeVariationRate:
                     aux_list.append(priceVariation[2])
                     aux_list.append(priceVariation[3])
                     filteredPricesVariations.append(aux_list)
-                    if aux_list[0]=='1683504000MATIC':
-                        print(aux_list)
             
             # open sheet 
             self.controllerGoogleSheets.openSheet(self.worksheetId,sheetId)
