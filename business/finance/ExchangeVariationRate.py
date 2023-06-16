@@ -27,7 +27,7 @@ class ExchangeVariationRate:
         exchangeRate_list = self.getExchangeRate()
         
     def writeBalance(self):
-        print('\nWriting transactions...')
+        print('\nWriting balance...')
         try:
             start_time = time()
             sheetId = 1397884468
