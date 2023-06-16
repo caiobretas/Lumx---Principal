@@ -1,5 +1,7 @@
 from time import time
+import datetime
 import logging
+import pygsheets
 from controllers.controllerGoogle.controllerGoogleSheets import GoogleSheets
 from repositories.repositoryPrices import RepositoryPrices
 from repositories.repositoryTransactions import RepositoryTransactions
@@ -119,7 +121,8 @@ class ExchangeVariationRate:
             for price in prices:
                 aux_list = []
                 if price.close and price.token != 'BRL':
-                    formatted_date = price.date.toordinal()
+                    date = price.date
+                    formatted_date = (date - datetime.date(1899, 12, 30)).days
                     id = f'{formatted_date}{price.token}'
                     aux_list.append(id)
                     aux_list.append(formatted_date)
