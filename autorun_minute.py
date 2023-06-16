@@ -24,7 +24,7 @@ class AutorunMinute:
     
     @staticmethod
     def run(): 
-
+        
         try:
             UpdateCategories(connection, engine).update()
         except Exception as e:

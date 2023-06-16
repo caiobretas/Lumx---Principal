@@ -1,6 +1,6 @@
 from main import Main
 from business.updateTransactionsRepository import UpdateTransactions
-
+from business.finance.ExchangeVariationRate import ExchangeVariationRate
 
 from controllers.controllerGoogle.controllerGoogleGmail import GoogleGmail
 
@@ -20,6 +20,8 @@ class AutorunMinute:
     def run(): 
         try:
             UpdateTransactions(connection, engine).update()
+            ExchangeVariationRate(connection,engine).updateSheet()
+            
         except Exception as e:
             draft: dict = sender.createDraft(from_=from_,to=to,subject=errorsubject,message_body=f'Error: {e}')
             sender.sendDraft(draft.get('id', None))
@@ -28,7 +30,7 @@ class AutorunMinute:
     @staticmethod
     def sender():
         subject = 'Successfully completed transactions update routine'
-        message = 'The following tasks were executed:\n\nUpdateTransactions_Table'
+        message = 'The following tasks were executed:\n\nUpdateTransactions_Table\nUpdateExchangeVariation_Sheet'
         draft: dict = sender.createDraft(from_=from_,to=to,subject=subject, message_body=message)
         sender.sendDraft(draft.get('id', None))
         
