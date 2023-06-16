@@ -40,8 +40,8 @@ class ExchangeVariationRate:
             filteredList = []
             for balance in balance_list:
                 aux_list = []
-                date: datetime = balance[1]
-                formatted_date = (date - datetime.date(1899, 12, 30)).days
+                date: datetime.datetime = balance[1]
+                formatted_date = (date.date() - datetime.date(1899, 12, 30)).days
                 id = f'{formatted_date}{balance[0]}'
                 aux_list.append(id)
                 aux_list.append(balance[0])
@@ -80,9 +80,10 @@ class ExchangeVariationRate:
                 obj: Transaction  = transaction[0]
                 
                 if obj.realizado:
-                    
+                    date = obj.datapagamento
+                    formatted_date = (date.date() - datetime.date(1899, 12, 30)).days
                     aux_list.append(obj.id)
-                    aux_list.append(obj.datapagamento.strftime('%Y-%m-%d'))
+                    aux_list.append(formatted_date)
                     aux_list.append(obj.moeda)
                     aux_list.append(obj.valorrealizado)
                     aux_list.append(obj.valorrealizado_brl)
