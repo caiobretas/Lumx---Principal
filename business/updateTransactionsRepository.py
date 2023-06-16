@@ -34,7 +34,6 @@ class UpdateTransactions:
         except Exception as e:
             status = 'Failed'
             logging.error(e)
-            return None
 
         finally:
             try_time = time()
