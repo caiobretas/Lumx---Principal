@@ -100,3 +100,49 @@ class RepositoryTransactions ( RepositoryBase ):
             
             
         return transactions
+    
+def getBalance(self) -> list:
+    with self.connection.cursor() as cur:
+        query = f"""
+        CREATE TEMPORARY TABLE IF NOT EXISTS balance AS (
+        SELECT moeda, date(datapagamento), saldo_local, saldo_brl
+        FROM (
+        SELECT moeda, datapagamento, SUM(valorrealizado) OVER (PARTITION BY moeda ORDER BY datapagamento) AS saldo_local, SUM(valorrealizado_brl) OVER (PARTITION BY moeda ORDER BY datapagamento) AS saldo_brl,
+        ROW_NUMBER() OVER (PARTITION BY moeda, datapagamento ORDER BY datapagamento DESC) AS rn
+        FROM finance.transactions
+        WHERE realizado
+        ) AS subquery
+        WHERE rn = 1
+        );
+        SELECT DISTINCT * FROM balance
+        ORDER BY date DESC;
+;"""
+        
+        cur.execute(query)
+        result = cur.fetchall()
+        self.connection.commit()
+        transactions: tuple = []
+        for row in result:
+            transaction = Transaction(
+                id=row[0],
+                idexterno=row[1],
+                idcontaativo=row[2],
+                idclassificacao=row[3],
+                idcentrocusto=row[4],
+                tipo=row[5],
+                realizado=row[6],
+                datapagamento=row[7],
+                datavencimento=row[8],
+                valorprevisto=row[9],
+                valorrealizado=row[10],
+                valorprevisto_brl=row[11],
+                valorrealizado_brl=row[12],
+                moeda=row[13],
+                descricao=row[14],
+                percentualrateio=row[15],
+            )
+            subcategoria4 = row[16]
+            transactions.append((transaction,subcategoria4))
+            
+            
+        return transactions

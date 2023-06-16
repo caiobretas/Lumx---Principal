@@ -1,3 +1,4 @@
+import logging
 from controllers.controllerGoogle.controllerGoogleSheets import GoogleSheets
 from repositories.repositoryPrices import RepositoryPrices
 from repositories.repositoryTransactions import RepositoryTransactions
@@ -9,47 +10,53 @@ class ExchangeVariationRate:
         self.repositoryTransactions = RepositoryTransactions(connection,engine)
         self.controllerGoogleSheets = GoogleSheets()
         self.worksheetId = '1CDumW0Wpy4OlYWsh8R_zOKSGFyfK2oFnXMeoY24qbGk'
-        
+    
+    def getBalance(self):
+        self.repositoryTransactions.ge
+     
     def getExchangeRate(self):
         pricesVariaton: list = self.repositoryPrices.getExchangeVariation()
         return pricesVariaton
     
     def writeTransactions(self):
+        
+        try:
 
-        sheetId = 391759750
-        headers = ['id','data','moeda','valorrealizado','valorrealizado_brl','subcategoria4']
-        
-        transactions: list[Transaction] = self.repositoryTransactions.getTransactions()
-        
-        # filters the rows that are going to be written (by default, all rows with no ExchangeRate are ignored)
-        filteredTransactions = []
-        for transaction in transactions:
-            aux_list = []
-            obj: Transaction  = transaction[0]
+            sheetId = 391759750
+            headers = ['id','data','moeda','valorrealizado','valorrealizado_brl','subcategoria4']
             
-            if not transaction[1]:
-                a = 2
+            transactions: list[Transaction] = self.repositoryTransactions.getTransactions()
             
-            if obj.realizado:
+            # filters the rows that are going to be written (by default, all rows with no ExchangeRate are ignored)
+            filteredTransactions = []
+            for transaction in transactions:
+                aux_list = []
+                obj: Transaction  = transaction[0]
                 
-                aux_list.append(obj.id)
-                aux_list.append(obj.datavencimento.strftime('%Y-%m-%d'))
-                aux_list.append(obj.moeda)
-                aux_list.append(obj.valorrealizado)
-                aux_list.append(obj.valorrealizado_brl)
-                aux_list.append(transaction[1])
-                
-                filteredTransactions.append(aux_list)
+                if obj.realizado:
+                    
+                    aux_list.append(obj.id)
+                    aux_list.append(obj.datapagamento.strftime('%Y-%m-%d'))
+                    aux_list.append(obj.moeda)
+                    aux_list.append(obj.valorrealizado)
+                    aux_list.append(obj.valorrealizado_brl)
+                    aux_list.append(transaction[1])
+                    
+                    filteredTransactions.append(aux_list)
+            
+            filteredTransactions.sort(reverse=True)
+            
+            # open sheet
+            self.controllerGoogleSheets.openSheet(self.worksheetId,sheetId)
+            # erase old values
+            self.controllerGoogleSheets.eraseSheet(headers=headers)
+            # write new values
+            self.controllerGoogleSheets.writemanyRows(filteredTransactions)
+            return None
         
-        filteredTransactions.sort(reverse=True)
-        
-        # open sheet
-        self.controllerGoogleSheets.openSheet(self.worksheetId,sheetId)
-        # erase old values
-        self.controllerGoogleSheets.eraseSheet(headers=headers)
-        # write new values
-        self.controllerGoogleSheets.writemanyRows(filteredTransactions)
-        return None
+        except Exception as e:
+            logging.error(e)
+            return None    
     
     def writePrices(self):
         sheetId = 56497729
@@ -109,4 +116,3 @@ class ExchangeVariationRate:
         self.writeTransactions()
         self.writePrices()
         self.writeExchangeRate()
-        
