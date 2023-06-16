@@ -1,6 +1,5 @@
 from main import Main
 from business.updateTransactionsRepository import UpdateTransactions
-from business.finance.ExchangeVariationRate import ExchangeVariationRate
 import pygsheets
 from controllers.controllerGoogle.controllerGoogleGmail import GoogleGmail
 
@@ -19,7 +18,7 @@ class AutorunMinute:
     @staticmethod
     def run(): 
         try:
-            # ExchangeVariationRate(connection,engine).updateSheet()
+            
             UpdateTransactions(connection, engine).update()
                         
         except Exception as e:
