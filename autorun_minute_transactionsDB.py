@@ -19,7 +19,7 @@ class AutorunMinute:
     @staticmethod
     def run(): 
         try:
-            UpdateTransactions(connection, engine).update()
+            # UpdateTransactions(connection, engine).update()
             ExchangeVariationRate(connection,engine).updateSheet()
             
         except Exception as e:

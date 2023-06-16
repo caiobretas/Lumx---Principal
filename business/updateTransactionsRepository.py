@@ -23,8 +23,8 @@ class UpdateTransactions:
             self.repositoryKamino.getTransactions(realizado=1)
             self.repositoryCrypto.getCryptoTransactions()
             
-            transactionsCrypto = self.repositoryCrypto.transactions
             transactionsKamino = self.repositoryKamino.transactions
+            transactionsCrypto = self.repositoryCrypto.transactions
             
             self.repositoryTransaction.insert(transactionsKamino, 'bulk')
             self.repositoryTransaction.insert(transactionsCrypto, 'bulk')
