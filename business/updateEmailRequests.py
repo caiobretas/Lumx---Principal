@@ -14,12 +14,15 @@ class UpdateEmailRequests:
         self.mailUpdates: list = []
     
     def update(self):
-        timer = time()
+        start_time = time()
         print('\nUpdating Email Requests...')
         
         emailRequests_list: list[EmailRequest] = self.repositoryEmailRequests.getEmailRequests(False, False, 'Invoice')
         
         if not emailRequests_list:
+            status = 'Empty'
+            try_time = time()
+            print('{} Status: {} - Time: {:.2f}s'.format(' ' * 3,status, try_time - start_time))
             return None
         
         for request in emailRequests_list:
@@ -90,4 +93,4 @@ class UpdateEmailRequests:
             self.mailUpdates.append(request_update)
                 
         self.repositoryEmailRequests.insertEmailRequests(self.mailUpdates)
-        print('\nEmail Requests updated in {:.2f} seconds\n'.format(time() - timer))
+        print('\n{}Email Requests updated in {:.2f} seconds\n'.format(' ' * 3,time() - start_time))

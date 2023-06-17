@@ -21,5 +21,6 @@ class UpdateBook:
             
         except Exception as e:
             status = 'Failed'
+            try_time = time()
             logging.error(e)
         print('{} Status: {} - Time: {:.2f}s'.format(' ' * 3,status, try_time - start_time))
