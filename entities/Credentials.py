@@ -49,3 +49,5 @@ class MyCredentials:
         except Exception as e:
             logging.error(e)
             return None
+
+MyCredentials.get_credentials()

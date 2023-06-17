@@ -115,7 +115,7 @@ project = EXCLUDED.project
             logging.error(f"An error occurred while getting the book: {e}")
 
     def getBook_fromSheets(self):
-        sheet: Worksheet = self.controllerGoogleSheets.openSheet(self.workSheetId, self.categoriesSheetId)
+        sheet: Worksheet = self.controllerGoogleSheets.openSheet(self.workSheetId, self.bookSheetId)
         
         maxColumn = len(self.workSheetHeaders)
         alphabet = string.ascii_uppercase
