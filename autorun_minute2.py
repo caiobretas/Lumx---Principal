@@ -1,6 +1,5 @@
 from main import Main
 from business.updateTransactionsRepository import UpdateTransactions
-import pygsheets
 from controllers.controllerGoogle.controllerGoogleGmail import GoogleGmail
 
 main = Main()
@@ -18,9 +17,7 @@ class AutorunMinute:
     @staticmethod
     def run(): 
         try:
-            
-            UpdateTransactions(connection, engine).update()
-                        
+            UpdateTransactions(connection, engine).update()         
         except Exception as e:
             draft: dict = sender.createDraft(from_=from_,to=to,subject=errorsubject,message_body=f'Error: {e}')
             sender.sendDraft(draft.get('id', None))

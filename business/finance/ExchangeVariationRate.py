@@ -1,7 +1,6 @@
 from time import time
 import datetime
 import logging
-import pygsheets
 from controllers.controllerGoogle.controllerGoogleSheets import GoogleSheets
 from repositories.repositoryPrices import RepositoryPrices
 from repositories.repositoryTransactions import RepositoryTransactions
