@@ -1,10 +1,11 @@
+import string
 import psycopg2
 import logging
 from pandas import DataFrame
-
+from controllers.controllerGoogle.controllerGoogleSheets import GoogleSheets
 from entities.entityBook import Book
 from repositories.repositoryBase import RepositoryBase
-
+from gspread import Worksheet
 class RepositoryBook ( RepositoryBase ):
     def __init__(self, connection: str, engine: str):
         self.tableName = 'book' # postgresql
@@ -13,6 +14,23 @@ class RepositoryBook ( RepositoryBase ):
         self.connection: psycopg2.connection = connection
         
         super().__init__(connection, engine, self.schema, self.tableName)
+
+        self.controllerGoogleSheets = GoogleSheets()
+        self.workSheetId = '1oXBOgSVcx3zWYpb0-i16Ykxce5E2ZFoZe-5NEONmZ4k'
+        self.workSheetHeaders = [
+        'address',
+        'name',
+        'is_lumx',
+        'is_safe',
+        'blockchain',
+        'is_conversion',
+        'is_primarysale',
+        'is_secondarysale',
+        'project'
+        ]
+        self.bookSheetId = 1088169641
+        self.lastUpdateSheetId = 1239069114
+
 
     def insert(self, lst: list[Book]) -> None: # postgresql
         with self.connection.cursor() as cur:
@@ -95,3 +113,51 @@ project = EXCLUDED.project
         
         except Exception as e:
             logging.error(f"An error occurred while getting the book: {e}")
+
+    def getBook_fromSheets(self):
+        sheet: Worksheet = self.controllerGoogleSheets.openSheet(self.workSheetId, self.categoriesSheetId)
+        
+        maxColumn = len(self.workSheetHeaders)
+        alphabet = string.ascii_uppercase
+        index = (maxColumn - 1) % 26
+        letter = alphabet[index]
+        self.workSheetrange = f"A:{letter}"
+        
+        row_list: list = sheet.get(self.workSheetrange)
+        row_numbers = len(row_list) - 1
+        if row_numbers == 0:
+            return
+        if row_list: row_list.pop(0)
+        
+        self.controllerGoogleSheets.eraseSheet(self.workSheetId,self.lastUpdateSheetId, self.workSheetHeaders)
+        self.controllerGoogleSheets.eraseSheet(self.workSheetId,self.bookSheetId, self.workSheetHeaders)
+        
+        book_list: list[Book] = []
+        filteredRows = []
+        
+        for row in row_list:
+            _index = row_list.index(row)
+            if not row or row[0] == '':
+                continue
+            
+            table_range = f'A{row_numbers}:{letter}{row_numbers}'
+            
+            if row != self.workSheetHeaders:
+
+                book = Book(
+                address=row[0],
+                name=row[1],
+                is_lumx=row[2],
+                blockchain=row[3],
+                is_conversion=row[4],
+                is_primarysale=row[5],
+                is_secondarysale=row[6],
+                project=row[7]
+                )
+                if book.address:
+                    book_list.append(book)
+                    if row not in filteredRows: filteredRows.append(row)
+        
+        self.controllerGoogleSheets.openSheet(self.workSheetId,self.lastUpdateSheetId)
+        self.controllerGoogleSheets.writemanyRows(filteredRows)
+        return book_list if row_list else None
