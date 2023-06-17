@@ -118,50 +118,57 @@ project = EXCLUDED.project
             logging.error(f"An error occurred while getting the book: {e}")
 
     def getBook_fromSheets(self):
-        sheet: Worksheet = self.controllerGoogleSheets.openSheet(self.workSheetId, self.bookSheetId)
-        
-        maxColumn = len(self.workSheetHeaders)
-        alphabet = string.ascii_uppercase
-        index = (maxColumn - 1) % 26
-        letter = alphabet[index]
-        self.workSheetrange = f"A:{letter}"
-        
-        row_list: list = sheet.get(self.workSheetrange)
-        row_numbers = len(row_list) - 1
-        if row_numbers == 0:
-            return
-        if row_list: row_list.pop(0)
-        
-        self.controllerGoogleSheets.eraseSheet(self.workSheetId,self.lastUpdateSheetId, self.workSheetHeaders)
-        self.controllerGoogleSheets.eraseSheet(self.workSheetId,self.bookSheetId, self.workSheetHeaders)
-        
-        book_list: list[Book] = []
-        filteredRows = []
-        
-        for row in row_list:
-            _index = row_list.index(row)
-            if not row or row[0] == '':
-                continue
+        try:
+            sheet: Worksheet = self.controllerGoogleSheets.openSheet(self.workSheetId, self.bookSheetId)
             
-            table_range = f'A{row_numbers}:{letter}{row_numbers}'
+            maxColumn = len(self.workSheetHeaders)
+            alphabet = string.ascii_uppercase
+            index = (maxColumn - 1) % 26
+            letter = alphabet[index]
+            self.workSheetrange = f"A:{letter}"
             
-            if row != self.workSheetHeaders:
-
-                book = Book(
-                address=row[0],
-                name=row[1],
-                is_lumx=bool(int(row[2])),
-                is_safe=bool(int(row[3])),
-                blockchain=row[4],
-                is_conversion=bool(int(row[5])),
-                is_primarysale=bool(int(row[6])),
-                is_secondarysale=bool(int(row[7])),
-                project=row[8]
-                )
-                if book.address:
-                    book_list.append(book)
-                    if row not in filteredRows: filteredRows.append(row)
+            row_list: list = sheet.get(self.workSheetrange)
+            row_numbers = len(row_list) - 1
+            if row_numbers == 0:
+                return
+            if row_list: row_list.pop(0)
+            
+            self.controllerGoogleSheets.eraseSheet(self.workSheetId,self.lastUpdateSheetId, self.workSheetHeaders)
+            self.controllerGoogleSheets.eraseSheet(self.workSheetId,self.bookSheetId, self.workSheetHeaders)
+            
+            book_list: list[Book] = []
+            filteredRows = []
+            
+            for row in row_list:
+                _index = row_list.index(row)
+                if not row or row[0] == '':
+                    continue
+                
+                table_range = f'A{row_numbers}:{letter}{row_numbers}'
+                
+                if row != self.workSheetHeaders:
+                    try:
+                        project = row[8]
+                    except:
+                        project = None
+                    book = Book(
+                    address=row[0],
+                    name=row[1],
+                    is_lumx=bool(int(row[2])),
+                    is_safe=bool(int(row[3])),
+                    blockchain=row[4],
+                    is_conversion=bool(int(row[5])),
+                    is_primarysale=bool(int(row[6])),
+                    is_secondarysale=bool(int(row[7])),
+                    project=project,
+                    )
+                    if book.address:
+                        book_list.append(book)
+                        if row not in filteredRows: filteredRows.append(row)
+            
+            self.controllerGoogleSheets.openSheet(self.workSheetId,self.lastUpdateSheetId)
+            self.controllerGoogleSheets.writemanyRows(filteredRows)
+            return book_list if row_list else None
         
-        self.controllerGoogleSheets.openSheet(self.workSheetId,self.lastUpdateSheetId)
-        self.controllerGoogleSheets.writemanyRows(filteredRows)
-        return book_list if row_list else None
+        except Exception as e:
+            logging.error(e)
