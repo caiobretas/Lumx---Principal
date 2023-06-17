@@ -14,4 +14,3 @@ oauth2client
 oauthlib
 openpyxl
 pandas
-pygsheets
