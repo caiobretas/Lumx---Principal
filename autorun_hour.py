@@ -2,6 +2,7 @@ from main import Main
 from business.updateProjection import UpdateProjection
 from controllers.controllerGoogle.controllerGoogleGmail import GoogleGmail
 from business.finance.ExchangeVariationRate import ExchangeVariationRate
+from business.finance.ExchangeVariationRate import ExchangeVariationRate
 
 main = Main()
 connection = main.connection
