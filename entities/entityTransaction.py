@@ -40,9 +40,11 @@ class KaminoTransaction:
         self.idclassificacao = idclassificacao
         self.contaativo = contaativo
 
-        if self.tipo == 'Pagamento' and (self.valorprevisto >= 0 or self.valorrealizado >= 0):
+        if self.tipo == 'Pagamento' and (self.valorprevisto >= 0):
             self.valorprevisto = (-1) * valorprevisto if valorprevisto != None else None
             self.valorrealizado = (-1) * valorrealizado if valorrealizado != None else None
+
+        if self.tipo == 'Pagamento':            
             self.nomecontadestino = nomepessoa
             self.nomecontaorigem = contaativo
             self.idclassificacao = idcontadestino

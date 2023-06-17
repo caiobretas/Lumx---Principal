@@ -28,7 +28,6 @@ class AutorunMinute:
         try:
             UpdateBook(connection,engine).update()
             UpdateCategories(connection, engine).update()
-        
         except Exception as e:
             draft: dict = sender.createDraft(from_=from_,to=to,subject=errorsubject,message_body=f'Error: {e}')
             sender.sendDraft(draft.get('id', None))
@@ -51,7 +50,6 @@ class AutorunMinute:
             draft: dict = sender.createDraft(from_=from_,to=to,subject=errorsubject,message_body=f'Error: {e}')
             sender.sendDraft(draft.get('id', None))
             AutorunMinute.list_errors.append(e)
-
         try:
             UpdateFutures(connection, engine).update()
         except Exception as e:
