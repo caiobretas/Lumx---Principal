@@ -33,6 +33,7 @@ class RepositoryBook ( RepositoryBase ):
 
 
     def insert(self, lst: list[Book]) -> None: # postgresql
+        if not lst: return
         with self.connection.cursor() as cur:
             values = [t.to_tuple() for t in lst]
             try:
@@ -55,8 +56,10 @@ project = EXCLUDED.project
                 cur.executemany(query, values)
                 self.connection.commit()
             
-            except:
-                raise Exception
+            except Exception as e:
+                logging.error(e)
+                return None
+                
             
     def getBook(self) -> list[Book]: # postgresql
         with self.connection.cursor() as cur:
@@ -147,12 +150,13 @@ project = EXCLUDED.project
                 book = Book(
                 address=row[0],
                 name=row[1],
-                is_lumx=row[2],
-                blockchain=row[3],
-                is_conversion=row[4],
-                is_primarysale=row[5],
-                is_secondarysale=row[6],
-                project=row[7]
+                is_lumx=bool(int(row[2])),
+                is_safe=bool(int(row[3])),
+                blockchain=row[4],
+                is_conversion=bool(int(row[5])),
+                is_primarysale=bool(int(row[6])),
+                is_secondarysale=bool(int(row[7])),
+                project=row[8]
                 )
                 if book.address:
                     book_list.append(book)
