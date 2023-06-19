@@ -22,9 +22,10 @@ class UpdateCryptoPrices:
             status = 'Updating'
             
         except ValueError as ve:
+            date = datetime(year=2021, month=12, day=31).date()
             print(f'{"" * 3}Warning: {ve}')
             status = 'Empty'
-            date = datetime(year=2021, month=12, day=31).date()
+            
 
         finally:
             self.repositoryPrices.deleteByDate(date=date)

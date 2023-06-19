@@ -129,7 +129,7 @@ class TransactionCrypto:
     description = None
     ):
         
-        self.id = id
+        self.id = id if id else str(uuid4())
         self.blockNumber = blockNumber
         self.blockHash = blockHash
         self.datetime = datetime.fromtimestamp(timeStamp) + timedelta(hours=3)

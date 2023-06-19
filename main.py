@@ -18,10 +18,10 @@ class Main:
         self.passwordProtocol = 'F1n@nceiro2502'
         self.dbnameProtocol = 'postgres'
         
-        self.host = 'financeiro.czhdzceztpsv.us-east-1.rds.amazonaws.com'
+        self.host = 'financeiro-15.czhdzceztpsv.us-east-1.rds.amazonaws.com'
         self.port = '5432'
         self.user = 'postgres'
-        self.password = 'financeiro2502lumx..'
+        self.password = 'F1nanc&1ro2502'
         self.dbname = 'postgres'
         self.schema = 'finance'
         
@@ -84,3 +84,5 @@ class Main:
         self.flows()
     
         print('\nRoutine in {:.2f} seconds\n'.format(time() - self.start_time))
+        
+Main().finance()
