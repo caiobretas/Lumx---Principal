@@ -16,7 +16,7 @@ class FinanceRepository:
         timer = time()
         
         UpdateTransactions(self.connection, self.engine).update()
-        UpdateBook(self.connection,self.engine).update() # update book repository from 'interface.xlsx'
+        UpdateBook(self.connection,self.engine).update()
         UpdateCategories(self.connection, self.engine).update()
         UpdateCryptoTransactions(self.connection, self.engine).update()
         UpdateCryptoPrices(self.connection,self.engine).update()
