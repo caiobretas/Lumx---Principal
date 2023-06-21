@@ -43,36 +43,7 @@ class RepositoryCryptoTransaction ( RepositoryBase ):
                     contractAddress, gas, gasPrice, gasUsed, cumulativeGasUsed, value, gasFee, total,
                     tokenName, tokenSymbol, tokenDecimal, isError, txreceipt_status, type,
                     methodId, functionName, txnType, blockchain, address, bank, scan, description) VALUES ({placeholders})
-                    ON CONFLICT (id) DO UPDATE SET
-                    blockNumber = EXCLUDED.blockNumber,
-                    blockHash = EXCLUDED.blockHash,
-                    datetime = EXCLUDED.datetime,
-                    hash = EXCLUDED.hash,
-                    nonce = EXCLUDED.nonce,
-                    from_ = EXCLUDED.from_,
-                    to_ = EXCLUDED.to_,
-                    contractAddress = EXCLUDED.contractAddress,
-                    gas = EXCLUDED.gas,
-                    gasPrice = EXCLUDED.gasPrice,
-                    gasUsed = EXCLUDED.gasUsed,
-                    cumulativeGasUsed = EXCLUDED.cumulativeGasUsed,
-                    value = EXCLUDED.value,
-                    gasFee = EXCLUDED.gasFee,
-                    total = EXCLUDED.total,
-                    tokenName = EXCLUDED.tokenName,
-                    tokenSymbol = EXCLUDED.tokenSymbol,
-                    tokenDecimal = EXCLUDED.tokenDecimal,
-                    isError = EXCLUDED.isError,
-                    txreceipt_status = EXCLUDED.txreceipt_status,
-                    type = EXCLUDED.type,
-                    methodId = EXCLUDED.methodId,
-                    functionName = EXCLUDED.functionName,
-                    txnType = EXCLUDED.txnType,
-                    blockchain = EXCLUDED.blockchain,
-                    address = EXCLUDED.address,
-                    bank = EXCLUDED.bank,
-                    scan = EXCLUDED.scan,
-                    description = EXLUDED.description
+                    ON CONFLICT (id) DO NOTHING
                     ;"""
                     
                 cur.executemany(query, values)

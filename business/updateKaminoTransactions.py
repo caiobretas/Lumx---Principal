@@ -1,3 +1,4 @@
+import logging
 from time import time
 from datetime import datetime, timedelta
 from business.loadTransactions import LoadTransactions
@@ -20,7 +21,8 @@ class UpdateKaminoTransactions:
             date: str = self.repositoryKamino.getDate(realizado=1)
             periodoDe = datetime.strftime(date - timedelta(days=10), "%m-%d-%y")
                 
-        except:
+        except Exception as e:
+            logging.error(e)
             status = 'Reset'
             return None
     
@@ -30,7 +32,8 @@ class UpdateKaminoTransactions:
                 self.repositoryKamino.insert(LoadTransactions(periodoDe=periodoDe,apenasRealizados=True).loadKaminoTransactions())
                 status = 'Complete'
                 
-            except:
+            except Exception as e:
+                logging.error(e)
                 # put on a limit date 
                 self.periodoAte = datetime.now().strftime("%m-%d-%y")
 

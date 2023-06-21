@@ -33,23 +33,19 @@ class RepositoryKamino ( RepositoryBase ):
             logging.error(e)
             
     def getDate(self, realizado: int = 1) -> datetime:
-
-        with self.connection.cursor() as cur:
-
-            try:
-                
+        try:   
+            with self.connection.cursor() as cur:
                 if realizado == 1:
                     query1 = f"""select date(max(data)) as data from {self.schema}.{self.tableName} where realizado = {realizado} order by data desc;"""
                     cur.execute(query1)
                     return cur.fetchone()[0]
- 
+
                 elif realizado == 0:
                     query2 = f"""select date(min(data)) as data from {self.schema}.{self.tableName} where realizado = {realizado} order by data desc;"""
                     cur.execute(query2)
                     return cur.fetchone()[0]
-            
-            except Exception as e:
-                logging.error(e)
+        except Exception as e:
+            logging.error(e)
                        
     def insert(self, obj: list[KaminoTransaction] | KaminoTransaction, method: Literal['bulk', 'single'] = 'bulk') -> None:
         
