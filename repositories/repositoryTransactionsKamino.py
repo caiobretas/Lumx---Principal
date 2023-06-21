@@ -416,7 +416,7 @@ class RepositoryKamino ( RepositoryBase ):
                     {self.repositoryContacts.schema}.{self.repositoryContacts.tableName} AS hr ON hr.idpessoa = fm.idpessoa
             WHERE
                 subcategoria4 = 'Prestação de Serviços' 
-                AND fm.data > '2023-05-01' AND fm.data < DATE_TRUNC('MONTH', CURRENT_DATE) + INTERVAL '60 day'
+                AND fm.data > '2023-05-01' AND fm.data < DATE_TRUNC('MONTH', CURRENT_DATE) + INTERVAL '5 day'
                 AND (fm.numeronotafiscal IS NULL OR fm.numeronotafiscal = '')
                 AND nomepessoa != 'Lumx Studios S/A'
             ORDER BY
