@@ -15,6 +15,7 @@ class UpdateEmailRequests:
     
     def update(self):
         start_time = time()
+        self.mailUpdates.clear()
         print('\nUpdating Email Requests...')
         
         emailRequests_list: list[EmailRequest] = self.repositoryEmailRequests.getEmailRequests(False, False, 'Invoice')
@@ -51,7 +52,8 @@ class UpdateEmailRequests:
                     
                     attachment: tuple = self.controllerGmail.getAttachmentById(message['id'],attachmentId)
                 
-                attachment_list.append(attachment)
+                if not attachment: continue
+                if attachment: attachment_list.append(attachment)
                 
                 if attachment_list:
                     request.attachment = True
@@ -85,12 +87,13 @@ class UpdateEmailRequests:
                     except HttpError as err:
                         logging.error(err)
                         request_update.concluded = False   
-            # se attachment Id;
-            # renomeia o attachment com o subject
-            # joga o attachment na pasta
-            # marca como concluded
+            
+                # se attachment Id;
+                # renomeia o attachment com o subject
+                # joga o attachment na pasta
+                # marca como concluded
                         
-            self.mailUpdates.append(request_update)
+                self.mailUpdates.append(request_update)
                 
         self.repositoryEmailRequests.insertEmailRequests(self.mailUpdates)
         print('\n{}Email Requests updated in {:.2f} seconds\n'.format(' ' * 3,time() - start_time))
