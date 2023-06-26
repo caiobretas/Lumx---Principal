@@ -27,7 +27,6 @@ class UpdateEmailRequests:
             return None
         
         for request in emailRequests_list:
-            
             mail: dict = self.controllerGmail.getMessagebyId(request.email_id)
             thread: dict = self.controllerGmail.getThreadById(mail['threadId'])
             messages_list: list[dict] = thread.get('messages', None)

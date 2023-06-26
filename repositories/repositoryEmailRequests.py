@@ -12,7 +12,8 @@ class RepositoryEmailRequests(RepositoryBase):
         self.repositoryContacts: RepositoryContacts = RepositoryContacts(connection, engine)
 
     def insertEmailRequests(self, list_requests: list[EmailRequest]| None):
-        if list_requests != None:
+        
+        if list_requests:
             values = [t.to_tuple() for t in list_requests]
             with self.connection.cursor() as cur:
                 try:
