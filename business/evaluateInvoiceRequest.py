@@ -1,3 +1,4 @@
+import logging
 from repositories.repositoryTransactionsKamino import RepositoryKamino
 from repositories.repositoryEmailRequests import RepositoryEmailRequests
 
@@ -29,6 +30,7 @@ class EvaluateInvoiceRequest:
                 contact_id= row[2],
                 contact_name=row[3],
                 to_=row[4],
+                # to_='caiodbretas@icloud.com',
                 secondaryemail=row[8],
                 value=row[5]
             )
@@ -56,7 +58,12 @@ class EvaluateInvoiceRequest:
 
     def sendInvoiceReminder(self) -> list[EmailRequest]:
         '''Send reminder notification and return a list of reminders sent'''
-        for request in self.repositoryEmailRequests.getEmailRequests(pendingOnly=True):
-            invoiceRequest = InvoiceRequest(request)
-            reminder = invoiceRequest.setReminder(request.email_id)
-            invoiceRequest.sendReminder(reminder)
+        try:
+            for request in self.repositoryEmailRequests.getEmailRequests(pendingOnly=True):
+                invoiceRequest = InvoiceRequest(request)
+                reminder = invoiceRequest.setReminder(request.email_id)
+                invoiceRequest.sendReminder(reminder)
+        
+        except Exception as e:
+            logging.error(e)
+            return None

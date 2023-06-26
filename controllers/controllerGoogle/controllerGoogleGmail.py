@@ -50,7 +50,7 @@ class GoogleGmail(ControllerGoogle):
         except Exception as e:
             logging.error(e)
 
-            
+    
     def sendDraft(self, draft_id):
         '''Sends a draft and returns the email sent'''
         body = {'id': draft_id}

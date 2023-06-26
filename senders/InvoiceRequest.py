@@ -4,13 +4,13 @@ from datetime import timedelta, datetime
 class InvoiceRequest:
     
     def setDraft(self) -> tuple:
-        self.request.subject = f'NFS-e {self.request.contact_name} - {self.date}'
+        self.request.subject = f'[SOLICITAÇÃO NFS-e] {self.request.contact_name} - {self.date}'
         message = f'Prezado(a) {self.request.contact_name},\n\nFavor responder a este e-mail com a Nota Fiscal de Serviços referente ao mês {self.date}\n\nValor: R${self.request.value}\n\nEm caso de dúvidas, envie um e-mail para financeiro@lumxstudios.com\n\nEsta é uma mensagem automática.'
         draft = GoogleGmail().createDraft(self.request.from_, self.request.to_, self.cc_list, self.request.subject, message)
         return draft, draft['id']
     
     def setMessage(self) -> tuple:
-        self.request.subject = f'NFS-e {self.request.contact_name} - {self.date}'
+        self.request.subject = f'[SOLICITAÇÃO NFS-e] {self.request.contact_name} - {self.date}'
         message = f'Prezado(a) {self.request.contact_name},\n\nFavor responder a este e-mail com a Nota Fiscal de Serviços referente ao mês {self.date}\n\nValor: R${self.request.value}\n\nEm caso de dúvidas, envie um e-mail para financeiro@lumxstudios.com\n\nEsta é uma mensagem automática.'
         return self.request.subject, message
     
@@ -20,9 +20,9 @@ class InvoiceRequest:
         draft = GoogleGmail().createDraft(self.request.from_,self.request.to_, self.cc_list, self.request.subject, message, messageId)
         return draft
         
-    def sendDraft(self, draft) -> None:
+    def sendDraft(self, draft) -> tuple:
         self.request.draft_id = draft['id']
-        self.request.email_id = GoogleGmail().sendDraft(self.request.draft_id)
+        self.request.email_id = GoogleGmail().sendDraft(self.request.draft_id).get('id', None)
         return (self.request.draft_id, self.request.email_id)
         
     def sendMessage(self):
@@ -39,7 +39,7 @@ class InvoiceRequest:
         self.contactEmail: str = request.to_
         # self.contactEmail = 'caiodbretas@icloud.com'
         
-        self.cc_list = [request.secondaryemail, 'financeiro@lumxstudios.com'] if request.secondaryemail != None else ['financeiro@lumxstudios.com']
+        self.cc_list = [request.secondaryemail] if request.secondaryemail != None else ['financeiro@lumxstudios.com']
         # self.cc_list = ['caio.bretas@lumxstudios.com']
         self.date = (request.datetime - timedelta(days=30)).strftime('%m/%Y')
     
