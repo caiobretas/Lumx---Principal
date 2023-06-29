@@ -81,5 +81,5 @@ class AutorunMinute:
         sender.sendDraft(draft.get('id', None))
         
 AutorunMinute.run()
-AutorunMinute.sender()
+# AutorunMinute.sender()
 print('Auto Run Minute Complete')

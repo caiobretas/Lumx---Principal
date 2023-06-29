@@ -34,7 +34,7 @@ class AutorunHour:
         sender.sendDraft(draft.get('id', None))
         
 AutorunHour.run()
-AutorunHour.sender()
+# AutorunHour.sender()
 print('Auto Run Hour Complete')
 
 
