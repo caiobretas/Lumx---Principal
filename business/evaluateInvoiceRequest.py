@@ -59,7 +59,7 @@ class EvaluateInvoiceRequest:
     def sendInvoiceReminder(self) -> list[EmailRequest]:
         '''Send reminder notification and return a list of reminders sent'''
         try:
-            for request in self.repositoryEmailRequests.getEmailRequests(pendingOnly=True):
+            for request in self.repositoryEmailRequests.getEmailRequests(concludedOnly=False):
                 invoiceRequest = InvoiceRequest(request)
                 reminder = invoiceRequest.setReminder(request.email_id)
                 invoiceRequest.sendReminder(reminder)
