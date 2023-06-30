@@ -25,7 +25,7 @@ errorsubject = 'Error running script!'
             
 #     @staticmethod
 #     def sender():
-#         subject = 'Successfully completed hour routine'
+#         subject = 'Successfully completed daily routine'
 #         message = 'The following tasks were executed:\nInvoiceRequest\nReminderRequest'
 #         draft: dict = sender.createDraft(from_=from_,to=to,subject=subject, message_body=message)
 #         sender.sendDraft(draft.get('id', None))
