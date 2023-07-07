@@ -13,13 +13,13 @@
         },
         {
             "previewLimit": 50,
-            "server": "financeiro.czhdzceztpsv.us-east-1.rds.amazonaws.com",
+            "server": "financeiro-15.czhdzceztpsv.us-east-1.rds.amazonaws.com",
             "port": 5432,
             "driver": "PostgreSQL",
-            "name": "Financeiro",
+            "name": "Lumx---Principal",
             "database": "postgres",
             "username": "postgres",
-            "password": "financeiro2502lumx.."
+            "password": "F1nanc&1ro2502"
         }
     ]
 }
