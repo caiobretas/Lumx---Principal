@@ -4,6 +4,7 @@ from business.UpdateContacts import UpdateContacts
 from business.updateCategories import UpdateCategories
 from business.updateCryptoPrices import UpdateCryptoPrices
 from business.updateFutures import UpdateFutures
+from business.updateCryptoTransactions import UpdateCryptoTransactions
 from business.updateKaminoTransactions import UpdateKaminoTransactions
 from business.updateTransactionsRepository import UpdateTransactions
 from business.comercial import PipedriveActivities, PipedriveDeals, PipedriveDealFields
@@ -40,6 +41,7 @@ class AutorunMinute:
             AutorunMinute.list_errors.append(e)
         try:
             UpdateCryptoPrices(connection, engine).update()
+            UpdateCryptoTransactions(connection, engine).update()
         except Exception as e:
             draft: dict = sender.createDraft(from_=from_,to=to,subject=errorsubject,message_body=f'Error: {e}')
             sender.sendDraft(draft.get('id', None))
