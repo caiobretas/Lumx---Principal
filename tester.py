@@ -15,6 +15,12 @@ controllerPipe = ControllerPipeDrive()
 
 # controllerDrive.uploadFile(attachment, 'Teste', '1JS8MCpBsNR-jp1APrxq7wR9Be2X7o1bd')
 
-from autorun_minute2 import AutorunMinute
+# drives =controllerDrive.getSharedDrives()
+# files = controllerDrive.getFoldersList('0AOWIfBoIehBbUk9PVA')
+# parentsFolder = controllerDrive.getFileParenting('1qEHK9I0uAATSGPPHyNThrVHNl-TtFePTYPqGusz1ows')
 
-AutorunMinute.run()
+# file = controllerDrive.service.files().get(fileId='0AOWIfBoIehBbUk9PVA',supportsAllDrives=True).execute()
+# file_name = file.get('name')
+# description = file.get('description')
+controllerDrive.getFilesByDriveId('0AOWIfBoIehBbUk9PVA', "Jurídico")
+a = 1
