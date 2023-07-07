@@ -54,7 +54,7 @@ class Main:
     
     def legal(self):
         from business.legal.DocumentsRepository import DocumentsRepository
-        DocumentsRepository(self.connection, self.engine).updateRepository()
+        DocumentsRepository(self.connection, self.engine).update()
     
     def comercial(self):
         from business.comercial import PipedriveDeals, PipedriveActivities,PipedriveDealFields

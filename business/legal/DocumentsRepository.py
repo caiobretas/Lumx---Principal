@@ -10,7 +10,7 @@ class DocumentsRepository:
         self.controllerDrive = GoogleDrive()
         self.repositoryDocuments = RepositoryDocuments(connection, engine)
 
-    def updateRepository(self):
+    def update(self):
         
         self.controllerDrive.getFilesByDriveId(self.repositoryDocuments.driveId, driveName='Jurídico')
         files: list[Document] = self.controllerDrive.files
