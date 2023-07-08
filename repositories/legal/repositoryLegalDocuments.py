@@ -1,11 +1,11 @@
 import logging
-from entities.legal.entityDocument import Document
+from entities.legal.entityDocument import LegalDocument
 from repositories.repositoryBase import RepositoryBase
 
-class RepositoryDocuments(RepositoryBase):
+class RepositoryLegalDocuments(RepositoryBase):
     def __init__(self,connection, engine):
         self.driveId = '0AOWIfBoIehBbUk9PVA'
-        self.tableName = 'documents'
+        self.tableName = 'documents_categories'
         self.schema = 'legal'
         super().__init__(connection, engine, self.schema,self.tableName)
     
@@ -17,7 +17,7 @@ class RepositoryDocuments(RepositoryBase):
         except Exception as e:
             logging.error(e)
             
-    def insertDocuments(self, list_documents: list[Document]):
+    def insert(self, list_documents: list[LegalDocument]):
         if not list_documents:
             return None
         values = [t.to_tuple() for t in list_documents]
@@ -26,18 +26,16 @@ class RepositoryDocuments(RepositoryBase):
                 placeholders = ','.join(['%s'] * len(values[0]))
                 query = f"""
                     INSERT INTO {self.schema}.{self.tableName}
-                    (id,googleid,name,type,drive,path,webLink,createdTime,modifiedTime,parents)
+                    (id,nome,categoria1,categoria2,categoria3,categoria4,categoria5)
                     VALUES ({placeholders})
-                    ON CONFLICT (googleid) DO
+                    ON CONFLICT (id) DO
                     UPDATE SET
-                    name = EXCLUDED.name,
-                    type = EXCLUDED.type,
-                    drive = EXCLUDED.drive,
-                    path = EXCLUDED.path,
-                    webLink = EXCLUDED.webLink,
-                    createdTime = EXCLUDED.createdTime,
-                    modifiedTime = EXCLUDED.modifiedTime,
-                    parents = EXCLUDED.parents
+                    nome = EXCLUDED.nome,
+                    categoria1 = EXCLUDED.categoria1,
+                    categoria2 = EXCLUDED.categoria2,
+                    categoria3 = EXCLUDED.categoria3,
+                    categoria4 = EXCLUDED.categoria4,
+                    categoria5 = EXCLUDED.categoria5
                     """
                 cur.executemany(query, values)
                 self.connection.commit()

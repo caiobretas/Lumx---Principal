@@ -53,8 +53,10 @@ class Main:
         Flow(self.connection, self.engine).salaryFlow()
     
     def legal(self):
-        from business.legal.DocumentsRepository import DocumentsRepository
-        DocumentsRepository(self.connection, self.engine).update()
+        from business.legal.documentsRepository import DocumentsRepository
+        from business.legal.updateLegalRepository import UpdateLegalRepository
+        # DocumentsRepository(self.connection, self.engine).update()
+        UpdateLegalRepository(self.connection, self.engine).update()
     
     def comercial(self):
         from business.comercial import PipedriveDeals, PipedriveActivities,PipedriveDealFields
@@ -88,3 +90,4 @@ class Main:
         self.flows()
     
         print('\nRoutine in {:.2f} seconds\n'.format(time() - self.start_time))
+Main().legal()
