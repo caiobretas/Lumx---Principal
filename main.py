@@ -55,7 +55,8 @@ class Main:
     def legal(self):
         from business.legal.documentsRepository import DocumentsRepository
         from business.legal.updateLegalRepository import UpdateLegalRepository
-        # DocumentsRepository(self.connection, self.engine).update()
+        
+        DocumentsRepository(self.connection, self.engine).update()
         UpdateLegalRepository(self.connection, self.engine).update()
     
     def comercial(self):
@@ -90,4 +91,3 @@ class Main:
         self.flows()
     
         print('\nRoutine in {:.2f} seconds\n'.format(time() - self.start_time))
-Main().legal()
