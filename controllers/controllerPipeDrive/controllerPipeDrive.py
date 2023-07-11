@@ -1,4 +1,4 @@
-
+import time
 import requests
 import json
 import logging
@@ -101,11 +101,21 @@ class ControllerPipeDrive ( ControllerHTTPBase ):
             listActivities: list[PipedriveActivity] = []
             result: list[dict] = jsonResponse['data']
             for obj in result:
+                
+                hours_inMinutes = int(str(obj.get('duration',"00:00")).split(':')[0]) * 60 if str(obj.get('duration',"00:00")).split(':')[0] != '' else 0
+                
+                try:
+                    minutes = int(str(obj.get('duration',"00:00")).split(':')[1]) if str(obj.get('duration',"00:00")).split(':')[1] != '' else 0
+                except IndexError:
+                    minutes = 0
+                
+                duration = hours_inMinutes + minutes
+                
                 activity = PipedriveActivity(
                 id = obj.get('id',None),
                 done = obj.get('done',None),
                 type = obj.get('type',None),
-                duration = obj.get('duration',None),
+                duration = duration,
                 subject = obj.get('subject',None),
                 company_id = obj.get('company_id',None),
                 user_id = obj.get('user_id',None),

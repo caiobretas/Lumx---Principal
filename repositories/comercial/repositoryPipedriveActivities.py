@@ -62,4 +62,5 @@ class RepositoryPipedriveActivites (RepositoryBase):
                 cur.executemany(query, values)
                 self.connection.commit()
             except Exception as e:
+                print(f'Erro ao inserir dados no banco: {self.schema}.{self.tableName}')
                 logging.error(e)
