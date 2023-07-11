@@ -1,6 +1,6 @@
 from main import Main
 from business.updateBook import UpdateBook
-from business.UpdateContacts import UpdateContacts
+from business.updateContacts import UpdateContacts
 from business.updateCategories import UpdateCategories
 from business.updateCryptoPrices import UpdateCryptoPrices
 from business.updateFutures import UpdateFutures

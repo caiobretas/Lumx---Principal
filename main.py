@@ -53,7 +53,7 @@ class Main:
         Flow(self.connection, self.engine).salaryFlow()
     
     def legal(self):
-        from business.legal.DocumentsRepository import DocumentsRepository
+        from business.legal.documentsRepository import DocumentsRepository
         from business.legal.updateLegalRepository import UpdateLegalRepository
         
         DocumentsRepository(self.connection, self.engine).update()
@@ -80,7 +80,7 @@ class Main:
         UpdateProjection(self.connection,self.engine).update()
         
     def hr(self):
-        from business.UpdateContacts import UpdateContacts
+        from business.updateContacts import UpdateContacts
         UpdateContacts(connection=self.connection, engine=self.engine).update()
     
     def routine(self):
