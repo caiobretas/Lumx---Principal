@@ -93,10 +93,10 @@ class ControllerPipeDrive ( ControllerHTTPBase ):
         except Exception as e:
             logging.error(e)
     
-    def getActivities(self) -> list[PipedriveActivity]:
+    def getActivities(self, start=0,limit=500, user_id=0) -> list[PipedriveActivity]:
         try:
             action = 'activities'
-            url = f'{self.baseUrl}/{self.version}/{action}?api_token={self.apikey}'
+            url = f'{self.baseUrl}/{self.version}/{action}?start_date=2023-07-01&user_id={user_id}&start={start}&limit={limit}&api_token={self.apikey}'
             jsonResponse = self.get(url,self.headers,'json')
             listActivities: list[PipedriveActivity] = []
             result: list[dict] = jsonResponse['data']
@@ -141,7 +141,7 @@ class ControllerPipeDrive ( ControllerHTTPBase ):
                 )
                 verificar_e_substituir_atributo_por_none(activity)
                 listActivities.append(activity)
-            
+       
             return listActivities
         
         except Exception as e:
