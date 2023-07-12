@@ -37,7 +37,6 @@ class LegalDocument(Document):
         self.idparte = idparte
         self.dataassinatura = dataassinatura
         
-        
     def __repr__(self):
         return f'{self.name}'
     

@@ -4,6 +4,7 @@ from business.updateCategories import UpdateCategories
 from business.updateKaminoTransactions import UpdateKaminoTransactions
 from business.updateCryptoTransactions import UpdateCryptoTransactions
 from business.updateTransactionsRepository import UpdateTransactions
+from business.finance.updateProjects import UpdateProjects
 from business.updateFutures import UpdateFutures
 from business.updateBook import UpdateBook
 
@@ -15,9 +16,9 @@ class FinanceRepository:
     def update(self): 
         timer = time()
         
-        
         UpdateBook(self.connection,self.engine).update()
         UpdateCategories(self.connection, self.engine).update()
+        UpdateProjects(self.connection, self.engine).update()
         UpdateCryptoPrices(self.connection,self.engine).update()
         UpdateCryptoTransactions(self.connection, self.engine).update()
         UpdateKaminoTransactions(self.connection,self.engine).update()

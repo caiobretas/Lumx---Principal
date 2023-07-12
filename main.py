@@ -56,8 +56,7 @@ class Main:
         from business.legal.legalControl_sheet import LegalControlSheet
         from business.legal.documentsRepository import DocumentsRepository
         from business.legal.updateLegalRepository import UpdateLegalRepository
-        
-        
+
         DocumentsRepository(self.connection, self.engine).update()
         UpdateLegalRepository(self.connection, self.engine).update()
         LegalControlSheet(self.connection,self.engine).routine()
@@ -75,10 +74,12 @@ class Main:
         UpdateEmailRequests(self.connection, self.engine).update()
         
     def finance(self):
+        from business.finance.updateProjects import UpdateProjects
         from business.atualizaRepository import FinanceRepository
         from business.updateProjection import UpdateProjection
         from business.finance.ExchangeVariationRate import ExchangeVariationRate
         
+        UpdateProjects(self.connection,self.engine).update()
         ExchangeVariationRate(self.connection,self.engine).updateSheet()
         FinanceRepository(self.connection,self.engine).update()
         UpdateProjection(self.connection,self.engine).update()
@@ -95,4 +96,4 @@ class Main:
         self.flows()
     
         print('\nRoutine in {:.2f} seconds\n'.format(time() - self.start_time))
-Main().legal()
+Main().finance()
