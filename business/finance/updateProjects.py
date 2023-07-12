@@ -9,3 +9,4 @@ class UpdateProjects:
         projects = self.repositoryProjects.getProjects_fromSheets()
         self.repositoryProjects.insert(projects)
         a = 1
+        

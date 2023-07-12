@@ -167,15 +167,15 @@ class RepositoryProjects ( RepositoryBase ):
                 except IndexError:
                     creditcardfee = 0
                 try:
-                    connect = row[16]
+                    connect = row[16] if row[16] != '' else False
                 except IndexError:
                     connect = False
                 try:
-                    activeuser = row[17]
+                    activeuser = row[17] if row[17] != '' else False
                 except IndexError:
                     activeuser = False
                 try:
-                    wallet = row[18]
+                    wallet = row[18] if row[18] != '' else False
                 except IndexError:
                     wallet = False
 
