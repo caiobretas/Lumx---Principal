@@ -157,8 +157,8 @@ class ControllerKamino ( ControllerHTTPBase ):
                     OrgaoEmissorRG = dict_['OrgaoEmissorRG'],
                     UFEmissorRG = dict_['UFEmissorRG'],
                     ClienteDesde = dict_['ClienteDesde'],
-                    IDClassificacaoPreferencial = dict_['IDClassificacaoPreferencial'],
-                    IDCentroCustoPreferencial = dict_['IDCentroCustoPreferencial'],
+                    IDClassificacaoPreferencial = str(dict_['IDClassificacaoPreferencial']).strip(),
+                    IDCentroCustoPreferencial = str(dict_['IDCentroCustoPreferencial']).strip(),
                     Observacoes = dict_['Observacoes'],
                     ChavePix = dict_['ChavePix'],
                     TipoChavePix = dict_['TipoChavePix'],
@@ -166,6 +166,7 @@ class ControllerKamino ( ControllerHTTPBase ):
                 list_contacts.append(contact)
             
             return list_contacts
+        
         except Exception as e:
             status = 'Failed'
             logging.error(e)
