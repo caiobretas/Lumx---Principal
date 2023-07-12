@@ -53,14 +53,18 @@ class Main:
         Flow(self.connection, self.engine).salaryFlow()
     
     def legal(self):
+        from business.legal.legalControl_sheet import LegalControlSheet
         from business.legal.documentsRepository import DocumentsRepository
         from business.legal.updateLegalRepository import UpdateLegalRepository
         
+        
         DocumentsRepository(self.connection, self.engine).update()
         UpdateLegalRepository(self.connection, self.engine).update()
+        LegalControlSheet(self.connection,self.engine).routine()
     
     def comercial(self):
         from business.comercial import PipedriveDeals, PipedriveActivities,PipedriveDealFields
+        
         PipedriveDeals.PipedriveDeals(self.connection,self.engine).update()
         # PipedriveDeals.PipedriveDeals(self.connection,self.engine).getFlow()
         PipedriveActivities.PipedriveActivities(self.connection,self.engine).update()
@@ -75,8 +79,8 @@ class Main:
         from business.updateProjection import UpdateProjection
         from business.finance.ExchangeVariationRate import ExchangeVariationRate
         
-        FinanceRepository(self.connection,self.engine).update()
         ExchangeVariationRate(self.connection,self.engine).updateSheet()
+        FinanceRepository(self.connection,self.engine).update()
         UpdateProjection(self.connection,self.engine).update()
         
     def hr(self):
@@ -91,3 +95,4 @@ class Main:
         self.flows()
     
         print('\nRoutine in {:.2f} seconds\n'.format(time() - self.start_time))
+Main().legal()

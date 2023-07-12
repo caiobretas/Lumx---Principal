@@ -139,8 +139,8 @@ class GoogleDrive (ControllerGoogle):
         try:
             """Listar todos os arquivos em um diretório e subdiretórios."""
             results = self.service.files().list(
-                q="'{}' in parents and trashed=false".format(driveId),
-                fields="files(name, mimeType, id, webViewLink, createdTime, modifiedTime, parents)",
+                q="'{}' in parents".format(driveId),
+                fields="files(name, mimeType, id, webViewLink, createdTime, modifiedTime, parents, trashed)",
                 pageSize=1000,
                 supportsAllDrives=True,
                 includeItemsFromAllDrives=True
@@ -158,7 +158,8 @@ class GoogleDrive (ControllerGoogle):
                     weblink=file.get('webViewLink'),
                     createdTime=datetime.strptime(file.get('createdTime'), "%Y-%m-%dT%H:%M:%S.%fZ"),
                     modifiedTime=datetime.strptime(file.get('modifiedTime'), "%Y-%m-%dT%H:%M:%S.%fZ"),
-                    parents=file.get('parents')[0]
+                    parents=file.get('parents')[0],
+                    trashed = file.get('trashed')
                 )
                 if document.type != 'folder': self.files.append(document) 
 
@@ -169,4 +170,4 @@ class GoogleDrive (ControllerGoogle):
         except HttpError as he:
             logging.error(he)
         
-        
+        return self.files

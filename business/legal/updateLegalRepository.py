@@ -36,6 +36,10 @@ class UpdateLegalRepository:
                 modifiedTime = tuple_[8],
                 parents = tuple_[9])
             
+            if document.trashed:
+                document.categoria1 = 'Lixeira'
+                continue
+            
             list_ = []
             document.categoria1 = document.path.split('/')[0]
             document.categoria2 = (document.path.split('/')[1]).split('.')[0]

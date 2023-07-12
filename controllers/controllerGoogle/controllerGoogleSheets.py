@@ -18,7 +18,7 @@ class GoogleSheets(ControllerGoogle):
         try:
             if SheetId:
                 worksheet: gspread.Spreadsheet = self.client.open_by_key(worksheetId)
-                sheet: gspread.models.Worksheet = worksheet.get_worksheet_by_id(SheetId)
+                sheet = worksheet.get_worksheet_by_id(SheetId)
                 
                 self.worksheetId = worksheetId
                 self.sheetId = SheetId
@@ -94,5 +94,3 @@ class GoogleSheets(ControllerGoogle):
                 logging.error(f'{" "* 3} Erro: {e}')
         else:
             None
-            
-    

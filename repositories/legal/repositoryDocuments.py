@@ -26,7 +26,7 @@ class RepositoryDocuments(RepositoryBase):
                 placeholders = ','.join(['%s'] * len(values[0]))
                 query = f"""
                     INSERT INTO {self.schema}.{self.tableName}
-                    (id,googleid,name,type,drive,path,webLink,createdTime,modifiedTime,parents)
+                    (id,googleid,name,type,drive,path,webLink,createdTime,modifiedTime,parents,trashed)
                     VALUES ({placeholders})
                     ON CONFLICT (googleid) DO
                     UPDATE SET
@@ -37,7 +37,8 @@ class RepositoryDocuments(RepositoryBase):
                     webLink = EXCLUDED.webLink,
                     createdTime = EXCLUDED.createdTime,
                     modifiedTime = EXCLUDED.modifiedTime,
-                    parents = EXCLUDED.parents
+                    parents = EXCLUDED.parents,
+                    trashed = EXCLUDED.trashed
                     """
                 cur.executemany(query, values)
                 self.connection.commit()

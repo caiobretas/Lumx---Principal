@@ -1,8 +1,9 @@
-import datetime
+import pytz
+from datetime import datetime
 
 from uuid import uuid4, UUID
 class Document:
-    def __init__(self, id=None, googleid=None, name=None, type=None, drive=None, path=None, weblink=None,createdTime=None, modifiedTime=None, parents=None):
+    def __init__(self, id=None, googleid=None, name=None, type=None, drive=None, path=None, weblink=None,createdTime: datetime=None, modifiedTime: datetime=None, parents=None, trashed=bool):
         self.id = str(uuid4()) if not id else id
         self.googleid: str = googleid
         self.name: str = name.split('.')[0]
@@ -10,15 +11,19 @@ class Document:
         self.drive: str = drive
         self.path: str = path
         self.webLink: str = weblink
-        self.createdTime: datetime.datetime =createdTime
-        self.modifiedTime: datetime.datetime = modifiedTime
+        self.createdTime: datetime = createdTime.astimezone(pytz.timezone('America/Sao_Paulo'))
+        self.modifiedTime: datetime = modifiedTime.astimezone(pytz.timezone('America/Sao_Paulo'))
         self.parents: str = parents
+        self.trashed: bool = trashed
+        
+        if self.trashed:
+            self.path = 'Lixeira'
     
     def __repr__(self):
         return f'{self.name}'
     
     def to_tuple(self) -> tuple:
-        return (self.id,self.googleid,self.name,self.type,self.drive,self.path,self.webLink,self.createdTime,self.modifiedTime,self.parents)
+        return (self.id,self.googleid,self.name,self.type,self.drive,self.path,self.webLink,self.createdTime,self.modifiedTime,self.parents, self.trashed)
 
 class LegalDocument(Document):
     def __init__(self, id=None, googleid=None, name=None, type=None, drive=None, path=None, weblink=None,createdTime=None, modifiedTime=None, parents=None,categoria1=None,categoria2=None,categoria3=None,categoria4=None,categoria5=None,idparte=None,dataassinatura=None):
