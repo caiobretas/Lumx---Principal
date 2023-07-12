@@ -25,6 +25,8 @@ class Main:
         self.dbname = 'postgres'
         self.schema = 'finance'
         
+        self.engineProtocol = create_engine(f'postgresql://{self.userProtocol}:{self.passwordProtocol}@{self.hostProtocol}/{self.dbnameProtocol}')
+        
         self.connectionProtocol = psycopg2.connect(
             host=self.hostProtocol,
             port=self.portProtocol,
@@ -96,3 +98,5 @@ class Main:
         self.flows()
     
         print('\nRoutine in {:.2f} seconds\n'.format(time() - self.start_time))
+        
+from repositories.repository
