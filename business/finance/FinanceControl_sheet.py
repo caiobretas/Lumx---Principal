@@ -49,7 +49,7 @@ class FinanceControl:
         self.controllerGoogleSheets.eraseSheet(self.worksheetId,sheetId,headers)
         self.controllerGoogleSheets.writemanyRows(contacts)
         
-    def writeVolumes_sheet(self):
+    def writeSales_sheet(self):
         
         sheetId = 1218727115
         headers = ['id','project_id','project_name','client_name','type','price','amount','currency','blockchain','status', 'created_at']
@@ -99,4 +99,4 @@ case
         self.writeProject_sheet()
         self.writeContacts_sheet()
         self.writeActiveUsers_sheet()
-        self.writeVolumes_sheet()
+        self.writeSales_sheet()
