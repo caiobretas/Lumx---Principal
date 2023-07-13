@@ -27,7 +27,7 @@ class RepositoryProjects ( RepositoryBase ):
         'currency',
         'currencycrypto',
         'setupfee',
-        'maintancefee',
+        'maintenancefee',
         'primarysalefee',
         'secondarysalefee',
         'pixfee',
@@ -47,7 +47,7 @@ class RepositoryProjects ( RepositoryBase ):
                 placeholders = ','.join(['%s'] * len(values[0]))
                 query = f"""
                     INSERT INTO {self.schema}.{self.tableName}
-                    (id,project_name,client_id,client_royalties_address,contract_address,blockchain_symbol,ativo,currency,currencycrypto,setupfee,maintancefee,primarysalefee,secondarysalefee,pixfee,min_pixfee,creditcardfee,connect,activeuser,wallet)
+                    (id,project_name,client_id,client_royalties_address,contract_address,blockchain_symbol,ativo,currency,currencycrypto,setupfee,maintenancefee,primarysalefee,secondarysalefee,pixfee,min_pixfee,creditcardfee,connect,activeuser,wallet)
                     VALUES ({placeholders})
                     ON CONFLICT (id) DO
                     UPDATE SET
@@ -60,7 +60,7 @@ class RepositoryProjects ( RepositoryBase ):
                     currency = EXCLUDED.currency,
                     currencycrypto = EXCLUDED.currencycrypto,
                     setupfee = EXCLUDED.setupfee,
-                    maintancefee = EXCLUDED.maintancefee,
+                    maintenancefee = EXCLUDED.maintenancefee,
                     primarysalefee = EXCLUDED.primarysalefee,
                     secondarysalefee = EXCLUDED.secondarysalefee,
                     pixfee = EXCLUDED.pixfee,
@@ -133,14 +133,13 @@ class RepositoryProjects ( RepositoryBase ):
                 except IndexError:
                     currencycrypto = None
                 try:
-                    setupfee = row[9]
+                    setupfee = str(row[9]).replace('.','').replace(',','.') if row[9] != '' else 0
                 except IndexError:
                     setupfee = 0
                 try:
-                    maintancefee = row[10]
-                    maintancefee = maintancefee
+                    maintenancefee = str(row[10]).replace('.','').replace(',','.') if row[10] != '' else 0
                 except IndexError:
-                    maintancefee = 0
+                    maintenancefee = 0
                 try:
                     primarysalefee = row[11] if row[11] != '' else 0
                     primarysalefee = float((str(primarysalefee).split('%')[0]).replace(',', '.'))
@@ -191,7 +190,7 @@ class RepositoryProjects ( RepositoryBase ):
                 currency = currency,
                 currencycrypto = currencycrypto,
                 setupfee = setupfee,
-                maintancefee = maintancefee,
+                maintenancefee = maintenancefee,
                 primarysalefee = primarysalefee,
                 secondarysalefee = secondarysalefee,
                 pixfee = pixfee,
@@ -211,7 +210,7 @@ class RepositoryProjects ( RepositoryBase ):
         return projects if row_list else None
     
     def getProjects(self) -> list[Project]:
-        query = f'select id,project_name,client_id,client_royalties_address,contract_address,blockchain_symbol,ativo,statusupdatedate,currency,currencycrypto,setupfee,maintancefee,primarysalefee,secondarysalefee,pixfee,min_pixfee,creditcardfee,connect,activeuser,wallet from {self.schema}.{self.tableName}'
+        query = f'select id,project_name,client_id,client_royalties_address,contract_address,blockchain_symbol,ativo,statusupdatedate,currency,currencycrypto,setupfee,maintenancefee,primarysalefee,secondarysalefee,pixfee,min_pixfee,creditcardfee,connect,activeuser,wallet from {self.schema}.{self.tableName}'
         result = []
         try:
             with self.connection.cursor() as cursor:
@@ -229,7 +228,7 @@ class RepositoryProjects ( RepositoryBase ):
                     currency = row[8],
                     currencycrypto = row[9],
                     setupfee = row[10],
-                    maintancefee = row[11],
+                    maintenancefee = row[11],
                     primarysalefee = row[12],
                     secondarysalefee = row[13],
                     pixfee = row[14],
