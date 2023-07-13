@@ -118,7 +118,7 @@ class RepositoryPrices( RepositoryBase ):
             WHERE
                 c.conversionsymbol = 'BRL';
 
-select time, close, conversionsymbol, to_char(date, '%Y-%m-%d') from prices
+select time, close, conversionsymbol, date from prices
 order by date desc;
 
 """
