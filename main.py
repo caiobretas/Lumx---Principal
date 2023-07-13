@@ -51,7 +51,10 @@ class Main:
         EvaluateInvoiceRequest(self.connection, self.engine).sendInvoiceReminder() # send the Invoice Reminder, if needed.
     
     def flows(self):
+        from business.finance.FinanceControl_sheet import FinanceControl
         from business.financeControl import Flow
+        
+        FinanceControl(self.connection,self.engine,self.connectionProtocol, self.engineProtocol).updateSheet()
         Flow(self.connection, self.engine).salaryFlow()
     
     def legal(self):
@@ -76,6 +79,7 @@ class Main:
         UpdateEmailRequests(self.connection, self.engine).update()
         
     def finance(self):
+        from repositories.protocol.repositoryWallets import RepositoryWallets
         from business.finance.updateProjects import UpdateProjects
         from business.atualizaRepository import FinanceRepository
         from business.updateProjection import UpdateProjection
@@ -98,5 +102,4 @@ class Main:
         self.flows()
     
         print('\nRoutine in {:.2f} seconds\n'.format(time() - self.start_time))
-        
-from repositories.repository
+Main().flows()

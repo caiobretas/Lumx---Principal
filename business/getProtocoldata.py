@@ -11,7 +11,7 @@ from controllers.controllerProtocol.controllerVolume import ControllerVolume
 from entities.entityBlockchain import Blockchain
 from entities.entityCollection import Collection
 from entities.entityUser import User
-from entities.entityWallet import Wallet
+from entities.protocol.entityWallet import Wallet
 from entities.entityMintRequest import MintRequest
 from entities.entityProject import Project
 from entities.entityVolume import Volume, VolumeWallets

@@ -209,3 +209,45 @@ class RepositoryProjects ( RepositoryBase ):
         self.controllerGoogleSheets.openSheet(self.workSheetId,self.lastUpdateSheetId)
         self.controllerGoogleSheets.writemanyRows(filteredRows)
         return projects if row_list else None
+    
+    def getProjects(self) -> list[Project]:
+        query = f'select id,project_name,client_id,client_royalties_address,contract_address,blockchain_symbol,ativo,statusupdatedate,currency,currencycrypto,setupfee,maintancefee,primarysalefee,secondarysalefee,pixfee,min_pixfee,creditcardfee,connect,activeuser,wallet from {self.schema}.{self.tableName}'
+        result = []
+        try:
+            with self.connection.cursor() as cursor:
+                cursor.execute(query)
+                for row in cursor.fetchall():
+                    project = Project(
+                    id = row[0],
+                    project_name = row[1],
+                    client_id = row[2],
+                    client_royalties_address = row[3],
+                    contract_address = row[4],
+                    blockchain_symbol = row[5],
+                    ativo = row[6],
+                    statusupdatedate = row[7],
+                    currency = row[8],
+                    currencycrypto = row[9],
+                    setupfee = row[10],
+                    maintancefee = row[11],
+                    primarysalefee = row[12],
+                    secondarysalefee = row[13],
+                    pixfee = row[14],
+                    min_pixfee = row[15],
+                    creditcardfee = row[16],
+                    connect = row[17],
+                    activeuser = row[18],
+                    wallet = row[19]     
+                    )
+                    result.append(project)
+                return result
+        except Exception as e:
+            logging.error(e)
+            
+    def runQuery(self, query):
+        result = []
+        with self.connection.cursor() as cursor:
+            cursor.execute(query)
+            for row in cursor.fetchall():
+                result.append(row)
+        return result

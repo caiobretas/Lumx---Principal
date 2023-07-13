@@ -2,7 +2,7 @@ from pandas import DataFrame
 
 from .controllerProtocol import ControllerProtocol
 
-from entities.entityWallet import Wallet
+from entities.protocol.entityWallet import Wallet
 
 class ControllerWallets( ControllerProtocol ):
     def __init__(self, connection):

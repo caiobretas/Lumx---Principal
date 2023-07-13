@@ -8,6 +8,13 @@ class RepositoryContacts(RepositoryBase):
         self.tableName = 'contacts'
         super().__init__(connection, engine, self.schema, self.tableName)
 
+    def runQuery(self, query):
+        result = []
+        with self.connection.cursor() as cursor:
+            cursor.execute(query)
+            for row in cursor.fetchall():
+                result.append(row)
+        return result
     
     def insertContacts(self, list_contacts: list[Contact]) -> None:
         with self.cursor as cur:
