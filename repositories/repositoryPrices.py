@@ -118,7 +118,7 @@ class RepositoryPrices( RepositoryBase ):
             WHERE
                 c.conversionsymbol = 'BRL';
 
-select time, close, conversionsymbol, date from prices
+select time, close, conversionsymbol, to_char(date, '%Y-%m-%d') from prices
 order by date desc;
 
 """
@@ -166,3 +166,10 @@ order by date asc;
         except Exception as e:
             logging.error(e)
             
+    def runQuery(self, query):
+        result = []
+        with self.connection.cursor() as cursor:
+            cursor.execute(query)
+            for row in cursor.fetchall():
+                result.append(row)
+        return result   

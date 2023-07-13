@@ -1,6 +1,7 @@
 from repositories.protocol.repositoryWallets import RepositoryWallets
 from repositories.repositoryProjects import RepositoryProjects
 from repositories.repositoryContacts import RepositoryContacts
+from repositories.repositoryPrices import RepositoryPrices
 from controllers.controllerGoogle.controllerGoogleSheets import GoogleSheets
 
 class FinanceControl:
@@ -9,6 +10,7 @@ class FinanceControl:
         self.repositoryWallets = RepositoryWallets(connectionProtocol, engineProtocol)
         self.repositoryProjects = RepositoryProjects(connection, engine)
         self.repositoryContacts = RepositoryContacts(connection, engine)
+        self.repositoryPrices = RepositoryPrices(connection, engine)
         self.controllerGoogleSheets = GoogleSheets()
         
         self.worksheetId = '1SYSnWnoDzDD6aU0VONx0vWfqlgAckrnhFb-uPc6xr_E'
@@ -20,6 +22,35 @@ class FinanceControl:
         query = f"select id,project_name,client_id,client_royalties_address,contract_address,blockchain_symbol,ativo,statusupdatedate,currency,currencycrypto,setupfee,maintenancefee,primarysalefee,secondarysalefee,pixfee,min_pixfee,creditcardfee,connect,activeuser,wallet from {self.repositoryProjects.schema}.{self.repositoryProjects.tableName}"
         
         projects = self.repositoryProjects.runQuery(query)
+        
+        self.controllerGoogleSheets.openSheet(self.worksheetId,sheetId)
+        self.controllerGoogleSheets.eraseSheet(self.worksheetId,sheetId,headers)
+        self.controllerGoogleSheets.writemanyRows(projects)
+    
+    
+    def writePrices_sheet(self):
+        
+        sheetId = 889621044
+        headers = ['date','close','token']
+        query = f"""CREATE TEMPORARY TABLE IF NOT EXISTS prices AS
+            SELECT
+                subqueryB.time, POWER(c.close, -1) * subqueryB.close AS close, subqueryB.conversionSymbol, subqueryB.date
+            FROM
+                finance.prices_crypto AS c
+            RIGHT JOIN (
+                SELECT
+                    time, close, conversionSymbol, date
+                FROM
+                    finance.prices_crypto
+                ) AS subqueryB ON c.time = subqueryB.time
+            WHERE
+                c.conversionsymbol = 'BRL';
+
+            select to_char(date(date), 'YYYY-MM-DD'), close, conversionsymbol as token from prices
+            where conversionsymbol != 'BRL'
+            order by date desc;"""
+        
+        projects = self.repositoryPrices.runQuery(query)
         
         self.controllerGoogleSheets.openSheet(self.worksheetId,sheetId)
         self.controllerGoogleSheets.eraseSheet(self.worksheetId,sheetId,headers)
@@ -96,6 +127,7 @@ case
         self.controllerGoogleSheets.writemanyRows(contacts)
     
     def updateSheet(self):
+        self.writePrices_sheet()
         self.writeProject_sheet()
         self.writeContacts_sheet()
         self.writeActiveUsers_sheet()
